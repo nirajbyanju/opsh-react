@@ -75,5 +75,5 @@ jobs:
           server: ftp.opportunitiessharing.com
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: /path/on/ftp/server
+          local-dir: ./dist
+          server-dir: /path/on/ftp/server/
