@@ -35,7 +35,16 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Build project
-        run: npm run build
+        run: |
+          echo "Starting build..."
+          npm run build
+          echo "Build finished."
+
+      - name: List root directory contents
+        run: ls -al
+
+      - name: List build directory contents
+        run: ls -al ./build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
