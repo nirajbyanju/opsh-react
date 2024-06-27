@@ -17,10 +17,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: '20'
 
       - name: Generate package-lock.json if missing
         run: |
@@ -32,16 +32,19 @@ jobs:
           fi
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
-      - name: Build project
+      - name: Build TypeScript
+        run: npm run build --if-present
+
+      - name: Check if build directory exists
         run: |
-          echo "Starting build..."
-          npm run build
-          echo "Build finished."
-
-      - name: List root directory contents
-        run: ls -al
+          if [ -d "./build" ]; then
+            echo "Build directory exists."
+          else
+            echo "Build directory does not exist."
+            exit 1
+          fi
 
       - name: List build directory contents
         run: ls -al ./build
