@@ -8,7 +8,7 @@ on:
 env:
   CI: false
 
-  
+
 jobs:
   build:
     name: Build
@@ -77,4 +77,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist
-          server-dir: /path/on/ftp/server/
+          server-dir: /
