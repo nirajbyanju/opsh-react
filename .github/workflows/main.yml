@@ -39,22 +39,22 @@ jobs:
 
       - name: Check if build directory exists
         run: |
-          if [ -d "./build" ]; then
-            echo "Build directory exists."
+          if [ -d "./dist" ]; then
+            echo "Build directory 'dist' exists."
           else
-            echo "Build directory does not exist."
+            echo "Build directory 'dist' does not exist."
             ls -al  # List current directory contents for further investigation
             exit 1
           fi
 
       - name: List build directory contents
-        run: ls -al ./build
+        run: ls -al ./dist
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
         with:
           name: production-files
-          path: ./build
+          path: ./dist
 
   deploy:
     name: Deploy
@@ -67,12 +67,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: production-files
-          path: ./build
+          path: ./dist
 
       - name: Deploy to FTP
-        uses: wylisimo/ftp-deploy-action@v2
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ftp.opportunitiessharing.com
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./build
+          local-dir: ./dist
