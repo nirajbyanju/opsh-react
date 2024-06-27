@@ -34,8 +34,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build TypeScript
-        run: npm run build --if-present
+      - name: Build TypeScript and Vite
+        run: npm run build
 
       - name: Check if build directory exists
         run: |
@@ -43,6 +43,7 @@ jobs:
             echo "Build directory exists."
           else
             echo "Build directory does not exist."
+            ls -al  # List current directory contents for further investigation
             exit 1
           fi
 
