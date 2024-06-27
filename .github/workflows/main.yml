@@ -70,7 +70,7 @@ jobs:
           path: ./dist
 
       - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: wylisimo/ftp-deploy-action@v2
         with:
           server: ftp.opportunitiessharing.com
           username: ${{ secrets.FTP_USERNAME }}
