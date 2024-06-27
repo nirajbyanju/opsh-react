@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - deploy
-      
+
 env:
   CI: false
 
@@ -21,6 +21,15 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
+
+      - name: Generate package-lock.json if missing
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "package-lock.json not found, generating..."
+            npm install --package-lock-only
+          else
+            echo "package-lock.json found, skipping generation."
+          fi
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
