@@ -1,4 +1,4 @@
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // Make sure to import the CSS
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import sildingImg from '@/assets/auth/sildingImg.png';
 import "./auth.scss";
