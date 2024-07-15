@@ -19,9 +19,9 @@
     "react-icons": "^5.2.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.24.0",
-    "reduce": "^1.0.3",
     "sass": "^1.77.6",
-    "tailwind": "^4.0.0"
+    "tailwind": "^4.0.0",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
