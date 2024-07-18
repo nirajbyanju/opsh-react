@@ -1,8 +1,5 @@
 import "./auth.scss";
 import { FcGoogle } from "react-icons/fc";
-import { FiMail } from "react-icons/fi";
-import { TiLockClosedOutline } from "react-icons/ti";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import AuthSidebar from '../../components/auth/AuthSidebar';
 import { Link } from 'react-router-dom';
 
