@@ -72,37 +72,10 @@ const LoginPage = () => {
                   Password
                 </label>
                 
-                <div className="text-red-500 text-sm">ghf</div>
+                <div className="text-red-500 text-sm"></div>
             
               </div>
-            
-          <div className="mb-4 flex items-center  relative">
-            <FiMail className="text-2xl mb-2 ms-4 text-opsh-secondary absolute left-0 top-3" />
-            <input
-              className=" w-full bg-opsh-background h-15 px-12 py-3 border rounded-lg"
-              type="email"
-              id="email"
-              placeholder="Email or Login ID"
-            />
-          </div>
-            <div className="mb-4 flex items-center relative">
-              <TiLockClosedOutline className="text-3xl ms-4 absolute left-0 top-4 text-opsh-secondary" />
-              <input
-                className="w-full welcome bg-opsh-background h-15 px-12 mt-2 py-3 border rounded-lg"
-                type="password"
-                id="password"
-                placeholder="Password"
-              />
-              <MdOutlineRemoveRedEye className="text-2xl ms-4 absolute right-5 top-6 text-opsh-secondary" />
-            </div>
-            <div className="flex items-center justify-between mb-4">
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2 text-opsh-primary font-medium">Remember Me</span>
-              </label>
-              <a href="#" className="text-opsh-primary font-medium">Forgot Password?</a>
-            </div>
-            <button className="w-full bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit">
+            <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit">
               Log In
             </button>
             <div className="mt-4 text-center">
