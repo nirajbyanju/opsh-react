@@ -1,18 +1,13 @@
 import { Response, api } from '../http.api';
-export interface Registration {
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
-    email?: string;
-    phoneNumber?: string;
-    password?: string;
-    c_password?: string;
-}
+import { Registration } from '../../types/auth/registration';
 
-export const registration = (registrationPayload: Registration): Promise<Response<Registration>> =>
-    api
-        .post<Response<Registration>>('/register', {
-            ...registrationPayload,
-        })
-        .then(({ data }) => data);
-
+export const registration = (payload: Registration): Promise<Response> =>
+  api.post<Response>("/register", {
+    ...payload,
+  }).then(({ data }) => data)
+  .catch((error) => {
+    if (error.response && error.response.data) {
+      return Promise.reject(error.response.data);
+    }
+    return Promise.reject(error);
+  });

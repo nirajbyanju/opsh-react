@@ -4,6 +4,7 @@ import { FiMail } from "react-icons/fi";
 import { TiLockClosedOutline } from "react-icons/ti";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import AuthSidebar from '../../components/auth/AuthSidebar';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   return (
@@ -34,6 +35,47 @@ const LoginPage = () => {
           </div>
 
           <form>
+          <div className="relative mb-4">
+              <input
+                type="text"
+                
+                id="userName"
+                className={`w-full border-2 rounded-lg  'border-red-500' : 'border-opsh-darkgrey'
+                 block py-3.5 ps-6 pe-0 text-sm text-gray-900 bg-transparent focus:bg-white appearance-none dark:text-dark dark:focus:border-blue-500 focus:outline-none peer`}
+                placeholder=" "
+              />
+              <label
+                htmlFor="userName"
+                className="z-10 absolute text-md bg-white text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:translate-x-5 peer-focus:text-blue-600 peer-focus:bg-white peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-2 rtl:peer-focus:left-auto"
+              >
+                User Name
+              </label>
+              
+                <div className="text-red-500 text-sm"></div>
+             
+            </div>
+
+              <div className="relative">
+                <input
+                  type="password"
+                 
+                  id="password"
+                  className={`w-full border-2 rounded-lg 
+                    'border-red-500' : 'border-opsh-darkgrey'
+                   block py-3.5 ps-6 pe-0 text-sm text-gray-900 bg-transparent focus:bg-white appearance-none dark:text-dark dark:focus:border-blue-500 focus:outline-none peer`}
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="password"
+                  className="z-10 absolute text-md bg-white text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:translate-x-5 peer-focus:text-blue-600 peer-focus:bg-white peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-2 rtl:peer-focus:left-auto"
+                >
+                  Password
+                </label>
+                
+                <div className="text-red-500 text-sm">ghf</div>
+            
+              </div>
+            
           <div className="mb-4 flex items-center  relative">
             <FiMail className="text-2xl mb-2 ms-4 text-opsh-secondary absolute left-0 top-3" />
             <input
@@ -63,9 +105,14 @@ const LoginPage = () => {
             <button className="w-full bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit">
               Log In
             </button>
-            <div className="w-full bg-blue-600 text-white py-3 rounded-lg bg-white border-2 border-gray-400 mt-4">
-              <p className="text-center text-gray-500 font-regular">Don't have an account? <a href="#" className="text-opsh-primary font-medium">Sign Up</a></p>
-            </div>
+            <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-blue-600 font-semibold hover:text-blue-800">
+                Registration
+              </Link>
+            </p>
+          </div>
           </form>
         </div>
       </div>

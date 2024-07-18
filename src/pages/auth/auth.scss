@@ -17,4 +17,12 @@
     background: #e7e5e5;
     background-image: linear-gradient(to right, #fff, #3854a5, #fff);
 }
+/* Hide the spin buttons for number input */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button,
+input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0; /* Optional: Remove margin */
+}
+
   
