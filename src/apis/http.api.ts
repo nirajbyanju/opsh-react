@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 export const api = axios.create({
-    baseURL: 'https://back.opportunitiessharing.com',
+    baseURL: 'https://back.opportunitiessharing.com/api',
     headers: {
         'Content-Type': 'application/json',
     },

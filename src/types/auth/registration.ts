@@ -9,10 +9,13 @@ export interface Registration {
     general?: string;
 }
 export interface RegistrationResponse {
-    success: boolean;
+  success: boolean;
+  error?: {
+    message?: string;
     error?: {
-      message?: string;
       validationErrors?: { [key: string]: string[] };
     };
-  }
+  };
+}
+
 

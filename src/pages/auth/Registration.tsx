@@ -39,29 +39,26 @@ const RegistrationPage: React.FC = () => {
     try {
       const response: RegistrationResponse = await registration(data);
       setLoading(false);
-
+  
       if (response.success) {
         console.log(response);
         console.log('Form submitted successfully');
         navigate('/success');
       } else {
-        // Handle error response
         if (response.error) {
-          console.log('Error Response:', response.error);
-
-          // Handle validation errors if present
-          if (response.error.validationErrors) {
-            console.log('Validation Errors:', response.error.validationErrors);
-            Object.keys(response.error.validationErrors).forEach((field) => {
-              if (response.error?.validationErrors?.[field]?.[0]) {
+          const errorData = response.error.error;
+          if (errorData?.validationErrors) {
+            console.log('Validation Errors:', errorData.validationErrors);
+            Object.keys(errorData.validationErrors).forEach((field) => {
+              const fieldErrors = errorData.validationErrors?.[field];
+              if (fieldErrors && fieldErrors[0]) {
                 setError(field as keyof Registration, {
                   type: 'manual',
-                  message: response.error.validationErrors[field][0],
+                  message: fieldErrors[0],
                 });
               }
             });
           } else {
-            // Handle general error message if validationErrors is not present
             setError('general', {
               type: 'manual',
               message: response.error.message || 'An error occurred',
@@ -70,27 +67,31 @@ const RegistrationPage: React.FC = () => {
         }
       }
     } catch (error: any) {
-      console.log('Caught Error:', error.error.validationErrors);
-      if (error.error.validationErrors) {
-        console.log('Validation Errors:', error.error.validationErrors);
-        Object.keys(error.error.validationErrors).forEach((field) => {
-          if (error.error?.validationErrors?.[field]?.[0]) {
+      setLoading(false);
+      const errorData = error.error;
+      if (errorData?.validationErrors) {
+        console.log('Validation Errors:', errorData.validationErrors);
+        Object.keys(errorData.validationErrors).forEach((field) => {
+          const fieldErrors = errorData.validationErrors?.[field];
+          if (fieldErrors && fieldErrors[0]) {
             setError(field as keyof Registration, {
               type: 'manual',
-              message: error.error.validationErrors[field][0],
+              message: fieldErrors[0],
             });
           }
         });
       } else {
-        // Handle general error message if validationErrors is not present
         setError('general', {
           type: 'manual',
           message: error.message || 'An error occurred',
         });
       }
-      setLoading(false);
     }
   };
+  
+
+    
+
 
   return (
     <div className="flex h-screen">
