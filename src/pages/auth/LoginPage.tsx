@@ -1,16 +1,18 @@
 import "./auth.scss";
 import { FcGoogle } from "react-icons/fc";
 import AuthSidebar from '../../components/auth/AuthSidebar';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../apis/auth/auth.api';
-import { Login, LoginResponse } from '../../types/auth/login';
+import { Link } from 'react-router-dom';
+import { Login } from '../../types/auth/loginTypes';
 import { loginValidationSchema } from '../../validations/auth/login';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import useAuthStore from '../../stores/auth/AuthStore';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const authStore = useAuthStore();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -22,38 +24,33 @@ const LoginPage = () => {
     resolver: yupResolver(loginValidationSchema),
   });
 
-  const handleErrors = (errorData: any) => {
-    if (errorData?.validationErrors) {
-      Object.keys(errorData.validationErrors).forEach((field) => {
-        const fieldErrors = errorData.validationErrors[field];
-        if (fieldErrors?.[0]) {
-          setError(field as keyof Login, {
-            type: 'manual',
-            message: fieldErrors[0],
-          });
-        }
-      });
-    } else {
-      setError('general', {
-        type: 'manual',
-        message: errorData?.message || 'An error occurred',
-      });
-    }
-  };
-
-  const onSubmit: SubmitHandler<Login> = async (data) => {
+  const onSubmit: SubmitHandler<Login> = async (data: Login) => {
     setLoading(true);
     try {
-      const response = await login(data) as LoginResponse;
-      if (response.error) {
-        handleErrors(response.error);
-      } else {
+      const response = await authStore.login(data);
+      setLoading(false);
+      if (response.success) {
         navigate('/dashboard');
       }
     } catch (error: any) {
-      handleErrors(error);
-    } finally {
       setLoading(false);
+      const errorData = error.error;
+      if (errorData?.validationErrors) {
+        Object.keys(errorData.validationErrors).forEach((field) => {
+          const fieldErrors = errorData.validationErrors[field];
+          if (fieldErrors && fieldErrors[0]) {
+            setError(field as keyof Login, {
+              type: 'manual',
+              message: fieldErrors[0],
+            });
+          }
+        });
+      } else {
+        setError('general', {
+          type: 'manual',
+          message: error.message || 'An error occurred',
+        });
+      }
     }
   };
 
@@ -122,11 +119,7 @@ const LoginPage = () => {
                 {errors.password?.message}
               </div>
             </div>
-            <button
-              className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
-              type="submit"
-              disabled={loading}
-            >
+            <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Log In'}
             </button>
             <div className="mt-4 text-center">

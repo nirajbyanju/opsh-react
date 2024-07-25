@@ -1,6 +1,6 @@
 import { Response, api } from '../http.api';
 import { Registration } from '../../types/auth/registration';
-import { Login } from '../../types/auth/login';
+import { Login } from '../../types/auth/loginTypes';
 
 export const registration = (payload: Registration): Promise<Response> =>
   api.post<Response>("/register", {
