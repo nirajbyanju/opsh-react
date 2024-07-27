@@ -5,6 +5,7 @@ import Dashboard from '../pages/auth/Dashboard';
 import MainLayout from '../layouts/mainLayout/MainLayout';
 import RequireAuth from '../components/authorize/RequireAuth';
 import User from '../pages/setting/user/User';
+import LogoutFallback from '../components/authorize/Logout';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -22,6 +23,7 @@ const AppRouter = () => {
         </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Registration />} />
+      <Route path="/logout" element={<LogoutFallback />} />
       </Routes>
     </BrowserRouter>
   )

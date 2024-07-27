@@ -76,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
                                  <FaCog className="mr-2" /> {/* Settings icon */}
                                  Settings
                              </Link>
-                             <Link to='' className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                             <Link to='/logout' className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                  <FaSignOutAlt className="mr-2" /> {/* Logout icon */}
                                  Logout
                              </Link>
