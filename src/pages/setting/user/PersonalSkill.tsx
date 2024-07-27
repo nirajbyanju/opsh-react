@@ -17,8 +17,7 @@ const PersonalSkill = () => {
           </tr>
         </thead>
         <tbody>
-          {[1, 2, 3, 4].map((item, index) => (
-            <tr key={index}>
+            <tr>
               <td className="border px-4 py-2">Opportunities Sharing</td>
               <td className="border px-4 py-2">UI/UX Designer</td>
               <td className="border px-4 py-2">Lorem ipsum dolor ddel sdlks akss</td>
@@ -31,7 +30,6 @@ const PersonalSkill = () => {
                 <button className="text-red-500 px-2">🗑️</button>
               </td>
             </tr>
-          ))}
         </tbody>
       </table>
     </div>
@@ -51,8 +49,8 @@ const PersonalSkill = () => {
           </tr>
         </thead>
         <tbody>
-          {[1, 2].map((item, index) => (
-            <tr key={index}>
+         
+            <tr>
               <td className="border px-4 py-2">Microsoft Office</td>
               <td className="border px-4 py-2">Beginner</td>
               <td className="border px-4 py-2">Lorem ipsum dolor ddel sdlks akss the world of</td>
@@ -64,7 +62,7 @@ const PersonalSkill = () => {
                 <button className="text-red-500 px-2">🗑️</button>
               </td>
             </tr>
-          ))}
+     
         </tbody>
       </table>
     </div>

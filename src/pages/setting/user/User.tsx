@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './User.scss';
 import { MdOutlineMail } from "react-icons/md";
 import profile from '../../../assets/auth/profile.jpg';
