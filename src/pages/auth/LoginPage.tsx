@@ -119,14 +119,23 @@ const LoginPage = () => {
                 {errors.password?.message}
               </div>
             </div>
-            <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit" disabled={loading}>
+            <div className="flex justify-between">
+              <div className="flex gap-2">
+              <input type="checkbox" id="rememberMe" className="form-checkbox h-4 w-4 text-blue-600" />
+              <label htmlFor="rememberMe" className="text-sm font-semibold text-opsh-primary">Remember Me</label>
+              </div>
+              <div>
+                <Link to="" className="text-sm font-semibold text-opsh-primary">Forgot Password?</Link>
+              </div>
+            </div>
+            <button className="w-full mt-3 bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Log In'}
             </button>
             <div className="mt-4 text-center">
               <p className="text-sm text-gray-600">
                 Don't have an account?{' '}
                 <Link to="/register" className="text-blue-600 font-semibold hover:text-blue-800">
-                  Register
+                  Registration
                 </Link>
               </p>
             </div>
