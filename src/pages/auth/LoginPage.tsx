@@ -125,7 +125,7 @@ const LoginPage = () => {
               <label htmlFor="rememberMe" className="text-sm font-semibold text-opsh-primary">Remember Me</label>
               </div>
               <div>
-                <Link to="" className="text-sm font-semibold text-opsh-primary">Forgot Password?</Link>
+                <Link to="/forget" className="text-sm font-semibold text-opsh-primary">Forgot Password?</Link>
               </div>
             </div>
             <button className="w-full mt-3 bg-blue-600 text-white py-3 rounded-lg bg-opsh-secondary hover:bg-opsh-primary" type="submit" disabled={loading}>

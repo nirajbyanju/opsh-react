@@ -6,6 +6,8 @@ import MainLayout from '../layouts/mainLayout/MainLayout';
 import RequireAuth from '../components/authorize/RequireAuth';
 import User from '../pages/setting/user/User';
 import LogoutFallback from '../components/authorize/Logout';
+import Forget from '../pages/auth/Forget';
+import TokenSent from '../pages/auth/TokenSent';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -24,6 +26,8 @@ const AppRouter = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Registration />} />
       <Route path="/logout" element={<LogoutFallback />} />
+      <Route path="/forget" element={<Forget/>}/>
+      <Route path="/tokenSent" element={<TokenSent/>}></Route>
       </Routes>
     </BrowserRouter>
   )
