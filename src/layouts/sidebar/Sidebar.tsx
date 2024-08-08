@@ -7,6 +7,9 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
+import { FiUsers } from "react-icons/fi";
+import { FaRegUserCircle } from "react-icons/fa";
+import { LuUserSquare2 } from "react-icons/lu";
 
 interface SidebarProps {
     isExpand: boolean;
@@ -27,6 +30,23 @@ const menuItems: MenuItem[] = [
         path: '/dashboard',
     },
     {
+        name: 'User',
+        icon: <FiUsers className="h-5 w-5 text-current" />,
+        path: '/settings',
+        submenu: [
+            {
+                name: 'Analytics Dashboard',
+                icon: <LuUserSquare2 className="h-5 w-4 text-current" />,
+                path: '/analyticsDashboard',
+            },
+            {
+                name: 'Roles & Permission',
+                icon: <FaRegUserCircle className="h-5 w-4 text-current" />,
+                path: '/rolesPermission',
+            },
+        ],
+    },
+    {
         name: 'Settings',
         icon: <IoSettingsOutline className="h-5 w-5 text-current" />,
         path: '/settings',
@@ -41,24 +61,6 @@ const menuItems: MenuItem[] = [
                 icon: <ImProfile className="h-5 w-4 text-current" />,
                 path: '/userProfiles',
             },
-        ],
-    },
-    {
-        name: 'Setting',
-        icon: <IoSettingsOutline className="h-5 w-5 text-current" />,
-        path: '/settingss',
-        submenu: [
-            {
-                name: 'Profile',
-                icon: <ImProfile className="h-5 w-4 text-current" />,
-                path: '/userProfiling',
-            },
-            {
-                name: 'Profile',
-                icon: <ImProfile className="h-5 w-4 text-current" />,
-                path: '/userProfiless',
-            },
-            
         ],
     },
 ];

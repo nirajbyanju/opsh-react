@@ -8,6 +8,8 @@ import User from '../pages/setting/user/User';
 import LogoutFallback from '../components/authorize/Logout';
 import Forget from '../pages/auth/Forget';
 import TokenSent from '../pages/auth/TokenSent';
+import RolesPermission from '../pages/user/rolesPermission';
+import AnalyticsDashboard from '../pages/user/analyticsDashboard';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -21,6 +23,8 @@ const AppRouter = () => {
         <Route path='/' element={protectedPath}>
           <Route index element={<Dashboard />} />
           <Route path='/dashboard' element={<Dashboard/>}></Route>
+          <Route path="/analyticsDashboard" element={<AnalyticsDashboard/>}></Route>
+          <Route path="/rolesPermission" element={<RolesPermission/>}></Route>
           <Route path='/userProfile' element={<User/>}></Route>
         </Route>
       <Route path="/login" element={<LoginPage />} />
