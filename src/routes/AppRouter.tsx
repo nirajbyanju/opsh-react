@@ -10,6 +10,7 @@ import Forget from '../pages/auth/Forget';
 import TokenSent from '../pages/auth/TokenSent';
 import RolesPermission from '../pages/user/rolesPermission';
 import AnalyticsDashboard from '../pages/user/analyticsDashboard';
+import VacancyList from '../pages/vacancy/vacancyList';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -26,6 +27,7 @@ const AppRouter = () => {
           <Route path="/analyticsDashboard" element={<AnalyticsDashboard/>}></Route>
           <Route path="/rolesPermission" element={<RolesPermission/>}></Route>
           <Route path='/userProfile' element={<User/>}></Route>
+          <Route path='/vacancylist' element={<VacancyList/>}></Route>
         </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Registration />} />

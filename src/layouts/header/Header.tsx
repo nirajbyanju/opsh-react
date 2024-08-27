@@ -5,24 +5,47 @@ import sildingImg from '../../assets/auth/sildingImg.png';
 import { Link } from 'react-router-dom';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
 
+
 interface HeaderProps {
     isExpand: boolean;
     setIsExpand: (isExpand: boolean) => void;
 }
 
+
+interface Notification {
+    id: number;
+    message: string;
+    created_at: string;
+}
+
 const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
+    const dropdownNotificationRef = useRef<HTMLDivElement |  null >(null);
 
     const handleProfileClick = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const handleNotification =() => {
+        setIsNotificationOpen(!isNotificationOpen);
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setIsDropdownOpen(false);
         }
+        if (dropdownNotificationRef.current && !dropdownNotificationRef.current.contains(event.target as Node)) {
+            setIsNotificationOpen(false);
+        }
     };
+    const [notifications] = useState<Notification[]>([]);
+
+    
+    
+    
+    
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -60,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
                     </form>
                 </div>
                 <div className="flex items-center space-x-4 mr-4">
-                    <button className='p-2 text-gray-600 hover:bg-gray-100 rounded-md'><IoNotificationsOutline className='text-xl' /></button>
+                    <button className='p-2 text-gray-600 hover:bg-gray-100 rounded-md'><IoNotificationsOutline className='text-xl' onClick={handleNotification} /></button>
                     <button className='p-2 text-gray-600 hover:bg-gray-100 rounded-md'><GrChat className='text-xl' /></button>
                     <div className='relative flex flex-row gap-4 cursor-pointer'onClick={handleProfileClick} >
                         <div>
@@ -80,6 +103,13 @@ const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
                                  <FaSignOutAlt className="mr-2" /> {/* Logout icon */}
                                  Logout
                              </Link>
+                         </div>
+                        )}
+                        {isNotificationOpen && (
+                        <div ref={dropdownNotificationRef} className="absolute right-20 mt-10 w-36 bg-white border border-gray-200 rounded-md shadow-lg">
+                            {notifications.map((notification) => (
+                    <li key={notification.id}>{notification.message}</li>
+                ))}
                          </div>
                         )}
                     </div>

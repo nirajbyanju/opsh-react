@@ -4,12 +4,19 @@ import "simplebar-react/dist/simplebar.min.css";
 import Logo from '../../assets/auth/Logo.jpg';
 import { FaTachometerAlt, FaChevronDown } from 'react-icons/fa';
 import { IoSettingsOutline } from "react-icons/io5";
-import { ImProfile } from "react-icons/im";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import { FiUsers } from "react-icons/fi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuUserSquare2 } from "react-icons/lu";
+import { FaChalkboardUser } from "react-icons/fa6";
+import { FaUserCog } from "react-icons/fa";
+import { RiUserSearchLine } from "react-icons/ri";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { LiaPaperPlane } from "react-icons/lia";
+import { PiUserFocus } from "react-icons/pi";
+import { TbReportSearch } from "react-icons/tb";
+import { MdManageHistory } from "react-icons/md";
 
 interface SidebarProps {
     isExpand: boolean;
@@ -47,22 +54,55 @@ const menuItems: MenuItem[] = [
         ],
     },
     {
+        name:'Vacancy',
+        icon: <RiUserSearchLine className="h-6 w-5 text-current" />,
+        path: '#',
+        submenu: [
+            {
+                name: 'Vacancy List',
+                icon: <HiOutlineClipboardList className="h-6 w-5 text-current" />,
+                path: '/vacancylist',
+            },
+            {
+                name: 'Vacancy Add',
+                icon: <LiaPaperPlane className="h-6 w-5 text-current" />,
+                path: '/vacancyAdd',
+            },
+            {
+                name: 'Company Profile',
+                icon: <PiUserFocus className="h-6 w-5 text-current" />,
+                path: 'companyProfile',
+            },
+            {
+                name: 'Manage Vacancy',
+                icon: <MdManageHistory className="h-6 w-5 text-current" />,
+                path: '/manageVacancy',
+            },
+            {
+                name: 'Shortlisted',
+                icon: <TbReportSearch className="h-6 w-5 text-current" />,
+                path: '/shortlisted',
+            },
+        ]
+    },
+    {
         name: 'Settings',
-        icon: <IoSettingsOutline className="h-5 w-5 text-current" />,
+        icon: <IoSettingsOutline className="h-6 w-5 text-current" />,
         path: '/settings',
         submenu: [
             {
                 name: 'Profile',
-                icon: <ImProfile className="h-5 w-4 text-current" />,
+                icon: <FaUserCog className="h-6 w-5 text-current" />,
                 path: '/userProfile',
             },
             {
-                name: 'Profile',
-                icon: <ImProfile className="h-5 w-4 text-current" />,
+                name: 'Vacancy Portfolio',
+                icon: <FaChalkboardUser className="h-6 w-5 text-current" />,
                 path: '/userProfiles',
             },
         ],
     },
+
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isExpand }) => {
@@ -121,7 +161,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isExpand }) => {
                                                     </div>
                                                     {isExpand && <FaChevronDown className={`transition-transform ${submenuStates[item.name] ? 'rotate-180' : ''}`} />}
                                                 </button>
-                                                <ul className={`overflow-hidden duration-300 ease-in-out ${submenuStates[item.name] ? "max-h-40" : "max-h-0"}`}>
+                                                <ul className={`overflow-hidden duration-300 ease-in-out ${submenuStates[item.name] ? "" : "max-h-0"}`}>
                                                     {item.submenu.map((subItem, subIndex) => (
                                                         <li key={subIndex}>
                                                             <Link to={subItem.path} role="button" tabIndex={0} id={subItem.name} className={`group flex cursor-pointer rounded-lg items-center justify-between h-12 py-0 pr-1 mb-1 focus:outline-none ${isExpand ? 'pl-4 ml-4' : 'pl-2 ml-2'} text-slate-500 menuHover ${location.pathname === subItem.path ? 'menuActive' : ''}`} data-tip={subItem.name} data-for="tooltip">
