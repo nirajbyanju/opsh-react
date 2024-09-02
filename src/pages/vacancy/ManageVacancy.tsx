@@ -21,7 +21,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
 
 
-const VacancyList = () => {
+const ManageVacancy = () => {
     const [expandedIndex, setExpandedIndex] = useState(null);
     const [Listing, setIsListing] = useState(1);
     const showlisting = (view: any) => {
@@ -67,7 +67,7 @@ const VacancyList = () => {
         <div className="px-4">
             {/* Header Section */}
             <div className="flex flex-col gap-4 sm:flex-row items-center mb-2">
-                <h5 className="text-opsh-primary font-medium text-md">Basic Information</h5>
+                <h5 className="text-opsh-primary font-medium text-md">Manage Jobs!</h5>
                 <hr className="border-t-1 border-opsh-grey flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
                 <h5 className="text-opsh-muted font-medium text-md">Working Dashboard</h5>
                 <h5 className="text-opsh-muted font-medium text-md">Statistics Dashboard</h5>
@@ -75,7 +75,7 @@ const VacancyList = () => {
 
             {/* Main Actions Section */}
             <div className="flex flex-col sm:flex-row gap-4 justify-between sm:gap-8 items-center mb-2">
-                <span className="text-lg font-normal text-opsh-primary">Vacancy List</span>
+                <span className="text-lg font-normal text-opsh-primary">Vacancy Listing</span>
                 <form action="" className="relative max-w-md w-full px-4">
                     <input
                         type="text"
@@ -243,7 +243,7 @@ const VacancyList = () => {
 
 
                     {/* Table */}
-                    <div className=" overflow-x-auto">
+                    <div className=" overflow-x-auto mt-4">
                         <table>
                             <thead className="bg-opsh-primary/5 mt-5 rounded-lg">
                                 <tr className="text-sm text-center text-opsh-darkgrey">
@@ -251,8 +251,8 @@ const VacancyList = () => {
                                     <th className="py-2 font-medium">Position</th>
                                     <th className="py-2 font-medium">Location</th>
                                     <th className="py-2 font-medium">Category</th>
-                                    <th className="py-2 font-medium">Job Types</th>
-                                    <th className="py-2 font-medium">Dateline</th>
+                                    <th className="py-2 font-medium">Application</th>
+                                    <th className="py-2 font-medium">Created & Expired</th>
                                     <th className="py-2 font-medium">Status</th>
                                     <th className="py-2 font-medium">Action</th>
                                 </tr>
@@ -284,11 +284,10 @@ const VacancyList = () => {
                                             <div className="text-sm text-gray-900">Manager-Assistant Manager</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Full Time
-                                            </span>
+                                           3+ Applied
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            2024-05-07<br></br>
                                             2024-05-07
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -453,4 +452,4 @@ const VacancyList = () => {
     );
 }
 
-export default VacancyList;
+export default ManageVacancy;

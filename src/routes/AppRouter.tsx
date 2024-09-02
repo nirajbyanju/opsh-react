@@ -11,6 +11,10 @@ import TokenSent from '../pages/auth/TokenSent';
 import RolesPermission from '../pages/user/rolesPermission';
 import AnalyticsDashboard from '../pages/user/analyticsDashboard';
 import VacancyList from '../pages/vacancy/vacancyList';
+import VacancyAdd from '../pages/vacancy/vacancyAdd';
+import CompanyProfile from '../pages/vacancy/CompanyProfile';
+import ManageVacancy from '../pages/vacancy/ManageVacancy';
+import Shortlisted from '../pages/vacancy/Shortlisted';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -28,6 +32,10 @@ const AppRouter = () => {
           <Route path="/rolesPermission" element={<RolesPermission/>}></Route>
           <Route path='/userProfile' element={<User/>}></Route>
           <Route path='/vacancylist' element={<VacancyList/>}></Route>
+          <Route path='/vacancyAdd' element={<VacancyAdd/>}></Route>
+          <Route path='/companyProfile' element={<CompanyProfile/>}></Route>
+          <Route path='/manageVacancy' element={<ManageVacancy/>}></Route>
+          <Route path='/shortlisted' element={<Shortlisted/>}></Route>
         </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Registration />} />

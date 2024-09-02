@@ -9,8 +9,8 @@ const Modal: FC<ModalProps> = ({ closeModal }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white rounded-lg w-2/3 p-5">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Add Experience Data</h2>
-          <button onClick={closeModal} className="text-red-500 text-xl font-bold">
+          <h2 className="text-lg font-semibold">Add Experience Data</h2>
+          <button onClick={closeModal} className="text-red-500 text-sm font-medium">
             Close (X)
           </button>
         </div>
