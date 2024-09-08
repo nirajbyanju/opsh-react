@@ -71,7 +71,7 @@ const menuItems: MenuItem[] = [
             {
                 name: 'Company Profile',
                 icon: <PiUserFocus className="h-6 w-5 text-current" />,
-                path: 'companyProfile',
+                path: '/companyProfile',
             },
             {
                 name: 'Manage Vacancy',

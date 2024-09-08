@@ -15,6 +15,8 @@ import VacancyAdd from '../pages/vacancy/vacancyAdd';
 import CompanyProfile from '../pages/vacancy/CompanyProfile';
 import ManageVacancy from '../pages/vacancy/ManageVacancy';
 import Shortlisted from '../pages/vacancy/Shortlisted';
+import AllApplicants from '../pages/vacancy/AllApplicants';
+import CvInfo from '../pages/vacancy/CvInfo';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -35,7 +37,9 @@ const AppRouter = () => {
           <Route path='/vacancyAdd' element={<VacancyAdd/>}></Route>
           <Route path='/companyProfile' element={<CompanyProfile/>}></Route>
           <Route path='/manageVacancy' element={<ManageVacancy/>}></Route>
+          <Route path='/manageVacancy/AllApplicants' element={<AllApplicants/>}></Route>
           <Route path='/shortlisted' element={<Shortlisted/>}></Route>
+          <Route path='/cvinfo' element={<CvInfo/>}></Route>
         </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Registration />} />

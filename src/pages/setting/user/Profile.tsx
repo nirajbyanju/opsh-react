@@ -1,7 +1,7 @@
 import { MdChevronRight } from "react-icons/md";
 const profile = () => {
     return (
-        <div className="w-full mx-auto bg-white p-4 sm:p-6 lg:px-10 rounded-lg shadow">
+        <div className="w-full mx-auto bg-white sm:py-4 sm:px-4 lg:px-10 rounded-lg shadow">
             <div className="flex flex-col sm:flex-row items-center mb-4">
                 <h2 className="text-bse font-medium text-opsh-primary">Basic Informations</h2>
                 <hr className="border-t-2 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
@@ -10,7 +10,7 @@ const profile = () => {
                 <div className="mb-8">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
-                            <label className="block text-sm font-normal text-opsh-darkgrey">User ID</label>
+                            <label className="block text-sm font-medium text-opsh-darkgrey">User ID</label>
                             <input type="text" placeholder="Placeholder" className="mt-1 block w-full p-2 border border-gray-300 rounded" />
                         </div>
                     </div>

@@ -19,7 +19,7 @@ import { MdOutlineWatchLater, MdOutlineEdit } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
-
+import { Link } from "react-router-dom";
 
 const ManageVacancy = () => {
     const [expandedIndex, setExpandedIndex] = useState(null);
@@ -260,7 +260,7 @@ const ManageVacancy = () => {
 
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {/* Repeatable Row */}
-                                {[...Array(6)].map((_, idx) => (
+                                {[...Array(2)].map((_, idx) => (
                                     <tr key={idx}>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
@@ -284,7 +284,10 @@ const ManageVacancy = () => {
                                             <div className="text-sm text-gray-900">Manager-Assistant Manager</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                           3+ Applied
+                                        <Link to="/manageVacancy/AllApplicants">
+                                            3+ Applied
+                                        </Link>
+  
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             2024-05-07<br></br>

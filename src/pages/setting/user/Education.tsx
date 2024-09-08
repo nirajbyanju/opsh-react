@@ -24,7 +24,7 @@ const Education = () => {
   ];
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="w-full mx-auto bg-white sm:py-4 sm:px-4 lg:px-10 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row items-center mb-4 gap-4">
         <h2 className="font-medium text-opsh-primary">Education Table</h2>
         <hr className="border-t-1 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />

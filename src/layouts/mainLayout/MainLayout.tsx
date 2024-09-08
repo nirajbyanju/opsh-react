@@ -15,7 +15,7 @@ const MainLayout: React.FC = () => {
     <div className="">
     <Header isExpand={isExpand} setIsExpand={setIsExpand} />
     </div>
-    <main className="flex-1 p-4">
+    <main className="flex-1">
       <Outlet />
     </main>
     <div className="">

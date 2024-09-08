@@ -1,7 +1,4 @@
 import { useState, KeyboardEvent, ChangeEvent, FC } from 'react';
-
-
-
 interface Tag {
     id: number;
     name: string;

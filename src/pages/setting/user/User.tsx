@@ -11,82 +11,82 @@ import Education from './Education';
 import PersonalSkill from './PersonalSkill';
 import Document from './Document';
 
-
 const User = () => {
   const [activeTab, setActiveTab] = useState('Profile');
-
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
 
   return (
     <div className="flex flex-col items-center bg-gray-100 w-full">
-      <div className="w-full bg-white p-6 rounded-lg shadow-md">
-        <div className='flex gap-20 ms-9'>
-          <div className="flex items-center gap-6 mb-6">
-            <img
-              src={profile}
-              alt="Profile"
-              className="w-40 h-40 rounded-full mr-4"
-            />
-            <div>
-              <h2 className="text-sm font-semibold">Niraj Byanju</h2>
-              <p className="text-xs text-opsh-secondary">Super Admin</p>
-              <div className='flex gap-2 mt-3'>
-                <MdOutlineMail className='text-opsh-primary text-sm' />
-                <span className='leading-4 text-sm'>nirajbyanju1234@gmail.com</span>
-              </div>
-              <div className='flex gap-2 mt-2'>
-                <GrLocation className='text-opsh-primary text-sm' />
-                <span className='leading-4 text-sm'>+977- 9843906039</span>
-              </div>
-              <div className='flex gap-2 mt-2'>
-                <LuPhoneCall className='text-opsh-primary text-sm' />
-                <span className='leading-4 text-sm'>Bhaktapur, Nepal</span>
-              </div>
+      <div className="w-full bg-white px-3 rounded-lg shadow-md">
+      <div className="flex gap-20 ms-9">
+        <div className="flex items-center gap-6 mb-6">
+          <img
+            src={profile}
+            alt="Profile"
+            className="w-24 h-24 rounded-full mr-4"
+          />
+          <div>
+            <h2 className="text-sm font-semibold">Niraj Byanju</h2>
+            <p className="text-xs text-opsh-secondary">Super Admin</p>
+            <div className="flex gap-2 mt-3">
+              <MdOutlineMail className="text-opsh-primary text-sm" />
+              <span className="leading-4 text-sm">
+                nirajbyanju1234@gmail.com
+              </span>
+            </div>
+            <div className="flex gap-2 mt-2">
+              <GrLocation className="text-opsh-primary text-sm" />
+              <span className="leading-4 text-sm">+977- 9843906039</span>
+            </div>
+            <div className="flex gap-2 mt-2">
+              <LuPhoneCall className="text-opsh-primary text-sm" />
+              <span className="leading-4 text-sm">Bhaktapur, Nepal</span>
             </div>
           </div>
-          <hr className="border-e-2 h-48"></hr>
-          <div className='flex flex-col gap-4'>
-            <div className='flex flex-row gap-9 justify-center'>
-              <div className='flex flex-col items-center'>
-                <div className='bg-opsh-primary/25 p-4 rounded-full'>
-                  <FaGraduationCap className='text-opsh-primary text-xl' />
-                </div>
-                <span className='text-sm mt-2'>Learn</span>
-              </div>
-              <div className='flex flex-col items-center'>
-                <div className='bg-opsh-primary/25 p-4 rounded-full'>
-                  <MdCalendarMonth className='text-opsh-primary text-xl' />
-                </div>
-                <span className='text-sm mt-2'>Practice</span>
-              </div>
-              <div className='flex flex-col items-center'>
-                <div className='bg-opsh-primary/25 p-4 rounded-full'>
-                  <MdCalendarMonth className='text-opsh-primary text-xl' />
-                </div>
-                <span className='text-sm mt-2'>Vacancy</span>
-              </div>
-            </div>
-            <div className='flex flex-row gap-9 justify-center'>
-              <div className='flex flex-col items-center'>
-                <div className='bg-opsh-primary/5 p-4 rounded-full'>
-                  <MdCalendarMonth className='text-opsh-primary text-xl' />
-                </div>
-                <span className='text-sm mt-2'>Opportunity</span>
-              </div>
-              <div className='flex flex-col items-center'>
-                <div className='bg-opsh-primary/25 p-4 rounded-full'>
-                  <MdCalendarMonth className='text-opsh-primary text-xl' />
-                </div>
-                <span className='text-sm mt-2'>Blogs</span>
-              </div>
-            </div>
-          </div>
-          <hr className="border-e-2 h-48"></hr>
         </div>
+        <hr className="border-e-2 h-48"></hr>
+        <div className="flex flex-col mt-5 items-center gap-4">
+          <div className="flex flex-row gap-4 justify-center">
+            <div className="flex flex-col items-center">
+              <div className="bg-opsh-primary/25 p-3 rounded-full">
+                <FaGraduationCap className="text-opsh-primary" />
+              </div>
+              <span className="text-sm mt-2">Learn</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-opsh-primary/25 p-3 rounded-full">
+                <MdCalendarMonth className="text-opsh-primary" />
+              </div>
+              <span className="text-sm mt-2">Practice</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-opsh-primary/25 p-3 rounded-full">
+                <MdCalendarMonth className="text-opsh-primary" />
+              </div>
+              <span className="text-sm mt-2">Vacancy</span>
+            </div>
+          </div>
+          <div className="flex flex-row gap-4 justify-center">
+            <div className="flex flex-col items-center">
+              <div className="bg-opsh-primary/25 p-3 rounded-full">
+                <MdCalendarMonth className="text-opsh-primary" />
+              </div>
+              <span className="text-sm mt-2">Opportunity</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-opsh-primary/25 p-3 rounded-full">
+                <MdCalendarMonth className="text-opsh-primary" />
+              </div>
+              <span className="text-sm mt-2">Blogs</span>
+            </div>
+          </div>
+        </div>
+        <hr className="border-e-2 h-48"></hr>
+      </div>
 
-        <div className="bg-opsh-primary/5 mt-8">
+        <div className="bg-opsh-primary/25 mt-3 rounded-lg">
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-opsh-darkgrey">
             <li className="me-2">
               <button 
@@ -131,7 +131,7 @@ const User = () => {
           </ul>
         </div>
 
-        <div className="mb-6 mt-4">
+        <div className="mb-6 mt-2">
           {activeTab === 'Profile' && (
             <div id="tabs-profile" role="tabpanel" aria-labelledby="tabs-profile-tab">
               <Profile/>

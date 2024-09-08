@@ -6,7 +6,7 @@ import Modal from "../../../components/modal/Model";
 const PersonalSkill = () => {
   const [showModal, setShowModal] = useState(false);
   return (
-    <div className="p-8">
+    <div className="w-full mx-auto bg-white sm:py-4 sm:px-4 lg:px-10 rounded-lg shadow">
     <div className="mb-8">
     <div className="flex flex-col sm:flex-row items-center mb-4 gap-4">
         <h2 className="font-medium text-opsh-primary">EXPERIENCE TABLE</h2>
