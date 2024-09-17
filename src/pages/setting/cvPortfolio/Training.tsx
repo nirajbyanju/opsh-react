@@ -16,7 +16,7 @@ const Training: FC<TrainingProps> = ({}) => {
     <div className="w-full mx-auto bg-white sm:py-4 sm:px-4 lg:px-4 rounded-lg shadow mb-5">
       <div className="flex flex-col sm:flex-row items-center mb-4 gap-4">
         <h2 className="font-medium text-xl text-opsh-primary">
-          Training &Skill Table
+          Training & Skill Table
         </h2>
         <hr className="border-t-2 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
         <button
