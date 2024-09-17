@@ -96,9 +96,9 @@ const menuItems: MenuItem[] = [
                 path: '/userProfile',
             },
             {
-                name: 'Vacancy Portfolio',
+                name: 'Cv Portfolio',
                 icon: <FaChalkboardUser className="h-6 w-5 text-current" />,
-                path: '/userProfiles',
+                path: '/cvProtfolio',
             },
         ],
     },

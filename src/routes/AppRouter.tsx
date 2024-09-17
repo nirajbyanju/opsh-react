@@ -17,6 +17,9 @@ import ManageVacancy from '../pages/vacancy/ManageVacancy';
 import Shortlisted from '../pages/vacancy/Shortlisted';
 import AllApplicants from '../pages/vacancy/AllApplicants';
 import CvInfo from '../pages/vacancy/CvInfo';
+import Test from '../pages/test'
+import CvPortfolio from '../pages/setting/cvPortfolio/CvPortfolio';
+import CvInfoAdding from '../pages/setting/cvPortfolio/CvInfo';
 
 const AppRouter = () => {
   const protectedPath = (
@@ -32,7 +35,7 @@ const AppRouter = () => {
           <Route path='/dashboard' element={<Dashboard/>}></Route>
           <Route path="/analyticsDashboard" element={<AnalyticsDashboard/>}></Route>
           <Route path="/rolesPermission" element={<RolesPermission/>}></Route>
-          <Route path='/userProfile' element={<User/>}></Route>
+
           <Route path='/vacancylist' element={<VacancyList/>}></Route>
           <Route path='/vacancyAdd' element={<VacancyAdd/>}></Route>
           <Route path='/companyProfile' element={<CompanyProfile/>}></Route>
@@ -40,12 +43,19 @@ const AppRouter = () => {
           <Route path='/manageVacancy/AllApplicants' element={<AllApplicants/>}></Route>
           <Route path='/shortlisted' element={<Shortlisted/>}></Route>
           <Route path='/cvinfo' element={<CvInfo/>}></Route>
+
+          //Settings
+          <Route path='/userProfile' element={<User/>}></Route>
+          <Route path='/cvProtfolio' element={<CvPortfolio/>} ></Route>
+          <Route path='/cvInfoAdding' element={<CvInfoAdding/>} ></Route>
+
         </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Registration />} />
       <Route path="/logout" element={<LogoutFallback />} />
       <Route path="/forget" element={<Forget/>}/>
       <Route path="/tokenSent" element={<TokenSent/>}></Route>
+      <Route path="/test" element={<Test/>}></Route>
       </Routes>
     </BrowserRouter>
   )

@@ -17,8 +17,6 @@ import { FiFacebook } from "react-icons/fi";
 import { BsWhatsapp } from "react-icons/bs";
 import { PiTiktokLogo } from "react-icons/pi";
 import { BsTwitterX } from "react-icons/bs";
-import { Timeline } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
 
 interface CvInfoProps {}
 
@@ -27,7 +25,6 @@ const CvInfo: FC<CvInfoProps> = ({}) => {
     <div>
       <div className="bg-opsh-primary/25 py-5">
         <div className="grid grid-cols-12 gap-9 ms-9 items-center justify-center">
-          {/* First div spanning 3 columns */}
           <div className="flex items-center gap-4 col-span-12 md:col-span-4">
             <img
               src={profile}
@@ -128,127 +125,64 @@ const CvInfo: FC<CvInfoProps> = ({}) => {
                     Education
                   </h5>
                 </div>
-                <Timeline className="custom-timeline ml-5 pl-4 relative">
-                  <Timeline.Item
-                    dot={
-                      <div
-                        className="flex-shrink-0 absolute"
-                        style={{ right: "-30px" }}
-                      >
-                        <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                          M
+                <div className="pt-3">
+                  <ol className="relative border-s dark:border-opsh-grey ml-6">
+                    <li className="mb-10 ms-6">
+                      <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3  ">
+                        <div className="">
+                          <div className="bg-opsh-primary/25 h-12 w-12 text-xl rounded-full flex items-center justify-center text-opsh-secondary font-semibold">
+                            M
+                          </div>
                         </div>
-                      </div>
-                    }
-                  >
-                    <div className="flex-grow pl-5">
-                      <div className="flex gap-9">
-                        <span className="text-2xl font-bold">
-                          Bachelors in Fine Arts
-                        </span>
-                        <div className="bg-opsh-primary/25 py-1 px-4 rounded-full text-opsh-secondary font-bold">
-                          2013-2016
+                      </span>
+                      <div className="flex-grow pl-5">
+                        <div className="flex gap-9">
+                          <span className="text-xl font-semibold">
+                            Bachelors in Fine Arts
+                          </span>
+                          <div className="bg-opsh-primary/25 py-1 px-4 rounded-full text-opsh-secondary font-semibold">
+                            2013-2016
+                          </div>
                         </div>
+                        <p className="text-opsh-primary font-semibold">
+                          Modern College
+                        </p>
+                        <p className="text-gray-700 mt-2">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Interdum et malesuada fames ac ante ipsum primis
+                          in faucibus.
+                        </p>
                       </div>
-                      <p className="text-opsh-primary font-bold">
-                        Modern College
-                      </p>
-                      <p className="text-gray-700 mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Interdum et malesuada fames ac ante ipsum primis in
-                        faucibus.
-                      </p>
-                    </div>
-                  </Timeline.Item>
-                  <Timeline.Item
-                    dot={
-                      <div
-                        className="flex-shrink-0 absolute"
-                        style={{ right: "-30px" }}
-                      >
-                        <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                          M
+                    </li>
+                    <li className="mb-10 ms-6">
+                      <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3  ">
+                        <div className="">
+                          <div className="bg-opsh-primary/25 h-12 w-12 text-xl rounded-full flex items-center justify-center text-opsh-secondary font-semibold">
+                            M
+                          </div>
                         </div>
+                      </span>
+                      <div className="flex-grow pl-5">
+                        <div className="flex gap-9">
+                          <span className="text-xl font-semibold">
+                            Bachelors in Fine Arts
+                          </span>
+                          <div className="bg-opsh-primary/25 py-1 px-4 rounded-full text-opsh-secondary font-semibold">
+                            2013-2016
+                          </div>
+                        </div>
+                        <p className="text-opsh-primary font-semibold">
+                          Modern College
+                        </p>
+                        <p className="text-gray-700 mt-2">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Interdum et malesuada fames ac ante ipsum primis
+                          in faucibus.
+                        </p>
                       </div>
-                    }
-                  >
-                    <div className="flex-grow pl-5">
-                      <h3 className="text-xl font-bold">
-                        Bachelors in Fine Arts
-                      </h3>
-                      <p className="text-blue-600">Modern College</p>
-                      <p className="text-gray-700 mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Interdum et malesuada fames ac ante ipsum primis in
-                        faucibus.
-                      </p>
-                    </div>
-                  </Timeline.Item>
-                </Timeline>
-              </div>
-              <div className="relative space-y-2">
-                <div className="mt-1">
-                  <h5 className="text-opsh-primary font-semibold text-xl">
-                    Education
-                  </h5>
+                    </li>
+                  </ol>
                 </div>
-                <Timeline className="custom-timeline ml-5 pl-4 relative">
-                  <Timeline.Item
-                    dot={
-                      <div
-                        className="flex-shrink-0 absolute"
-                        style={{ right: "-30px" }}
-                      >
-                        <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                          M
-                        </div>
-                      </div>
-                    }
-                  >
-                    <div className="flex-grow pl-5">
-                      <div className="flex gap-9">
-                        <span className="text-2xl font-bold">
-                          Bachelors in Fine Arts
-                        </span>
-                        <div className="bg-opsh-primary/25 py-1 px-4 rounded-full text-opsh-secondary font-bold">
-                          2013-2016
-                        </div>
-                      </div>
-                      <p className="text-opsh-primary font-bold">
-                        Modern College
-                      </p>
-                      <p className="text-gray-700 mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Interdum et malesuada fames ac ante ipsum primis in
-                        faucibus.
-                      </p>
-                    </div>
-                  </Timeline.Item>
-                  <Timeline.Item
-                    dot={
-                      <div
-                        className="flex-shrink-0 absolute"
-                        style={{ right: "-30px" }}
-                      >
-                        <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                          M
-                        </div>
-                      </div>
-                    }
-                  >
-                    <div className="flex-grow pl-5">
-                      <h3 className="text-xl font-bold">
-                        Bachelors in Fine Arts
-                      </h3>
-                      <p className="text-blue-600">Modern College</p>
-                      <p className="text-gray-700 mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Interdum et malesuada fames ac ante ipsum primis in
-                        faucibus.
-                      </p>
-                    </div>
-                  </Timeline.Item>
-                </Timeline>
               </div>
               <div className="relative space-y-2">
                 <div className="mt-1">

@@ -5,9 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [{ find: '@', replacement: '/src' }],
+    alias: {
+      '@': '/src', // Ensure alias points correctly to the src folder
+    },
   },
   server: {
     port: 3000,
   },
 })
+

@@ -232,7 +232,7 @@ const VacancyAdd: FC = () => {
               type="submit"
               className="px-5 py-2 flex items-center gap-1 bg-opsh-success text-white rounded hover:bg-green-700"
             >
-              Add Postw
+              Add Post
             </button>
           </div>
         </div>
