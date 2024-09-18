@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
 import Select from "@/components/select/select";
 import CkEditors from "@/components/ckEditors.tsx/CkEditors";
 
@@ -9,7 +8,7 @@ interface AddCvModalProps {
   onClose: () => void;
   onSubmit: (data: any) => void;
 }
-
+// ss
 interface Position {
   id?: number;
   name: string;
@@ -25,8 +24,6 @@ const dummyPositions: Position[] = [
 
 const AddCvModal: FC<AddCvModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const { control } = useForm();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploading] = useState(false);
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,18 +43,6 @@ const AddCvModal: FC<AddCvModalProps> = ({ isOpen, onClose, onSubmit }) => {
     onClose(); // Close modal after submit
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-    }
-  };
-
-  const handleUpload = () => {
-    const fileInput = document.getElementById("image-upload");
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
       <div className="bg-white w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl p-6 rounded-lg max-h-[90vh] overflow-y-auto overflow-auto custom-scrollbar">

@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { RiDeleteBinLine, MdOutlineRemoveRedEye, BiEdit,FaPlus,} from "@/assets/icons/Icons";
 import Select from "@/components/select/select";
 import CkEditors from "@/components/ckEditors.tsx/CkEditors";
 interface AwardModalProps {
