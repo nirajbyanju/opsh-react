@@ -32,7 +32,7 @@ const Experience: FC<ExperienceProps> = ({}) => {
         <table className="min-w-full">
           <thead>
             <tr className="bg-opsh-primary/25">
-              <th className="p-4 font-medium text-sm text-center text-opsh-primary">
+              <th className="p-4 font-medium text-sm text-cente text-opsh-primary">
                 Designation
               </th>
               <th className="p-4 font-medium text-sm text-center text-opsh-primary">

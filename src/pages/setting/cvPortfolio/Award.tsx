@@ -1,36 +1,44 @@
-import { FC } from "react";
-import { RiPencilLine } from "react-icons/ri";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { RiDeleteBin5Line } from "react-icons/ri";
-
+import { FC, useState } from "react";
+import { RiDeleteBinLine, MdOutlineRemoveRedEye, BiEdit,FaPlus,} from "@/assets/icons/Icons";
+import AwardModal from "./modal/AwardModal";
 interface AwardProps {}
 
 const Award: FC<AwardProps> = ({}) => {
+  const [isAwardModalOpen, setIsAwardModalOpen] = useState(false);
+
+  const handleAddAward = () =>{
+
+  };
   return (
-    <div className="w-full mx-auto bg-white sm:py-4 sm:px-4 lg:px-10 rounded-lg shadow">
+    <div className="w-full mx-auto bg-white sm:py-4 sm:px-4 lg:px-4 rounded-lg shadow mb-5">
       <div className="flex flex-col sm:flex-row items-center mb-4 gap-4">
-        <h2 className="font-medium text-opsh-primary">Education Table</h2>
-        <hr className="border-t-1 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
-        <button className="border-opsh-primary rounded-full border text-opsh-primary px-4 py-2">
-          + Add Data in Table
+        <h2 className="font-medium text-xl text-opsh-primary">
+          Award Table
+        </h2>
+        <hr className="border-t-2 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
+        <button
+          className="border-opsh-primary border-2 rounded-full font-semibold text-opsh-primary px-4 py-2 flex gap-2 items-center hover:text-opsh-success hover:border-opsh-success"
+          onClick={() => setIsAwardModalOpen(true)}
+        >
+          <FaPlus size={18} /> Add Ward
         </button>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead>
-            <tr className="bg-opsh-primary/5">
-              <th className="p-4 font-medium text-sm text-center">
+            <tr className="bg-opsh-primary/25">
+              <th className="p-4 font-medium text-sm text-center text-opsh-primary">
                 Award Name
               </th>
-              <th className="p-4 font-medium text-sm text-center">Category</th>
-              <th className="p-4 font-medium text-sm text-center">Description</th>
-              <th className="p-4 font-medium text-sm text-center">
+              <th className="p-4 font-medium text-sm text-center text-opsh-primary">Category</th>
+              <th className="p-4 font-medium text-sm text-center text-opsh-primary">Description</th>
+              <th className="p-4 font-medium text-sm text-center text-opsh-primary">
                 Achievement
               </th>
-              <th className="p-4 font-medium text-sm text-center">
+              <th className="p-4 font-medium text-sm text-center text-opsh-primary">
                 Attachment Date
               </th>
-              <th className="p-4 font-medium text-sm text-center">Actions</th>
+              <th className="p-4 font-medium text-sm text-center text-opsh-primary">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -48,14 +56,14 @@ const Award: FC<AwardProps> = ({}) => {
               </td>
               <td className="p-4 border-b text-center">
                 <div className="flex space-x-2 justify-center">
-                  <button className="p-2 rounded text-xl">
-                    <RiPencilLine />
-                  </button>
-                  <button className="p-2 rounded text-xl">
+                  <button className="p-2 rounded text-xl text-opsh-primary hover:text-opsh-success">
                     <MdOutlineRemoveRedEye />
                   </button>
-                  <button className="p-2 rounded text-xl">
-                    <RiDeleteBin5Line />
+                  <button className="p-2 rounded text-xl text-opsh-primary hover:text-opsh-warning">
+                    <BiEdit />
+                  </button>
+                  <button className="p-2 rounded text-xl text-opsh-primary hover:text-opsh-danger">
+                    <RiDeleteBinLine />
                   </button>
                 </div>
               </td>
@@ -63,6 +71,11 @@ const Award: FC<AwardProps> = ({}) => {
           </tbody>
         </table>
       </div>
+      <AwardModal 
+        isOpen={isAwardModalOpen}
+        onClose={() => setIsAwardModalOpen(false)}
+        onSubmit={handleAddAward}
+      />
     </div>
   );
 };

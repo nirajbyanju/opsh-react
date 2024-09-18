@@ -3,26 +3,27 @@ import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import Select from "@/components/select/select";
 import CkEditors from "@/components/ckEditors.tsx/CkEditors";
-interface TrainingModalProps {
+
+interface CertificationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }
+
 interface Position {
   id?: number;
   name: string;
 }
-
-// Create some dummy data
 const dummyPositions: Position[] = [
   { id: 1, name: "Manager" },
   { id: 2, name: "Developer" },
   { id: 3, name: "Designer" },
   { id: 1, name: "Manager" },
   { id: 2, name: "Developer" },
+  { id: 3, name: "Designer" },
 ];
 
-const TrainingModal: FC<TrainingModalProps> = ({
+const CertificationModal: FC<CertificationModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -66,7 +67,7 @@ const TrainingModal: FC<TrainingModalProps> = ({
       <div className="bg-white w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl p-6 rounded-lg max-h-[90vh] overflow-y-auto overflow-auto custom-scrollbar">
         <div className="flex justify-between items-center mb-4">
           <h4 className="text-xl font-semibold text-opsh-black">
-            Add Training & Skill Data
+            Add Certificate Data
           </h4>
           <button
             onClick={onClose}
@@ -99,9 +100,9 @@ const TrainingModal: FC<TrainingModalProps> = ({
                 <button
                   onClick={handleUpload}
                   className="
-        bg-blue-700 hover:bg-blue-800
-        text-white py-2 px-4 rounded-lg flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2
-      "
+      bg-blue-700 hover:bg-blue-800
+      text-white py-2 px-4 rounded-lg flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2
+    "
                   type="button"
                 >
                   <span>{isUploading ? "Uploading..." : "Upload"}</span>
@@ -128,33 +129,32 @@ const TrainingModal: FC<TrainingModalProps> = ({
             <div className="grid grid-cols-1 gap-y-2 gap-x-3 sm:grid-cols-1 md:grid-cols-3">
               <div className="col-span-1 sm:col-span-2 md:col-span-1">
                 <label
-                  htmlFor="trainingName"
+                  htmlFor="certificateName"
                   className="block text-sm mb-1 text-opsh-primary font-medium"
                 >
-                  Training & Skill Name
+                  Certificate Name
                 </label>
                 <input
                   type="text"
-                  id="trainingName"
-                  name="trainingName"
+                  id="certificateName"
+                  name="certificateName"
                   className="w-full border-opsh-grey rounded px-3 py-[0.375rem] border focus:outline-none focus:border-opsh-secondary placeholder:text-opsh-muted/50 placeholder:text-sm"
-                  placeholder="Enter Training & Skill Name"
+                  placeholder="Enter Certificate Name"
                   required
                 />
               </div>
-              <div className="col-span-1 sm:col-span-2 md:col-span-1">
+              <div>
                 <label
-                  htmlFor="level"
+                  htmlFor="joinedYearDate"
                   className="block text-sm mb-1 text-opsh-primary font-medium"
                 >
-                  Level
+                  Achievement Date
                 </label>
                 <input
-                  type="text"
-                  id="level"
-                  name="level"
+                  type="date"
+                  id="joinedYearDate"
+                  name="joinedYear"
                   className="w-full border-opsh-grey rounded px-3 py-[0.375rem] border focus:outline-none focus:border-opsh-secondary placeholder:text-opsh-muted/50 placeholder:text-sm"
-                  placeholder="Enter Level"
                   required
                 />
               </div>
@@ -174,29 +174,8 @@ const TrainingModal: FC<TrainingModalProps> = ({
                   }))}
                 />
               </div>
-
-              <div className="">
-                <label
-                  htmlFor="yearDate"
-                  className="block text-sm mb-1 text-opsh-primary font-medium"
-                >
-                  Year of Experience
-                </label>
-                <input
-                  type="date"
-                  id="yearDate"
-                  name="yearDate"
-                  className="w-full border-opsh-grey rounded px-3 py-[0.375rem] border focus:outline-none focus:border-opsh-secondary placeholder:text-opsh-muted/50 placeholder:text-sm"
-                  required
-                />
-              </div>
               <div className="col-span-3">
-                <label
-                  htmlFor="yearDate"
-                  className="block text-sm mb-1 text-opsh-primary font-medium"
-                >
-                  Year of Experience
-                </label>
+                <label htmlFor="">Description</label>
                 <CkEditors />
               </div>
             </div>
@@ -229,4 +208,4 @@ const TrainingModal: FC<TrainingModalProps> = ({
   );
 };
 
-export default TrainingModal;
+export default CertificationModal;

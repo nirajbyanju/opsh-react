@@ -5,15 +5,25 @@ import { LuEye } from "react-icons/lu";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
 import { FC } from "react";
-import CkEditors from "../../../components/ckEditors.tsx/CkEditors";
 import { Link } from "react-router-dom";
+import AddCvModal from "./modal/AddCvModal";
+import {
+  FaPlus,
+} from "@/assets/icons/Icons";
 
 interface CvPortfolioProps {}
 
-const CvPortfolio: FC<CvPortfolioProps> = ({}) => {
+const CvPortfolio: FC<CvPortfolioProps> = ({
+  
+
+}) => {
   const [Listing, setIsListing] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModelAdd, setIsModelAdd] = useState(false);
+  const [isAddCvModalOpen, setIsAddCvModalOpen] = useState(false);
+
+  const handleAddCv = () =>{
+
+  };
 
   const showlisting = (view: any) => {
     setIsListing(Listing === view ? Listing : view);
@@ -27,13 +37,7 @@ const CvPortfolio: FC<CvPortfolioProps> = ({}) => {
     setIsModalOpen(true);
   };
 
-  const openAdd = () => {
-    setIsModelAdd(true);
-  };
 
-  const closeAddModal = () => {
-    setIsModelAdd(false);
-  };
 
   return (
     <div className="px-4">
@@ -67,9 +71,6 @@ const CvPortfolio: FC<CvPortfolioProps> = ({}) => {
         </form>
         <div className="flex gap-4">
           <div className="flex flex-wrap gap-2 sm:gap-4">
-            <button className="text-opsh-primary border-2 py-1 px-3 border-opsh-primary text-sm rounded-lg hover:bg-opsh-light-blue">
-              Bulk Action
-            </button>
             <button
               onClick={openModal}
               className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90"
@@ -80,7 +81,7 @@ const CvPortfolio: FC<CvPortfolioProps> = ({}) => {
               All View
             </button>
             <button
-              onClick={openAdd}
+              // onClick={openAdd}
               className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90"
             >
               Add Cv
@@ -99,25 +100,27 @@ const CvPortfolio: FC<CvPortfolioProps> = ({}) => {
       </div>
 
       <div className="overflow-x-auto">
-        <div className="flex flex-col sm:flex-row items-center mb-4 gap-4">
-          <h2 className="font-medium text-opsh-primary">Cv Table</h2>
-          <hr className="border-t-1 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
-          <button
-            onClick={openAdd}
-            className="border-opsh-primary rounded-full border text-opsh-primary px-4 py-2"
-          >
-            + Add Data in Table
-          </button>
-        </div>
+      <div className="flex flex-col sm:flex-row items-center mb-4 gap-4">
+        <h2 className="font-medium text-xl text-opsh-primary">
+          Education Table
+        </h2>
+        <hr className="border-t-2 border-opsh-primary flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
+        <button
+          className="border-opsh-primary border-2 rounded-full font-semibold text-opsh-primary px-4 py-2 flex gap-2 items-center hover:text-opsh-success hover:border-opsh-success"
+          onClick={() => setIsAddCvModalOpen(true)}
+        >
+          <FaPlus size={18} /> Add Education
+        </button>
+      </div>
         {/* Table */}
         <table className="min-w-full">
-          <thead className="bg-opsh-primary/5">
+          <thead className="bg-opsh-primary/25">
             <tr className="text-sm text-center">
-              <th className="py-2 font-medium">Name</th>
-              <th className="py-2 font-medium">Position</th>
-              <th className="py-2 font-medium">Description</th>
-              <th className="py-2 font-medium">Created</th>
-              <th className="py-2 font-medium">Action</th>
+              <th className="py-2 font-medium text-opsh-primary">Name</th>
+              <th className="py-2 font-medium text-opsh-primary">Position</th>
+              <th className="py-2 font-medium text-opsh-primary">Description</th>
+              <th className="py-2 font-medium text-opsh-primary">Created</th>
+              <th className="py-2 font-medium text-opsh-primary">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-gray-200">
@@ -269,86 +272,12 @@ const CvPortfolio: FC<CvPortfolioProps> = ({}) => {
           </div>
         </div>
       )}
-      {isModelAdd && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg w-11/12 md:w-2/3 lg:w-1/2 p-5">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl md:text-xl font-semibold">
-                Add Cv Portfolio
-              </h2>
-              <button
-                onClick={closeAddModal}
-                className="text-red-500 text-sm md:text-base font-medium"
-              >
-                Close (X)
-              </button>
-            </div>
-            <form className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-4">
-              <div className="col-span-2">
-                <label
-                  htmlFor="company-name"
-                  className="block text-gray-700 text-sm mb-1"
-                >
-                  Name
-                </label>
-                <input
-                  id="company-name"
-                  type="text"
-                  placeholder="Enter Name"
-                  className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 text-sm leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="col-span-2">
-                <label
-                  htmlFor="position"
-                  className="block text-gray-700 text-sm mb-1"
-                >
-                  Position
-                </label>
-                <input
-                  id="position"
-                  type="text"
-                  placeholder="Enter Position"
-                  className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 text-sm leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="col-span-4">
-                <label
-                  className="block text-gray-700 text-sm mb-2"
-                  htmlFor="description"
-                >
-                  Description
-                </label>
-                <CkEditors />
-              </div>
-              <div className="col-span-4">
-                <div>
-                  <div className="flex justify-end gap-5 mt-4">
-                    <button
-                      type="button"
-                      className="px-3 py-2 text-sm bg-opsh-danger text-white rounded hover:bg-red-700"
-                    >
-                      Cancel & Close
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-3 py-2 text-sm flex items-center gap-1 bg-opsh-success text-white rounded hover:bg-green-700"
-                    >
-                      Add & Create New
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-3 py-2 text-sm flex items-center gap-1 bg-opsh-success text-white rounded hover:bg-green-700"
-                    >
-                      Add Post
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+        <AddCvModal 
+        isOpen={isAddCvModalOpen}
+        onClose={() => setIsAddCvModalOpen(false)}
+        onSubmit={ handleAddCv }
+      />
+     
     </div>
   );
 };
