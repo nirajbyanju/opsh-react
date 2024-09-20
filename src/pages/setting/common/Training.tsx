@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import TrainingModal from "@/pages/setting/cvPortfolio/modal/TrainingModal";
+import TrainingModal from "../common/modal/TrainingModal";
 import {
   RiDeleteBinLine,
   MdOutlineRemoveRedEye,

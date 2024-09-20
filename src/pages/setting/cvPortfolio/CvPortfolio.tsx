@@ -6,7 +6,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import AddCvModal from "./modal/AddCvModal";
+import AddCvModal from "../common/modal/AddCvModal";
 import {
   FaPlus,
 } from "@/assets/icons/Icons";
@@ -36,8 +36,6 @@ const CvPortfolio: FC<CvPortfolioProps> = ({
   const openModal = () => {
     setIsModalOpen(true);
   };
-
-
 
   return (
     <div className="px-4">
@@ -112,11 +110,11 @@ const CvPortfolio: FC<CvPortfolioProps> = ({
           <FaPlus size={18} /> Add Education
         </button>
       </div>
-        {/* Table */}
-        <table className="min-w-full">
-          <thead className="bg-opsh-primary/25">
+      <div className="rounded-lg overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-opsh-primary/25 rounded-lg">
             <tr className="text-sm text-center">
-              <th className="py-2 font-medium text-opsh-primary">Name</th>
+              <th className="py-3 font-medium text-opsh-primary">Name</th>
               <th className="py-2 font-medium text-opsh-primary">Position</th>
               <th className="py-2 font-medium text-opsh-primary">Description</th>
               <th className="py-2 font-medium text-opsh-primary">Created</th>
@@ -147,6 +145,7 @@ const CvPortfolio: FC<CvPortfolioProps> = ({
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modal */}

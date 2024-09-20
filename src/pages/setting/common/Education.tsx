@@ -1,5 +1,5 @@
 import { useState, FC } from "react";
-import Modal from "@/pages/setting/cvPortfolio/modal/EducationModal";
+import Modal from "../common/modal/EducationModal";
 import {
   RiDeleteBinLine,
   MdOutlineRemoveRedEye,

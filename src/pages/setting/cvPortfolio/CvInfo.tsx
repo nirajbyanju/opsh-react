@@ -1,22 +1,24 @@
 import { FC, useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import profile from "../../../assets/auth/profile.jpg";
-import { LuPhoneCall } from "react-icons/lu";
-import { GrLocation } from "react-icons/gr";
-import { PiClockUser } from "react-icons/pi";
-import { RiGraduationCapLine } from "react-icons/ri";
-import { LiaUserClockSolid } from "react-icons/lia";
-import { MdCalendarMonth } from "react-icons/md";
-import { FaRegUserCircle } from "react-icons/fa";
-import { RiUserFollowLine } from "react-icons/ri";
-import { PiUserList } from "react-icons/pi";
-import { TbAward } from "react-icons/tb";
-import { PiCertificate } from "react-icons/pi";
-import Education from "./Education";
-import Experience from "./Experience";
-import Training from "./Training";
-import Award from "./Award";
-import Certificate from "./Certificate";
+import {
+  PiCertificate,
+  TbAward,
+  PiUserList,
+  RiUserFollowLine,
+  FaRegUserCircle,
+  MdCalendarMonth,
+  LiaUserClockSolid,
+  RiGraduationCapLine,
+  PiClockUser,
+  GrLocation,
+  LuPhoneCall,
+} from "@/assets/icons/Icons";
+import Education from "../common/Education";
+import Experience from "../common/Experience";
+import Training from "../common/Training";
+import Award from "../common/Award";
+import Certificate from "../common/Certificate";
 import Information from "./Information";
 
 interface CvInfoProps {}
@@ -104,7 +106,7 @@ const CvInfo: FC<CvInfoProps> = () => {
         </div>
       </div>
 
-      <div className="w-full  px-2 shadow-md mt-3">
+      <div className="w-full  px-1 shadow-md mt-3">
         <div className="bg-opsh-primary/25 rounded-md">
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-opsh-darkgrey">
             <li className="me-2">

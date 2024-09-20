@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        'xxs': ['0.70rem', '1rem'], // font-size of 0.70rem and line-height of 1rem
+      },
       colors: {
         'opsh-primary': '#1C4980',
         'opsh-secondary': '#3854A5',
