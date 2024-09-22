@@ -21,7 +21,7 @@ const VacancyAdd: FC = () => {
               Vacancy Title
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="title"
               type="text"
               placeholder="Enter Vacancy Title"
@@ -35,7 +35,7 @@ const VacancyAdd: FC = () => {
               Category
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="category"
             >
               <option>Select Category</option>
@@ -52,7 +52,7 @@ const VacancyAdd: FC = () => {
               Company
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="company"
             >
               <option>Select Company</option>
@@ -68,7 +68,7 @@ const VacancyAdd: FC = () => {
               Vacancy Type
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="vacancy-type"
             >
               <option>Select Type</option>
@@ -85,7 +85,7 @@ const VacancyAdd: FC = () => {
               Vacancy Level
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="vacancy-level"
             >
               <option>Select Level</option>
@@ -102,7 +102,7 @@ const VacancyAdd: FC = () => {
               Location
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="location"
               type="text"
               placeholder="Enter Location"
@@ -116,7 +116,7 @@ const VacancyAdd: FC = () => {
               Website
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="website"
               type="url"
               placeholder="https://"
@@ -127,7 +127,7 @@ const VacancyAdd: FC = () => {
               Email Address
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="email"
               placeholder="Enter Email"
@@ -138,7 +138,7 @@ const VacancyAdd: FC = () => {
               Phone Number
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="number"
               placeholder="9800-000000"
@@ -149,7 +149,7 @@ const VacancyAdd: FC = () => {
               Age
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="text"
               placeholder="Enter age limit"
@@ -160,7 +160,7 @@ const VacancyAdd: FC = () => {
               Dateline
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="date"
               placeholder="Enter Number"
@@ -171,7 +171,7 @@ const VacancyAdd: FC = () => {
               Offered Salary
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="number"
               placeholder="Enter Email"
@@ -182,7 +182,7 @@ const VacancyAdd: FC = () => {
               Experience Requirement
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="email"
               placeholder="Enter Email"
@@ -193,7 +193,7 @@ const VacancyAdd: FC = () => {
               Experience Requirement
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-1 border border-gray-300 rounded placeholder:text-sm placeholder:font-thin"
               id="email"
               type="email"
               placeholder="Enter Email"

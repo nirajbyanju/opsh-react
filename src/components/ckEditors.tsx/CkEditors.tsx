@@ -17,11 +17,7 @@ const CkEditors: FC<CkEditorsProps> = ({}) => {
               'undo', 'redo', '|', 'imageUpload', 'mediaEmbed', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells'
             ]
           }}
-          data="<p>Enter description here...</p>"
-          onChange={(event, editor) => {
-            const data = editor.getData();
-            console.log({ event, editor, data });
-          }}
+          // data="<p>Enter description here...</p>"
         />
   </div>
 }

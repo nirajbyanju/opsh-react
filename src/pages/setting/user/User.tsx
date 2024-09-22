@@ -158,12 +158,12 @@ const User = () => {
         </div>
       </div>
 
-      <div className="w-full  px-1 shadow-md mt-3">
+      <div className="w-full  px-1 shadow-md mt-1 2xl:mt-2">
         <div className="bg-opsh-primary/25 rounded-md">
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-opsh-darkgrey">
             <li className="me-2">
               <button
-                className={`inline-flex items-center justify-center p-4 gap-2 group border-b-2 ${
+                className={`inline-flex items-center justify-center p-2 2xl:p-4 gap-2 group border-b-2 ${
                   activeTab === "Profile"
                     ? "border-opsh-secondary text-opsh-secondary"
                     : "border-transparent hover:text-opsh-secondary hover:border-opsh-secondary"
@@ -176,7 +176,7 @@ const User = () => {
             </li>
             <li className="me-2">
               <button
-                className={`inline-flex items-center justify-center p-4 gap-2 group border-b-2 ${
+                className={`inline-flex items-center justify-center p-2 2xl:p-4 gap-2 group border-b-2 ${
                   activeTab === "Education"
                     ? "border-opsh-secondary text-opsh-secondary"
                     : "border-transparent hover:text-opsh-secondary hover:border-opsh-secondary"
@@ -189,7 +189,7 @@ const User = () => {
             </li>
             <li className="me-2">
               <button
-                className={`inline-flex items-center justify-center p-4 gap-2 group border-b-2 ${
+                className={`inline-flex items-center justify-center p-2 2xl:p-4 gap-2 group border-b-2 ${
                   activeTab === "Experience"
                     ? "border-opsh-secondary text-opsh-secondary"
                     : "border-transparent hover:text-opsh-secondary hover:border-opsh-secondary"
@@ -202,7 +202,7 @@ const User = () => {
             </li>
             <li className="me-2">
               <button
-                className={`inline-flex items-center justify-center gap-2 p-4 group border-b-2 ${
+                className={`inline-flex items-center justify-center gap-2 p-2 2xl:p-4 group border-b-2 ${
                   activeTab === "Traings"
                     ? "border-opsh-secondary text-opsh-secondary"
                     : "border-transparent hover:text-opsh-secondary hover:border-opsh-secondary"
@@ -215,7 +215,7 @@ const User = () => {
             </li>
             <li className="me-2">
               <button
-                className={`inline-flex items-center justify-center gap-2 p-4 group border-b-2 ${
+                className={`inline-flex items-center justify-center gap-2 p-2 2xl:p-4 group border-b-2 ${
                   activeTab === "Award"
                     ? "border-opsh-secondary text-opsh-secondary"
                     : "border-transparent hover:text-opsh-secondary hover:border-opsh-secondary"
@@ -228,7 +228,7 @@ const User = () => {
             </li>
             <li className="me-2">
               <button
-                className={`inline-flex items-center justify-center gap-2 p-4 group border-b-2 ${
+                className={`inline-flex items-center justify-center gap-2 p-2 2xl:p-4 group border-b-2 ${
                   activeTab === "Certificate"
                     ? "border-opsh-secondary text-opsh-secondary"
                     : "border-transparent hover:text-opsh-secondary hover:border-opsh-secondary"
@@ -243,7 +243,7 @@ const User = () => {
         </div>
 
         {/* Tab content */}
-        <div className="mt-3">
+        <div className="mt-2 2xl:mt-2">
           {activeTab === "Profile" && (
             <div>
               {" "}

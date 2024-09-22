@@ -74,10 +74,10 @@ const Tags: FC<TagsProps> = ({}) => {
     };
 
   return <div>
-    <div className="bg-white p-2 border rounded-lg shadow-sm relative custom-tag-input">
+    <div className="bg-white p-1 border rounded-sm relative custom-tag-input">
                 <div className="flex flex-wrap items-center gap-2">
                     {tags.map(tag => (
-                        <span key={tag.id} className="bg-opsh-primary text-white rounded-lg px-3 py-1 text-sm font-medium flex items-center">
+                        <span key={tag.id} className="bg-opsh-secondary text-white rounded-md px-3 py-1 text-sm font-medium flex items-center">
                             {tag.name}
                             <button onClick={() => handleDeleteTag(tag.id)} className="ml-2 text-xs">&times;</button>
                         </span>
@@ -88,7 +88,7 @@ const Tags: FC<TagsProps> = ({}) => {
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
                         onClick={handleInputClick}
-                        className="rounded-lg flex-1 min-w-0 focus:outline-none"
+                        className="placeholder:text-sm placeholder:font-thin rounded-lg pl-1 flex-1 min-w-0 focus:outline-none"
                         placeholder="Type and press Enter..."
                     />
                 </div>

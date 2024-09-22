@@ -9,7 +9,7 @@ interface SelectProps {
     value?: SingleValue<{ value: string, label: string }>;
 }
 
-const Select: React.FC<SelectProps> = ({ name, control, options, value }) => {
+const Select: React.FC<SelectProps> = ({ name, control, options, value}) => {
     return (
         <Controller
             name={name}
