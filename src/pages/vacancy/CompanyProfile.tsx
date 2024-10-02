@@ -55,10 +55,10 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
 
     try {
       const response = await companyProfile(formData);
-    
+
       if (!response.success && response.error) {
         const errorData = response.error || response.error; // Safely access the error
-    
+
         if (errorData?.validationErrors) {
           if (errorData.validationErrors.description) {
             setError("description", {
@@ -68,11 +68,11 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
           }
         }
       } else {
-        toast.success('Company profile saved successfully!');
+        toast.success("Company profile saved successfully!");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error('Failed to save the company profile.');
+      toast.error("Failed to save the company profile.");
     }
   };
 
@@ -89,17 +89,25 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex flex-col gap-4 sm:flex-row items-center mb-4">
+    <div className="px-3 py-1">
+      <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
         <h5 className="text-primary font-medium text-xl">Company Profile</h5>
         <hr className="border-t-1 border-gray-300 flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
         <h5 className="text-muted text-sm">Working Dashboard</h5>
         <h5 className="text-muted text-sm">Statistics Dashboard</h5>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <UploadPhoto onUpload={handlePhotoUpload} />
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div className="mb-4">
+        <div>
+          <label
+            className="block text-gray-700 text-sm font-medium mb-1"
+            htmlFor="company-name"
+          >
+            Company Logo
+          </label>
+          <UploadPhoto onUpload={handlePhotoUpload} />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="company-name"
@@ -119,7 +127,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               <p className="text-red-600">{errors.companyName.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="category"
@@ -131,7 +139,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               <p className="text-red-600">{errors.categoryId.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="email"
@@ -149,7 +157,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               <p className="text-red-600">{errors.email.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="phone"
@@ -169,7 +177,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               <p className="text-red-600">{errors.phoneNumber.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="website"
@@ -187,7 +195,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               <p className="text-red-600">{errors.website.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="location"
@@ -205,7 +213,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               <p className="text-red-600">{errors.location.message}</p>
             )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="estSince"
@@ -229,7 +237,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="description"
             >
-              Company Description
+              Description
             </label>
             <CkEditors onChange={handleEditorChange} />
             {errors.description && (
