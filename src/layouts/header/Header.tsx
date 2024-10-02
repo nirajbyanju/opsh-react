@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import sildingImg from "../../assets/auth/sildingImg.png";
 import { Link } from "react-router-dom";
+import NotificationModal from "./NotificationModal";
 import {
   FaCog,
   FaRegUser,
@@ -15,42 +16,33 @@ interface HeaderProps {
   setIsExpand: (isExpand: boolean) => void;
 }
 
-interface Notification {
-  id: number;
-  message: string;
-  created_at: string;
-}
-
 const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+  
+  // Refs to handle clicks outside of the dropdown and notification modal
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const dropdownNotificationRef = useRef<HTMLDivElement | null>(null);
+  const notificationModalRef = useRef<HTMLDivElement | null>(null);
 
+  // Function to toggle profile dropdown
   const handleProfileClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleNotification = () => {
-    setIsNotificationOpen(!isNotificationOpen);
-  };
-
+  // Function to handle clicks outside dropdown and modal
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    // Close profile dropdown if clicked outside
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
     }
-    if (
-      dropdownNotificationRef.current &&
-      !dropdownNotificationRef.current.contains(event.target as Node)
-    ) {
-      setIsNotificationOpen(false);
+
+    // Close notification modal if clicked outside
+    if (notificationModalRef.current && !notificationModalRef.current.contains(event.target as Node)) {
+      setIsNotificationModalOpen(false);
     }
   };
-  const [notifications] = useState<Notification[]>([]);
 
+  // Attach event listener to detect clicks outside dropdown and modal
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -122,13 +114,12 @@ const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
           </form>
         </div>
         <div className="flex items-center space-x-4 mr-4">
-          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-md">
-            <IoNotificationsOutline
-              className="text-xl"
-              onClick={handleNotification}
-            />
+          <button
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-md"
+            onClick={() => setIsNotificationModalOpen(true)}
+          >
+            <IoNotificationsOutline className="text-xl" />
           </button>
-          {/* <button className='p-2 text-gray-600 hover:bg-gray-100 rounded-md'><GrChat className='text-xl' /></button> */}
           <div
             className="relative flex flex-row gap-4 cursor-pointer"
             onClick={handleProfileClick}
@@ -142,75 +133,69 @@ const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
             </div>
             {isDropdownOpen && (
               <div
-              ref={dropdownRef}
-              className="absolute right-0 mt-10 z-50 bg-white border border-gray-200 rounded-lg shadow-lg w-64"
-            >
-              <div className="px-2 py-3 border-b border-gray-100">
-                <div className="flex gap-3 items-center">
-                  <div className="border-opsh-primary border-2 rounded-full w-10 h-10">
-                    <img
-                      src={sildingImg}
-                      alt="profile-image"
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                  <div>
-                    <span className="text-base font-medium text-gray-900 block">
-                      Niraj Byanju
-                    </span>
-                    <span className="text-sm text-gray-500 overflow-hidden">
-                      nirajbyanju1234@gmail.com
-                    </span>
+                ref={dropdownRef}
+                className="absolute right-0 mt-10 z-50 bg-white border border-gray-200 rounded-lg shadow-lg w-64"
+              >
+                <div className="px-2 py-3 border-b border-gray-100">
+                  <div className="flex gap-3 items-center">
+                    <div className="border-opsh-primary border-2 rounded-full w-10 h-10">
+                      <img
+                        src={sildingImg}
+                        alt="profile-image"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-base font-medium text-gray-900 block">
+                        Niraj Byanju
+                      </span>
+                      <span className="text-sm text-gray-500 overflow-hidden">
+                        nirajbyanju1234@gmail.com
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            
-              <div className="py-2">
-                <Link
-                  to="/userProfile"
-                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150"
-                >
-                  <FaRegUser className="mr-3 text-gray-500" />
-                  My Profile
-                </Link>
-            
-                <Link
-                  to="/userProfile"
-                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150"
-                >
-                  <FaCog className="mr-3 text-gray-500" />
-                  Settings
-                </Link>
-            
-                <Link
-                  to="/help-support"
-                  className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150"
-                >
-                  <RiCustomerService2Fill className="mr-3 text-gray-500" />
-                  Help & Support
-                </Link>
-            
-                <Link
-                  to="/logout"
-                  className="flex items-center px-4 py-3 text-sm text-opsh-danger hover:bg-gray-100 transition ease-in-out duration-150"
-                >
-                  <FaSignOutAlt className="mr-3" />
-                  Logout
-                </Link>
-              </div>
-            </div>
-            
-            )}
-            {isNotificationOpen && (
-              <div
-                ref={dropdownNotificationRef}
-                className="absolute right-20 mt-10 w-36 bg-white border border-gray-200 rounded-md shadow-lg"
-              >
-                {notifications.map((notification) => (
-                  <li key={notification.id}>{notification.message}</li>
-                ))}
+                <div className="py-2">
+                  <Link
+                    to="/userProfile"
+                    className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150"
+                  >
+                    <FaRegUser className="mr-3 text-gray-500" />
+                    My Profile
+                  </Link>
+                  <Link
+                    to="/userProfile"
+                    className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150"
+                  >
+                    <FaCog className="mr-3 text-gray-500" />
+                    Settings
+                  </Link>
+                  <Link
+                    to="/help-support"
+                    className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150"
+                  >
+                    <RiCustomerService2Fill className="mr-3 text-gray-500" />
+                    Help & Support
+                  </Link>
+                  <Link
+                    to="/logout"
+                    className="flex items-center px-4 py-3 text-sm text-opsh-danger hover:bg-gray-100 transition ease-in-out duration-150"
+                  >
+                    <FaSignOutAlt className="mr-3" />
+                    Logout
+                  </Link>
+                </div>
               </div>
             )}
+            {/* Notification Modal */}
+            
+              <div ref={notificationModalRef} className="absolute right-0 mt-10 ">
+                <NotificationModal
+                  isOpen={isNotificationModalOpen}
+                  onClose={() => setIsNotificationModalOpen(false)}
+                />
+              </div>
+            
           </div>
         </div>
       </div>

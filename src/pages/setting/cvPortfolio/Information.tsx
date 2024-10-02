@@ -1,6 +1,6 @@
 import { FC } from "react";
 import UploadPhoto from "../../../components/uploadPhoto/UploadPhoto";
-import CkEditors from "../../../components/ckEditors.tsx/CkEditors";
+import CkEditors from "../../../components/ckEditors/CkEditors";
 
 interface InformationProps {}
 

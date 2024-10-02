@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 export const api = axios.create({
     baseURL: 'https://back.opportunitiessharing.com/api',
     headers: {
-        'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data', 
     },
     timeout: 5000,
 });
@@ -31,8 +31,10 @@ export const api = axios.create({
   
   export interface Response<T = any> {
     success: boolean;
-    result: T;
-  }
+    result?: T;
+    error?: ApiErrorData; // Add error property
+}
+
   
   export interface ApiErrorData {
     code: number;

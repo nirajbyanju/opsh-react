@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import Select from "@/components/select/select";
-import CkEditors from "@/components/ckEditors.tsx/CkEditors";
+import CkEditors from "@/components/ckEditors/CkEditors";
 
 interface CertificationModalProps {
   isOpen: boolean;

@@ -41,8 +41,8 @@ const RegistrationPage: React.FC = () => {
       setLoading(false);
   
       if (response.success) {
-        console.log(response);
-        console.log('Form submitted successfully');
+        // console.log(response);
+        // console.log('Form submitted successfully');
         navigate('/success');
       } else {
         if (response.error) {

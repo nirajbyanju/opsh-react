@@ -29,6 +29,7 @@
     "react-select": "^5.8.0",
     "react-tag-autocomplete": "^7.3.0",
     "react-tag-input": "^6.10.3",
+    "react-toastify": "^10.0.5",
     "react-tooltip": "^5.27.1",
     "sass": "^1.77.6",
     "simplebar-react": "^3.2.6",

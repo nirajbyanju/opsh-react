@@ -1,12 +1,15 @@
 import React, { useState, FC } from 'react';
+
 interface UploadPhotoProps {
-  
+  onUpload: (file: File | null) => void;
 }
 
-const UploadPhoto: FC<UploadPhotoProps> = () => {
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload }) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files ? event.target.files[0] : null;
+    onUpload(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -21,8 +24,8 @@ const UploadPhoto: FC<UploadPhotoProps> = () => {
   };
 
   return (
-  <div>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div className="flex items-center justify-center w-full">
           {imagePreview ? (
             <div className="relative">
@@ -60,8 +63,7 @@ const UploadPhoto: FC<UploadPhotoProps> = () => {
                   />
                 </svg>
                 <p className="mb-2 text-sm text-gray-500">
-                  <span className="font-semibold">Click to upload</span> or drag
-                  and drop
+                  <span className="font-semibold">Click to upload</span> or drag and drop
                 </p>
                 <p className="text-xs text-gray-500">
                   SVG, PNG, JPG or GIF (MAX. 800x400px)
@@ -78,7 +80,7 @@ const UploadPhoto: FC<UploadPhotoProps> = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UploadPhoto
+export default UploadPhoto;

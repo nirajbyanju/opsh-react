@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "@/components/select/select";
-import CkEditors from "@/components/ckEditors.tsx/CkEditors";
+import CkEditors from "@/components/ckEditors/CkEditors";
 interface AwardModalProps {
     isOpen: boolean;
     onClose: () => void;

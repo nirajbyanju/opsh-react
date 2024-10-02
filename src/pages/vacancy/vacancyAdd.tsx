@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Tags from "../../components/Tags/Tags";
-import CkEditors from "../../components/ckEditors.tsx/CkEditors";
+import CkEditors from "../../components/ckEditors/CkEditors";
 import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 import "./vacancy.scss";
 
