@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import Select from "@/components/select/select";
-import CkEditors from "@/components/ckEditors/CkEditors";
+// import CkEditors from "@/components/ckEditors/CkEditors";
 interface TrainingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -197,7 +197,7 @@ const TrainingModal: FC<TrainingModalProps> = ({
                 >
                   Year of Experience
                 </label>
-                <CkEditors />
+                {/* <CkEditors /> */}
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import Select from "@/components/select/select";
-import CkEditors from "@/components/ckEditors/CkEditors";
+// import CkEditors from "@/components/ckEditors/CkEditors";
 
 interface AddCvModalProps {
   isOpen: boolean;
@@ -109,7 +109,7 @@ const AddCvModal: FC<AddCvModalProps> = ({ isOpen, onClose, onSubmit }) => {
               </div>
               <div className="col-span-3">
                 <label htmlFor="">Description</label>
-                <CkEditors />
+                {/* <CkEditors /> */}
               </div>
             </div>
           </div>

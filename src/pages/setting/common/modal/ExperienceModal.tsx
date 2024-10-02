@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import Select from "@/components/select/select";
-import CkEditors from "@/components/ckEditors/CkEditors";
+// import CkEditors from "@/components/ckEditors/CkEditors";
 
 interface ExperienceModalProps {
   isOpen: boolean;
@@ -209,7 +209,7 @@ const ExperienceModal: FC<ExperienceModalProps> = ({
             </div>
             <div className="col-span-3">
                 <label htmlFor="">Description</label>
-                <CkEditors/>
+                {/* <CkEditors/> */}
             </div>
             </div>
             

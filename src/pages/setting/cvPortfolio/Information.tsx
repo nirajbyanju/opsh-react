@@ -1,6 +1,6 @@
 import { FC } from "react";
-import UploadPhoto from "../../../components/uploadPhoto/UploadPhoto";
-import CkEditors from "../../../components/ckEditors/CkEditors";
+// import UploadPhoto from "../../../components/uploadPhoto/UploadPhoto";
+// import CkEditors from "../../../components/ckEditors/CkEditors";
 
 interface InformationProps {}
 
@@ -16,7 +16,7 @@ const Information: FC<InformationProps> = ({}) => {
             >
               Photo
             </label>
-            <UploadPhoto />
+            {/* <UploadPhoto /> */}
           </div>
           <div className="mt-2">
             <label
@@ -25,7 +25,7 @@ const Information: FC<InformationProps> = ({}) => {
             >
               Description
             </label>
-            <CkEditors />
+            {/* <CkEditors /> */}
           </div>
         </div>
         <div className="flex justify-end gap-5 mt-4">

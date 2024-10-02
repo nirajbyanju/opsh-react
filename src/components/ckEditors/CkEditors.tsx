@@ -10,7 +10,7 @@ interface CkEditorsProps {
 const CkEditors: FC<CkEditorsProps> = ({ onChange }) => {
   const [editorData, setEditorData] = useState<string>(''); // Initialize state for editor data
 
-  const handleEditorChange = (event: any, editor: any) => {
+  const handleEditorChange = (editor: any) => {
     const data = editor.getData(); // Get editor data
     setEditorData(data); // Update state
     onChange(data); // Call the onChange prop to pass data to parent

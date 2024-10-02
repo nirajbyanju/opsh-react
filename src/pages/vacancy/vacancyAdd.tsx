@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Tags from "../../components/Tags/Tags";
-import CkEditors from "../../components/ckEditors/CkEditors";
-import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
+// import CkEditors from "../../components/ckEditors/CkEditors";
+// import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 import "./vacancy.scss";
 
 const VacancyAdd: FC = () => {
@@ -14,7 +14,7 @@ const VacancyAdd: FC = () => {
         <h5 className="text-muted text-sm">Statistics Dashboard</h5>
       </div>
       <form action="">
-        <UploadPhoto />
+        {/* <UploadPhoto /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="mb-2">
             <label className="block text-gray-700 text-sm mb-2" htmlFor="title">
@@ -212,7 +212,7 @@ const VacancyAdd: FC = () => {
           >
             Description
           </label>
-          <CkEditors />
+          {/* <CkEditors /> */}
         </div>
         <div>
           <div className="flex justify-end gap-5 mt-4">

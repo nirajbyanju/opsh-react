@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Select from "react-select";
+// import Select from "react-select";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { companyProfile } from "@/apis/vacancy/companyProfile.api";
 import { CompanyProfiles } from "@/types/vacancy/compnayProfile"; // Fix typo here
@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 interface CompanyProfileProps {}
 
 const CompanyProfile: FC<CompanyProfileProps> = () => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
