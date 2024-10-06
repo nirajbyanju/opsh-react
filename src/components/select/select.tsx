@@ -1,15 +1,14 @@
-import { Control, Controller, FieldValues } from 'react-hook-form';
-import React from 'react';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import ReactSelect, { SingleValue } from 'react-select';
 
-interface SelectProps {
-    name: string;
-    control: Control<FieldValues>;
+interface SelectProps<T extends FieldValues> {
+    name: Path<T>; // Use Path<T> to ensure 'name' is a valid key from T
+    control: Control<T>;
     options: { value: string, label: string }[];
     value?: SingleValue<{ value: string, label: string }>;
 }
 
-const Select: React.FC<SelectProps> = ({ name, control, options, value}) => {
+const Select = <T extends FieldValues>({ name, control, options, value }: SelectProps<T>) => {
     return (
         <Controller
             name={name}

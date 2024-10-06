@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react';
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import Logo from '../../assets/auth/Logo.jpg';
-import { FaTachometerAlt, FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 import { IoSettingsOutline } from "react-icons/io5";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import { FiUsers } from "react-icons/fi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuUserSquare2 } from "react-icons/lu";
-import { FaChalkboardUser } from "react-icons/fa6";
-import { FaUserCog } from "react-icons/fa";
 import { RiUserSearchLine } from "react-icons/ri";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import { LiaPaperPlane } from "react-icons/lia";
 import { PiUserFocus } from "react-icons/pi";
 import { TbReportSearch } from "react-icons/tb";
 import { MdManageHistory } from "react-icons/md";
+import { LiaUserCogSolid } from "react-icons/lia";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { RiPresentationLine } from "react-icons/ri";
 
 interface SidebarProps {
     isExpand: boolean;
@@ -33,7 +35,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
     {
         name: 'Dashboard',
-        icon: <FaTachometerAlt className="h-5 w-5 text-current" />,
+        icon: <AiOutlineDashboard className="h-5 w-5 text-current" />,
         path: '/dashboard',
     },
     {
@@ -69,11 +71,6 @@ const menuItems: MenuItem[] = [
                 path: '/vacancyAdd',
             },
             {
-                name: 'Company Profile',
-                icon: <PiUserFocus className="h-6 w-5 text-current" />,
-                path: '/companyProfile',
-            },
-            {
                 name: 'Manage Vacancy',
                 icon: <MdManageHistory className="h-6 w-5 text-current" />,
                 path: '/manageVacancy',
@@ -86,18 +83,35 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
+        name:'Company Profile',
+        icon: <RiPresentationLine className="h-6 w-5 text-current" />,
+        path: '#',
+        submenu: [
+            {
+                name: 'Profile List',
+                icon: <HiOutlineClipboardList className="h-6 w-5 text-current" />,
+                path: '/profileList',
+            },
+            {
+                name: 'Profile Add',
+                icon: <PiUserFocus className="h-6 w-5 text-current" />,
+                path: '/companyProfile',
+            },
+        ]
+    },
+    {
         name: 'Settings',
         icon: <IoSettingsOutline className="h-6 w-5 text-current" />,
         path: '/settings',
         submenu: [
             {
                 name: 'Profile',
-                icon: <FaUserCog className="h-6 w-5 text-current" />,
+                icon: <LiaUserCogSolid className="h-6 w-5 text-current" />,
                 path: '/userProfile',
             },
             {
                 name: 'Cv Portfolio',
-                icon: <FaChalkboardUser className="h-6 w-5 text-current" />,
+                icon: <HiOutlineClipboardDocumentList className="h-6 w-5 text-current" />,
                 path: '/cvProtfolio',
             },
         ],

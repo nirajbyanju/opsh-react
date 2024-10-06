@@ -1,49 +1,62 @@
 import { FC, useState } from "react";
-// import Select from "react-select";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { companyProfile } from "@/apis/vacancy/companyProfile.api";
-import { CompanyProfiles } from "@/types/vacancy/compnayProfile"; // Fix typo here
+import { useNavigate } from "react-router-dom"; // Import from react-router-dom
+import Select from "@/components/select/select";
+import { useForm } from "react-hook-form";
+import useCompanyProfileStore from "@/stores/company/companyStore";
+import { CompanyProfiles } from "@/types/vacancy/compnayProfile";
 import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
-import CkEditors from "@/components/ckEditors/CkEditors"; // Fix path to CkEditors
+import CkEditors from "@/components/ckEditors/CkEditors";
 import Category from "@/components/category/category";
 import { toast } from "react-toastify";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import { companyProfileValidationSchema } from "@/validations/vacancy/companyProfile";
 interface CompanyProfileProps {}
+interface TeamSize {
+  id?: number;
+  name: string;
+}
+
+const teamSize: TeamSize[] = [
+  { id: 1, name: "0-10" },
+  { id: 2, name: "10-20" },
+  { id: 3, name: "20-50" },
+];
 
 const CompanyProfile: FC<CompanyProfileProps> = () => {
-  // const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const { createCompanyProfile } = useCompanyProfileStore();
   const {
+    control,
     register,
     handleSubmit,
-    setError,
+    reset,
     formState: { errors },
-  } = useForm<CompanyProfiles>();
+  } = useForm<CompanyProfiles>({
+    resolver: yupResolver(companyProfileValidationSchema),
+  });
   const [editorContent, setEditorContent] = useState<string>("");
   const [uploadedPhoto, setUploadedPhoto] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+ 
 
-  const onSubmit: SubmitHandler<CompanyProfiles> = async (data) => {
-    if (!editorContent || editorContent.trim() === "") {
-      setError("description", {
-        type: "manual",
-        message: "Description is required",
-      });
-      return;
-    }
+  const reseting = () => {
+    reset();
+    setEditorContent("");
+    setUploadedPhoto(null);
+    setSelectedCategory(null);
+    setIsCreatingNew(false); 
+  };
 
-    if (!selectedCategory) {
-      setError("categoryId", {
-        type: "manual",
-        message: "Category is required",
-      });
-      return;
-    }
-
+  const onSubmit = async (data: CompanyProfiles) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("description", editorContent);
     formData.append("categoryId", selectedCategory || "");
     if (uploadedPhoto) {
-      formData.append("logo", uploadedPhoto); // handle file upload
+      formData.append("logo", uploadedPhoto);
+      data.logo = uploadedPhoto;
     }
     formData.append("companyName", data.companyName);
     formData.append("email", data.email);
@@ -51,43 +64,26 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
     formData.append("website", data.website);
     formData.append("location", data.location);
     formData.append("established", data.established);
-    // Add any other fields that you have in the form
+    formData.append("teamSize", data.teamSize);
 
     try {
-      const response = await companyProfile(formData);
+      await createCompanyProfile(formData);
+      toast.success("Company profile saved successfully!");
 
-      if (!response.success && response.error) {
-        const errorData = response.error || response.error; // Safely access the error
-
-        if (errorData?.validationErrors) {
-          if (errorData.validationErrors.description) {
-            setError("description", {
-              type: "manual",
-              message: errorData.validationErrors.description[0],
-            });
-          }
-        }
+      if (isCreatingNew) {
+        reset();
+        setEditorContent(""); // Reset editor content
+        setUploadedPhoto(null); // Reset photo
+        setSelectedCategory(null); // Reset category
       } else {
-        toast.success("Company profile saved successfully!");
+        navigate("/profileList");
       }
     } catch (error) {
-      console.error("Submission error:", error);
-      toast.error("Failed to save the company profile.");
+      toast.error("Company profile save failed!");
+    } finally {
+      setLoading(false);
     }
   };
-
-  const handleEditorChange = (data: string) => {
-    setEditorContent(data);
-  };
-
-  const handlePhotoUpload = (file: File | null) => {
-    setUploadedPhoto(file);
-  };
-
-  const handleCategoryChange = (data: string) => {
-    setSelectedCategory(data);
-  };
-
   return (
     <div className="px-3 py-1">
       <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
@@ -99,32 +95,37 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label
-            className="block text-gray-700 text-sm font-medium mb-1"
+            className="text-gray-700 text-sm font-medium mb-1 flex gap-6"
             htmlFor="company-name"
           >
-            Company Logo
+            Company Logo{" "}
+            {errors.logo && (
+              <p className="text-opsh-danger text-sm font-normal">
+                {errors.logo.message}
+              </p>
+            )}
           </label>
-          <UploadPhoto onUpload={handlePhotoUpload} />
+          <UploadPhoto onUpload={setUploadedPhoto} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
           <div>
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
-              htmlFor="company-name"
+              htmlFor="companyName"
             >
               Company Name
             </label>
             <input
               className="border border-gray-300 rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:border-blue-700 focus:ring-primary focus:ring-1 placeholder:text-opsh-muted/50 placeholder:text-sm"
-              id="company-name"
+              id="companyName"
               type="text"
               placeholder="Company Name"
-              {...register("companyName", {
-                required: "Company name is required",
-              })}
+              {...register("companyName")}
             />
             {errors.companyName && (
-              <p className="text-red-600">{errors.companyName.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.companyName.message}
+              </p>
             )}
           </div>
           <div>
@@ -134,9 +135,15 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
             >
               Category
             </label>
-            <Category onChange={handleCategoryChange} />
+            <Category
+              {...register("categoryId")}
+              onChange={setSelectedCategory}
+            />
+
             {errors.categoryId && (
-              <p className="text-red-600">{errors.categoryId.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.categoryId.message}
+              </p>
             )}
           </div>
           <div>
@@ -151,10 +158,10 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               id="email"
               type="email"
               placeholder="Email Address"
-              {...register("email", { required: "Email is required" })}
+              {...register("email")}
             />
             {errors.email && (
-              <p className="text-red-600">{errors.email.message}</p>
+              <p className="text-opsh-danger text-sm">{errors.email.message}</p>
             )}
           </div>
           <div>
@@ -174,7 +181,9 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               })}
             />
             {errors.phoneNumber && (
-              <p className="text-red-600">{errors.phoneNumber.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.phoneNumber.message}
+              </p>
             )}
           </div>
           <div>
@@ -192,7 +201,9 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               {...register("website", { required: "Website is required" })}
             />
             {errors.website && (
-              <p className="text-red-600">{errors.website.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.website.message}
+              </p>
             )}
           </div>
           <div>
@@ -210,7 +221,9 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               {...register("location", { required: "Location is required" })}
             />
             {errors.location && (
-              <p className="text-red-600">{errors.location.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.location.message}
+              </p>
             )}
           </div>
           <div>
@@ -229,29 +242,73 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               })}
             />
             {errors.established && (
-              <p className="text-red-600">{errors.established.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.established.message}
+              </p>
             )}
           </div>
-          <div className="col-span-full mb-4">
+          <div>
+            <label
+              className="block text-gray-700 text-sm font-medium mb-1"
+              htmlFor="teamSize"
+            >
+              Team Size
+            </label>
+            <Select
+              name="teamSize" // This should match exactly with the CompanyProfiles interface
+              control={control}
+              options={teamSize.map((pos) => ({
+                value: pos.name?.toString() || "",
+                label: pos.name,
+              }))}
+            />
+
+            {errors.teamSize && (
+              <p className="text-opsh-danger text-sm">
+                {errors.teamSize.message}
+              </p>
+            )}
+          </div>
+          <div className="col-span-full mb-1">
             <label
               className="block text-gray-700 text-sm font-medium mb-1"
               htmlFor="description"
             >
               Description
             </label>
-            <CkEditors onChange={handleEditorChange} />
+            <CkEditors onChange={setEditorContent} />
             {errors.description && (
-              <p className="text-red-600">{errors.description.message}</p>
+              <p className="text-opsh-danger text-sm">
+                {errors.description.message}
+              </p>
             )}
           </div>
         </div>
-        <div className="mb-4 flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded"
-          >
-            Save Company
-          </button>
+        <div>
+          <div className="flex justify-end gap-5 mt-2">
+            <button
+              type="button"
+              className="px-4 py-2 bg-red-500 text-white rounded"
+              onClick={() => reseting()}
+            >
+              Cancel & Reset
+            </button>
+            <button
+              type="submit"
+              onClick={() => setIsCreatingNew(true)}
+              className="px-5 py-2 bg-green-500 text-white rounded"
+              disabled={loading}
+            >
+              Add & Create New
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2 bg-green-500 text-white rounded"
+              disabled={loading}
+            >
+              {loading ? <span className="loader light"></span> : "Add Profile"}
+            </button>
+          </div>
         </div>
       </form>
     </div>

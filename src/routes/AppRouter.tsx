@@ -12,7 +12,8 @@ import RolesPermission from '../pages/user/rolesPermission';
 import AnalyticsDashboard from '../pages/user/analyticsDashboard';
 import VacancyList from '../pages/vacancy/vacancyList';
 import VacancyAdd from '../pages/vacancy/vacancyAdd';
-import CompanyProfile from '../pages/vacancy/CompanyProfile';
+import CompanyProfile from '../pages/company/CompanyProfile';
+import ProfileList from '@/pages/company/ProfileList';
 import ManageVacancy from '../pages/vacancy/ManageVacancy';
 import Shortlisted from '../pages/vacancy/Shortlisted';
 import AllApplicants from '../pages/vacancy/AllApplicants';
@@ -36,14 +37,18 @@ const AppRouter = () => {
           <Route path="/analyticsDashboard" element={<AnalyticsDashboard/>}></Route>
           <Route path="/rolesPermission" element={<RolesPermission/>}></Route>
 
+          // vacancy
           <Route path='/vacancylist' element={<VacancyList/>}></Route>
           <Route path='/vacancyAdd' element={<VacancyAdd/>}></Route>
-          <Route path='/companyProfile' element={<CompanyProfile/>}></Route>
           <Route path='/manageVacancy' element={<ManageVacancy/>}></Route>
           <Route path='/manageVacancy/AllApplicants' element={<AllApplicants/>}></Route>
           <Route path='/shortlisted' element={<Shortlisted/>}></Route>
           <Route path='/cvinfo' element={<CvInfo/>}></Route>
 
+          //company
+          <Route path='/companyProfile' element={<CompanyProfile/>}></Route>
+          <Route path='/profileList' element={<ProfileList/>}></Route>
+          
           //Settings
           <Route path='/userProfile' element={<User/>}></Route>
           <Route path='/cvProtfolio' element={<CvPortfolio/>} ></Route>

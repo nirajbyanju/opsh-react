@@ -18,7 +18,7 @@ const MainLayout: React.FC = () => {
     <main className="flex-1">
       <Outlet />
     </main>
-    <div className="">
+    <div className="mt-2">
       <Footer />
     </div>
   </div>
