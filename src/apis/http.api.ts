@@ -30,6 +30,7 @@ export const api = axios.create({
   );
   
   export interface Response<T = any> {
+    data: T;
     success: boolean;
     result?: T;
     error?: ApiErrorData; // Add error property

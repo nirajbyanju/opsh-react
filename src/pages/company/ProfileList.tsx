@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC } from "react";
+import { useEffect, useState, FC } from "react";
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { PiListBulletsBold } from "react-icons/pi";
 // import { BsThreeDotsVertical } from "react-icons/bs";
@@ -7,14 +7,17 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { LuEye } from "react-icons/lu";
 import useCompanyProfileStore from "@/stores/company/companyStore";
 import { toast } from "react-toastify";
+import { CompanyProfiles } from "@/types/vacancy/compnayProfile";
+import ViewModal from "./ViewingModal";
 
 const ProfileList: FC = () => {
   // const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [Listing, setIsListing] = useState<number>(1);
   const { getAllCompanyProfiles, deleteCompanyProfile } = useCompanyProfileStore();
-  const [profiles, setProfiles] = useState<CompanyProfile[]>([]);
+  const [profiles, setProfiles] = useState<CompanyProfiles[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [profileToDelete, setProfileToDelete] = useState<number | null>(null);
+  const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
 
   const showListing = (view: number) => {
     setIsListing(view);
@@ -39,6 +42,11 @@ const ProfileList: FC = () => {
     } catch (error) {
       console.error("Error deleting profile:", error);
     }
+  };
+
+  const openViewModal = (id: number) => {
+    setSelectedProfileId(id);  // Pass the id
+    setIsModalOpen(true);
   };
   
   const openDeleteModal = (id: number) => {
@@ -189,7 +197,8 @@ const ProfileList: FC = () => {
                       </td>
                       <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
                         <div className="text-xs sm:text-sm text-gray-900">
-                          {compy.category.name}
+                        {compy.category!.name}
+
                         </div>
                       </td>
                       <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden md:table-cell">
@@ -220,7 +229,7 @@ const ProfileList: FC = () => {
                         <div className="flex flex-row gap-3 justify-center items-center">
                           <button
                             className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey"
-                            onClick={() => navigate(`/profiledetails/${compy.id}`)}
+                            onClick={() => openViewModal(compy.id)}
                           >
                             <LuEye />
                           </button>
@@ -296,6 +305,13 @@ const ProfileList: FC = () => {
             </div>
           </div>
         </div>
+      )}
+      {selectedProfileId && (
+        <ViewModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          profileId={selectedProfileId}
+        />
       )}
       
     </div>

@@ -25,7 +25,7 @@ const teamSize: TeamSize[] = [
 const CompanyProfile: FC<CompanyProfileProps> = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [isCreatingNew, setIsCreatingNew] = useState(false);
   const { createCompanyProfile } = useCompanyProfileStore();
   const {
     control,
@@ -39,14 +39,13 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
   const [editorContent, setEditorContent] = useState<string>("");
   const [uploadedPhoto, setUploadedPhoto] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
- 
 
   const reseting = () => {
     reset();
     setEditorContent("");
     setUploadedPhoto(null);
     setSelectedCategory(null);
-    setIsCreatingNew(false); 
+    setIsCreatingNew(false);
   };
 
   const onSubmit = async (data: CompanyProfiles) => {
@@ -99,9 +98,9 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
             htmlFor="company-name"
           >
             Company Logo{" "}
-            {errors.logo && (
-              <p className="text-opsh-danger text-sm font-normal">
-                {errors.logo.message}
+            {errors.companyName && (
+              <p className="text-opsh-danger text-sm">
+                {errors.companyName.message as string}
               </p>
             )}
           </label>

@@ -1,74 +1,32 @@
-// import { Response, api } from '@/apis/http.api';
-// import { CompanyProfile } from '@/types/company/companyProfile'
-  
-//   export const getAllCompanyProfiles = (): Promise<ComapnyProfile[]> =>
-//       api.get<Response<ComapnyProfile[]>>("/companyProfile")
-//   .then(({ data }) => {
-//     return data;
-// });
-  
-//   export const createCompanyProfile = (
-//       payload: ComapnyProfile
-//   ): Promise<Response> =>
-//       api.post<Response>("/companyProfile", {
-//           ...payload,
-//       }).then(({ data }) => data);
-  
-//   export const getComapnyProfileByID = (
-//       payload: number
-//   ): Promise<Response<ComapnyProfile>> =>
-//       api.get<Response<ComapnyProfile>>("/companyProfile", {
-//           params: {
-//               id: payload
-//           }
-//       }) .then(({ data }) => {
-//         console.log(data); // log the response data
-//         return data;
-//     });
-  
-//   export const updateComapnyProfile = (
-//       payload: ComapnyProfile
-//   ): Promise<Response> =>
-//       api.put<Response>("/companyProfile", {
-//           ...payload,
-//       }).then(({ data }) => data);
-  
-//   export const deleteCompanyProfile = (
-//       payload: ComapnyProfile
-//   ): Promise<Response> =>
-//       api.delete<Response>("/companyProfile", {
-//           params: {
-//               id: payload.id
-//           }
-//       }).then(({ data }) => data);
-  
-  
-  
-  
-  
-
-  
-
-
 // src/apis/company/companyProfile.api.ts
 
 import { Response, api } from '@/apis/http.api';
-import { CompanyProfile } from '@/types/company/companyProfile';
+import { CompanyProfiles } from "@/types/company/compnayProfile"; // Corrected the typo in the path
 
-export const getAllCompanyProfiles = (): Promise<CompanyProfile[]> =>
-  api.get<Response<CompanyProfile[]>>('/companyProfile')
-    .then(({ data }) => data.data.Company);
-
-export const createCompanyProfile = (
-  payload: CompanyProfile
-): Promise<CompanyProfile> =>
-  api.post<Response<CompanyProfile>>('/companyProfile', payload)
+// Fetch all company profiles
+export const getAllCompanyProfiles = (): Promise<CompanyProfiles[]> =>
+  api.get<Response<CompanyProfiles[]>>('/companyProfile')
     .then(({ data }) => data.data);
 
+// Create a new company profile using FormData
+export const createCompanyProfile = (
+  payload: FormData
+): Promise<CompanyProfiles> =>
+  api.post<Response<CompanyProfiles>>('/companyProfile', payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+    .then(({ data }) => {
+      console.log(data.data); // Log the full response
+      return data.data;        // Return the actual data
+    });
+
+// Fetch a single company profile by ID
 export const getCompanyProfileByID = (
   id: number
-): Promise<CompanyProfile> =>
-  api.get<Response<CompanyProfile>>('/companyProfile', {
+): Promise<CompanyProfiles> =>
+  api.get<Response<CompanyProfiles>>('/companyProfile', {
     params: { id }
   })
     .then(({ data }) => {
@@ -76,14 +34,20 @@ export const getCompanyProfileByID = (
       return data.data;
     });
 
+// Update an existing company profile using FormData
 export const updateCompanyProfile = (
-  payload: CompanyProfile
-): Promise<CompanyProfile> =>
-  api.put<Response<CompanyProfile>>('/companyProfile', payload)
+  payload: FormData
+): Promise<CompanyProfiles> =>
+  api.put<Response<CompanyProfiles>>('/companyProfile', payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
     .then(({ data }) => data.data);
 
+// Delete a company profile by ID
 export const deleteCompanyProfile = (
-  id: number): Promise<void> => 
+  id: number
+): Promise<void> => 
   api.delete(`/companyProfile/${id}`)
     .then(({ data }) => data);
-

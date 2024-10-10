@@ -1,4 +1,5 @@
 export interface CompanyProfiles {
+  id: number;
   companyName: string;
   categoryId: string;
   email: string;
@@ -6,11 +7,16 @@ export interface CompanyProfiles {
   website: string;
   location: string;
   established: string;
-  teamSize: string; // Ensure this exists
-  logo: File | null; // Or whatever type is appropriate
+  teamSize: string; 
+  logo: any ;
   description: string;
-  status?: string; // Optional fields
-  verifiedAt?: Date; // Optional fields
+  status?: string;
+  verifiedAt?: Date;
+  category?: {
+    name: string;
+  };
+  formData?: any;
+  FormData?: any;
 }
 
 export interface CompanyProfileResponse {
