@@ -6,8 +6,10 @@ import { CompanyProfiles } from "@/types/company/compnayProfile"; // Corrected t
 // Fetch all company profiles
 export const getAllCompanyProfiles = (): Promise<CompanyProfiles[]> =>
   api.get<Response<CompanyProfiles[]>>('/companyProfile')
-    .then(({ data }) => data.data);
-
+    .then(({ data }) => {
+      console.log('Fetched Company Profile:', data);
+      return data.data;
+    });
 // Create a new company profile using FormData
 export const createCompanyProfile = (
   payload: FormData
@@ -18,7 +20,6 @@ export const createCompanyProfile = (
     },
   })
     .then(({ data }) => {
-      console.log(data.data); // Log the full response
       return data.data;        // Return the actual data
     });
 

@@ -10,17 +10,24 @@ export interface CompanyProfiles {
   teamSize: string; 
   logo: any ;
   description: string;
-  status?: string;
+  status?: any;
   verifiedAt?: Date;
+  verified_by?: any;
+  created_by?: any;
   category?: {
     name: string;
   };
   formData?: any;
   FormData?: any;
+  data?: any;
+  response?: {
+    data?: any;
+  }
 }
 
 export interface CompanyProfileResponse {
   success: boolean;
+  data:any;
   error?: {
     message?: string;
     error?: {

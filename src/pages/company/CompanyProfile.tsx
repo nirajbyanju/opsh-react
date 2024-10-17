@@ -10,6 +10,7 @@ import Category from "@/components/category/category";
 import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { companyProfileValidationSchema } from "@/validations/vacancy/companyProfile";
+import useAuthStore from '../../stores/auth/AuthStore';
 interface CompanyProfileProps {}
 interface TeamSize {
   id?: number;
@@ -39,6 +40,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
   const [editorContent, setEditorContent] = useState<string>("");
   const [uploadedPhoto, setUploadedPhoto] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const userData = useAuthStore((state) => state.userData.user);
 
   const reseting = () => {
     reset();
@@ -64,6 +66,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
     formData.append("location", data.location);
     formData.append("established", data.established);
     formData.append("teamSize", data.teamSize);
+    formData.append("createdBy", userData.id);
 
     try {
       await createCompanyProfile(formData);

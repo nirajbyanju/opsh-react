@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import sildingImg from "../../assets/auth/sildingImg.png";
 import { Link } from "react-router-dom";
 import NotificationModal from "./NotificationModal";
+import useAuthStore from '../../stores/auth/AuthStore';
 import {
   FaCog,
   FaRegUser,
@@ -19,8 +20,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
-  
-  // Refs to handle clicks outside of the dropdown and notification modal
+  const userData = useAuthStore((state) => state.userData.user);
+
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const notificationModalRef = useRef<HTMLDivElement | null>(null);
 
@@ -147,10 +148,10 @@ const Header: React.FC<HeaderProps> = ({ isExpand, setIsExpand }) => {
                     </div>
                     <div>
                       <span className="text-base font-medium text-gray-900 block">
-                        Niraj Byanju
+                       {userData.firstName} {userData.lastName}
                       </span>
                       <span className="text-sm text-gray-500 overflow-hidden">
-                        nirajbyanju1234@gmail.com
+                       {userData.email}
                       </span>
                     </div>
                   </div>

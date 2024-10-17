@@ -6,7 +6,7 @@ import { devtools, persist } from "zustand/middleware";
 interface AuthState {
     isAuthenticated: boolean;
     token: string;
-    userId: number;
+    userData: any;
     setToken: (token: string) => void;
     login: (payload: LoginRequest) => Promise<{ success: boolean }>;
     logout: () => void;
@@ -18,7 +18,7 @@ const useAuthStore = create<AuthState>()(
             (set) => ({
                 isAuthenticated: false,
                 token: "",
-                userId: 0,
+                userData: {},
                 setToken: (token: string) => {
                     set({ token, isAuthenticated: true });
                 },
@@ -34,15 +34,15 @@ const useAuthStore = create<AuthState>()(
 
                         const response = await login(payload);
                         const responseData = response as unknown as LoginResponse;
-                        set({ token: responseData.data.token, userId: responseData.data.id, isAuthenticated: true });
-                        return { success: true };  // Return success
+                        set({ token: responseData.data.token, userData: responseData.data, isAuthenticated: true});
+                        return { success: true }; 
                     } catch (error) {
                         console.error("Login error:", error);
                         throw error;
                     }
                 },
                 logout: () => {
-                    set({ isAuthenticated: false, token: "", userId: 0 });
+                    set({ isAuthenticated: false, token: "", userData: {} });
                 },
             }),
             { name: "arkbo-session" }
