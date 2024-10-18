@@ -12,6 +12,7 @@ interface CategoryResponse {
 
 interface CategoryProps {
   onChange: (selectedCategoryId: string) => void; // Callback to send the selected category ID to parent
+  selectedCategory?: string; // Optional prop for the initially selected category
 }
 
 interface Option {
@@ -19,9 +20,10 @@ interface Option {
   label: string;
 }
 
-const Category: FC<CategoryProps> = ({ onChange }) => {
+const Category: FC<CategoryProps> = ({ onChange, selectedCategory }) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [defaultOption, setDefaultOption] = useState<Option | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -33,6 +35,13 @@ const Category: FC<CategoryProps> = ({ onChange }) => {
           label: item.name,
         }));
         setOptions(formattedOptions);
+
+        if (selectedCategory) {
+          const selectedOption = formattedOptions.find(
+            (option) => option.value === selectedCategory
+          );
+          setDefaultOption(selectedOption || null);
+        }
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
@@ -40,7 +49,7 @@ const Category: FC<CategoryProps> = ({ onChange }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [selectedCategory]);
 
   const handleChange = (selectedOption: Option | null) => {
     if (selectedOption) {
@@ -56,6 +65,7 @@ const Category: FC<CategoryProps> = ({ onChange }) => {
         <Select
           options={options}
           onChange={handleChange} // Call the handleChange function on selection
+          defaultValue={defaultOption} // Set the default selected option
         />
       )}
     </div>

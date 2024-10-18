@@ -1,3 +1,15 @@
+export interface CompanyProfile {
+  status: boolean;
+  messaage: string;
+  data: CompanyProfiles[];
+  pagination: {
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+  };
+
+}
 export interface CompanyProfiles {
   id: any;
   companyName: string;
@@ -8,7 +20,7 @@ export interface CompanyProfiles {
   location: string;
   established: string;
   teamSize: string; // Ensure this exists
-  logo: any; 
+  logo: any;
   description: string;
   status?: string; // Optional fields
   verifiedAt?: Date;

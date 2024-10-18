@@ -88,14 +88,14 @@ const menuItems: MenuItem[] = [
         path: '#',
         submenu: [
             {
-                name: 'Profile List',
+                name: 'List Profile',
                 icon: <HiOutlineClipboardList className="h-6 w-5 text-current" />,
-                path: '/profileList',
+                path: '/companyProfile',
             },
             {
-                name: 'Profile Add',
+                name: 'Add Profile',
                 icon: <PiUserFocus className="h-6 w-5 text-current" />,
-                path: '/companyProfile',
+                path: '/companyProfile/create',
             },
         ]
     },

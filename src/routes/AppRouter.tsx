@@ -14,6 +14,7 @@ import VacancyList from '../pages/vacancy/vacancyList';
 import VacancyAdd from '../pages/vacancy/vacancyAdd';
 import CompanyProfile from '../pages/company/CompanyProfile';
 import ProfileList from '@/pages/company/ProfileList';
+import EditProfile from '@/pages/company/EditProfile';
 import ManageVacancy from '../pages/vacancy/ManageVacancy';
 import Shortlisted from '../pages/vacancy/Shortlisted';
 import AllApplicants from '../pages/vacancy/AllApplicants';
@@ -46,8 +47,10 @@ const AppRouter = () => {
           <Route path='/cvinfo' element={<CvInfo/>}></Route>
 
           //company
-          <Route path='/companyProfile' element={<CompanyProfile/>}></Route>
-          <Route path='/profileList' element={<ProfileList/>}></Route>
+          <Route path='/companyProfile' element={<ProfileList/>}></Route>
+          <Route path='/companyProfile/create' element={<CompanyProfile/>}></Route>
+          <Route path='/companyProfile/edit/:id' element={<EditProfile />}></Route>
+          
           
           //Settings
           <Route path='/userProfile' element={<User/>}></Route>

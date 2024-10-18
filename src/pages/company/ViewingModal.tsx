@@ -1,14 +1,17 @@
 import { FC, useEffect, useState } from "react";
 import useCompanyProfileStore from "@/stores/company/companyStore";
+import CkEditors from "@/components/ckEditors/CkEditors";
 
 interface ViewModalProps {
   isOpen: boolean;
-  closeModal: () => void;
-  profileId: number;  // Pass the id instead of the whole profile
+  onClose: () => void; // Ensure this is present
+  profileId: number | null;
+  onDelete: (id: number) => Promise<void>;
+  profileToDelete: number | null;
 }
 
-const ViewModal: FC<ViewModalProps> = ({ isOpen, closeModal, profileId }) => {
-  const {  getCompanyProfile } = useCompanyProfileStore(); // Assume this is the method to fetch by ID
+const ViewModal: FC<ViewModalProps> = ({ isOpen, onClose, profileId }) => {
+  const { getCompanyProfile } = useCompanyProfileStore();
   const [profileData, setProfileData] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -16,7 +19,7 @@ const ViewModal: FC<ViewModalProps> = ({ isOpen, closeModal, profileId }) => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const profile = await  getCompanyProfile(profileId); // Fetch profile data using the ID
+        const profile = await getCompanyProfile(profileId ?? 0);
         setProfileData(profile);
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -26,56 +29,183 @@ const ViewModal: FC<ViewModalProps> = ({ isOpen, closeModal, profileId }) => {
     };
 
     if (isOpen) {
-      fetchProfile(); // Fetch data when modal opens
+      fetchProfile();
     }
-  }, [isOpen, profileId,  getCompanyProfile]);
+  }, [isOpen, profileId, getCompanyProfile]);
 
   if (!isOpen || loading) return null;
 
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+      <div className="bg-white w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-6 rounded-lg max-h-[90vh] overflow-y-auto overflow-auto custom-scrollbar">
+        <div className="flex justify-between items-center mb-2">
+          <h4 className="text-xl font-semibold text-opsh-black">
+            {profileData.companyName} Profile
+          </h4>
+          <button
+            onClick={onClose}
+            className="bg-opsh-danger font-medium text-white text-sm py-1 px-3 rounded-md border-2 border-white hover:bg-white hover:text-opsh-danger hover:border-opsh-danger"
+          >
+            Close (x)
+          </button>
         </div>
 
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div>
-            {profileData ? (
-              <div className="mt-3 text-center sm:mt-5">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  {profileData.companyName}
-                </h3>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    {profileData.description}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Location: {profileData.location}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Team Size: {profileData.teamSize}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Established: {profileData.established}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Phone Number: {profileData.phoneNumber}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <p>No data found</p>
-            )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label className="block text-sm text-opsh-primary font-medium">
+              Company Photo
+            </label>
+            <img src={profileData.logo} alt="Company Logo" className="w-28 h-28 object-cover rounded-lg border-2 border-opsh-primary/25" />
           </div>
-          <div className="mt-5 sm:mt-6">
-            <button
-              onClick={closeModal}
-              className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:text-sm"
+        </div>
+
+        <div className="grid gap-y-2 mt-2">
+          <div className="grid grid-cols-1 gap-y-2 gap-x-3 sm:grid-cols-1 md:grid-cols-3">
+            <div className="col-span-1 sm:col-span-2 md:col-span-1">
+              <label
+                htmlFor="awardName"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+                Company Name
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.companyName}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+                Category
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.category?.name}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+                Email
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.email}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+                Phone Number
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.phoneNumber}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+                Website
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.website}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+                Location
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.location}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+               Est. Since
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.established}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="joinedYearDate"
+                className="block text-sm mb-1 text-opsh-primary font-medium"
+              >
+               Team Size
+              </label>
+              <input
+                type="text"
+                id="awardName"
+                name="awardName"
+                disabled
+                 className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                value={profileData.teamSize}
+                required
+              />
+            </div>
+            <div className="col-span-full mb-1">
+            <label
+              className="block text-gray-700 text-sm font-medium mb-1"
+              htmlFor="description"
             >
-              Close
-            </button>
+              Description
+            </label>
+            <CkEditors data={profileData.description} readOnly={true} />
+          </div>
           </div>
         </div>
       </div>

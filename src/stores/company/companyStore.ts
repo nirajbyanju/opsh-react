@@ -1,5 +1,3 @@
-// src/stores/company/companyStore.ts
-
 import {
   getAllCompanyProfiles,
   getCompanyProfileByID,
@@ -7,37 +5,52 @@ import {
   updateCompanyProfile,
   deleteCompanyProfile
 } from '@/apis/company/companyProfile.api';
-import { CompanyProfiles } from '@/types/company/compnayProfile'; // Corrected the typo in the path
+import { CompanyProfiles, CompanyProfile } from '@/types/company/compnayProfile'; // Corrected the typo in the path
 import _ from 'lodash';
 import { create } from 'zustand';
 
 interface CompanyProfileState {
-  companyProfiles: CompanyProfiles[];
-  companyProfile: CompanyProfiles | null;
-  getAllCompanyProfiles: () => Promise<CompanyProfiles[]>;
+  companyProfiles: CompanyProfiles[] | null;
+  companyProfile: CompanyProfile | null;
+  total: number;
+  per_page: number;
+  current_page: number;
+  last_page: number;
+  getAllCompanyProfiles: (page: number) => Promise<CompanyProfile | null>; 
   createCompanyProfile: (companyProfile: FormData) => Promise<void>; 
-  getCompanyProfile: (id: number) => Promise<CompanyProfiles | undefined>;
+  getCompanyProfile: (id: number) => Promise<CompanyProfile | null>;
   updateCompanyProfile: (companyProfile: FormData) => Promise<void>;
   deleteCompanyProfile: (id: number) => Promise<void>;
 }
 
 export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => ({
-  companyProfiles: [],
+  companyProfiles: null,
   companyProfile: null,
+  total: 0,
+  per_page: 10,
+  current_page: 1,
+  last_page: 0,
 
-  getAllCompanyProfiles: async () => {
+  getAllCompanyProfiles: async (page: number) => {
     try {
-      if (_.isEmpty(get().companyProfiles)) {
-        const profiles = await getAllCompanyProfiles();
-        set({ companyProfiles: profiles });
-        return profiles;
+      const profiles = await getAllCompanyProfiles(page);
+      if (profiles) {
+        set({ 
+          companyProfiles: profiles.data, 
+          total: profiles.pagination.total, 
+          last_page: profiles.pagination.last_page,
+          current_page: profiles.pagination.current_page
+        });
       }
-      return get().companyProfiles;
+      return profiles; 
     } catch (error) {
       console.error('Failed to fetch company profiles:', error);
-      throw error;
+      throw error; 
     }
   },
+
+
+
 
   /**
    * Creates a new company profile and updates the state.
@@ -47,7 +60,7 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
     try {
       const newProfile = await createCompanyProfile(formData);
       set((state) => ({
-        companyProfiles: [...state.companyProfiles, newProfile],
+        companyProfiles: [...state.companyProfiles??[], newProfile],
       }));
     } catch (error) {
       console.error('Failed to create company profile:', error);
@@ -63,18 +76,22 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
   getCompanyProfile: async (id: number) => {
     try {
       if (_.isEmpty(get().companyProfiles)) {
-        const profile = await getCompanyProfileByID(id);
+        const response = await getCompanyProfileByID(id);
+        const profile = (response as any);
         set({ companyProfile: profile });
         return profile;
       } else {
-        const profile = get().companyProfiles.find((p) => p.id === id);
-        return profile;
+        const profile = get().companyProfiles?.find((p) => p.id === id);
+        return profile ?? null;
       }
     } catch (error) {
       console.error(`Failed to fetch company profile with id ${id}:`, error);
       throw error;
     }
   },
+  
+  
+
 
   /**
    * Updates an existing company profile and updates the state.
@@ -84,7 +101,7 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
     try {
       const updatedProfile = await updateCompanyProfile(formData);
       set((state) => ({
-        companyProfiles: state.companyProfiles.map((profile) =>
+        companyProfiles: state.companyProfiles?.map((profile) =>
           profile.id === updatedProfile.id ? updatedProfile : profile
         ),
       }));

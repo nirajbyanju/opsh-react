@@ -1,14 +1,14 @@
 // src/apis/company/companyProfile.api.ts
 
 import { Response, api } from '@/apis/http.api';
-import { CompanyProfiles } from "@/types/company/compnayProfile"; // Corrected the typo in the path
+import { CompanyProfiles, CompanyProfile } from "@/types/company/compnayProfile"; // Corrected the typo in the path
 
 // Fetch all company profiles
-export const getAllCompanyProfiles = (): Promise<CompanyProfiles[]> =>
-  api.get<Response<CompanyProfiles[]>>('/companyProfile')
+export const getAllCompanyProfiles = (page: number): Promise<CompanyProfile> =>
+  api.get<Response<CompanyProfile>>(`/companyProfile?limit=2&page=${page}`)
     .then(({ data }) => {
-      console.log('Fetched Company Profile:', data);
-      return data.data;
+      console.log('Fetched Company Profile:', data.data);
+      return (data as any);
     });
 // Create a new company profile using FormData
 export const createCompanyProfile = (
@@ -27,11 +27,9 @@ export const createCompanyProfile = (
 export const getCompanyProfileByID = (
   id: number
 ): Promise<CompanyProfiles> =>
-  api.get<Response<CompanyProfiles>>('/companyProfile', {
-    params: { id }
-  })
+  api.get<Response<CompanyProfiles>>(`/companyProfile/${id}`,
+  )
     .then(({ data }) => {
-      console.log('Fetched Company Profile:', data);
       return data.data;
     });
 
