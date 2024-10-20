@@ -11,25 +11,15 @@ import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { companyProfileValidationSchema } from "@/validations/vacancy/companyProfile";
 import useAuthStore from '../../stores/auth/AuthStore';
-interface CompanyProfileProps {}
-interface TeamSize {
-  id?: number;
-  name: string;
-}
+import { teamSize } from "@/data/teamSize";
 
-const teamSize: TeamSize[] = [
-  { id: 1, name: "0-10" },
-  { id: 2, name: "10-20" },
-  { id: 3, name: "20-50" },
-];
-
+interface CompanyProfileProps { }
 const CompanyProfile: FC<CompanyProfileProps> = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const { createCompanyProfile } = useCompanyProfileStore();
   const {
-    control,
     register,
     handleSubmit,
     reset,
@@ -38,15 +28,16 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
     resolver: yupResolver(companyProfileValidationSchema),
   });
   const [editorContent, setEditorContent] = useState<string>("");
-  const [uploadedPhoto, setUploadedPhoto] = useState<File | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [uploadedPhoto, setUploadedPhoto] = useState<File | any>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
   const userData = useAuthStore((state) => state.userData.user);
 
   const reseting = () => {
     reset();
     setEditorContent("");
-    setUploadedPhoto(null);
-    setSelectedCategory(null);
+    setUploadedPhoto("");
+    setSelectedCategory("");
     setIsCreatingNew(false);
   };
 
@@ -54,31 +45,27 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("description", editorContent);
-    formData.append("categoryId", selectedCategory || "");
-    if (uploadedPhoto) {
-      formData.append("logo", uploadedPhoto);
-      data.logo = uploadedPhoto;
-    }
+    formData.append("categoryId", selectedCategory);
+    formData.append("logo", uploadedPhoto);
     formData.append("companyName", data.companyName);
     formData.append("email", data.email);
     formData.append("phoneNumber", data.phoneNumber);
     formData.append("website", data.website);
     formData.append("location", data.location);
     formData.append("established", data.established);
-    formData.append("teamSize", data.teamSize);
+    formData.append("teamSize", selectedTeamSize);
     formData.append("createdBy", userData.id);
-
     try {
       await createCompanyProfile(formData);
       toast.success("Company profile saved successfully!");
 
       if (isCreatingNew) {
         reset();
-        setEditorContent(""); // Reset editor content
-        setUploadedPhoto(null); // Reset photo
-        setSelectedCategory(null); // Reset category
+        setEditorContent(""); 
+        setUploadedPhoto(""); 
+        setSelectedCategory(""); 
       } else {
-        navigate("/profileList");
+        navigate("/companyProfile");
       }
     } catch (error) {
       toast.error("Company profile save failed!");
@@ -107,7 +94,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               </p>
             )}
           </label>
-          <UploadPhoto onUpload={setUploadedPhoto} />
+          <UploadPhoto onUpload={setUploadedPhoto} preview={""} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
           <div>
@@ -138,7 +125,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               Category
             </label>
             <Category
-              {...register("categoryId")}
+              name={"categoryId"}
               onChange={setSelectedCategory}
             />
 
@@ -257,12 +244,9 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               Team Size
             </label>
             <Select
-              name="teamSize" // This should match exactly with the CompanyProfiles interface
-              control={control}
-              options={teamSize.map((pos) => ({
-                value: pos.name?.toString() || "",
-                label: pos.name,
-              }))}
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={teamSize}
             />
 
             {errors.teamSize && (

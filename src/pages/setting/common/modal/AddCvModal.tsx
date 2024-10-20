@@ -1,29 +1,17 @@
 import { FC } from "react";
-import { useForm } from "react-hook-form";
 import Select from "@/components/select/select";
-// import CkEditors from "@/components/ckEditors/CkEditors";
+import { position } from "@/data/position";
+import { useState } from "react";
 
 interface AddCvModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }
-// ss
-interface Position {
-  id?: number;
-  name: string;
-}
-const dummyPositions: Position[] = [
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-];
 
 const AddCvModal: FC<AddCvModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const { control } = useForm();
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  console.log(selectedTeamSize);
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -99,13 +87,10 @@ const AddCvModal: FC<AddCvModalProps> = ({ isOpen, onClose, onSubmit }) => {
                   Category
                 </label>
                 <Select
-                  name="levelPositionId"
-                  control={control}
-                  options={dummyPositions.map((pos) => ({
-                    value: pos.id?.toString() || "",
-                    label: pos.name,
-                  }))}
-                />
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={position}
+            />
               </div>
               <div className="col-span-3">
                 <label htmlFor="">Description</label>

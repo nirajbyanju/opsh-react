@@ -19,7 +19,8 @@ import ManageVacancy from '../pages/vacancy/ManageVacancy';
 import Shortlisted from '../pages/vacancy/Shortlisted';
 import AllApplicants from '../pages/vacancy/AllApplicants';
 import CvInfo from '../pages/vacancy/CvInfo';
-import Test from '../pages/test'
+import Test from '../pages/test';
+
 import CvPortfolio from '../pages/setting/cvPortfolio/CvPortfolio';
 import CvInfoAdding from '../pages/setting/cvPortfolio/CvInfo';
 
@@ -64,6 +65,7 @@ const AppRouter = () => {
       <Route path="/forget" element={<Forget/>}/>
       <Route path="/tokenSent" element={<TokenSent/>}></Route>
       <Route path="/test" element={<Test/>}></Route>
+     
       </Routes>
     </BrowserRouter>
   )

@@ -19,12 +19,13 @@ export interface CompanyProfiles {
   website: string;
   location: string;
   established: string;
-  teamSize: string; // Ensure this exists
+  teamSize: number; 
   logo: any;
   description: string;
   status?: string; // Optional fields
   verifiedAt?: Date;
   category?: any;
+  formatted_date?: string;
 }
 
 export interface CompanyProfileResponse {

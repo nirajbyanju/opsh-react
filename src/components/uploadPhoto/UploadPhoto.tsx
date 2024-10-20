@@ -1,27 +1,38 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 
 interface UploadPhotoProps {
   onUpload: (file: File | null) => void;
+  preview?: string | null; // Allow preview to be undefined as well
 }
 
-const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload }) => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload, preview }) => {
+  // State for the local image preview
+  const [imagePreview, setImagePreview] = useState<string | null>(preview ?? null);
 
+  // Handle image upload from file input
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
-    onUpload(file);
+    onUpload(file); // Store the uploaded file
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setImagePreview(reader.result as string); // Set the image preview
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Read the file as a data URL
     }
   };
 
+  // Remove the uploaded image and clear the preview
   const removeImage = () => {
-    setImagePreview(null);
+    setImagePreview(null); // Clear local preview
+    onUpload(null); // Call onUpload with null to clear the uploaded photo
   };
+
+  // Update the local preview if the preview prop changes
+  useEffect(() => {
+    setImagePreview(preview ?? null);
+  }, [preview]);
 
   return (
     <div>
@@ -30,7 +41,7 @@ const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload }) => {
           {imagePreview ? (
             <div className="relative">
               <img
-                src={imagePreview}
+                src={imagePreview} // Use local preview state
                 alt="Uploaded Preview"
                 className="w-full h-56 object-cover rounded-lg"
               />

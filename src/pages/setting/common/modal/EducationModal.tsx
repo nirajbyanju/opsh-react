@@ -1,23 +1,7 @@
 import { FC } from "react";
-import React, { useState } from "react";
-import "./model.scss";
 import Select from "@/components/select/select";
-import { useForm } from "react-hook-form";
-
-interface Position {
-  id?: number;
-  name: string;
-}
-
-// Create some dummy data
-const dummyPositions: Position[] = [
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-];
+import { position } from "@/data/position";
+import { useState } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -26,8 +10,8 @@ interface ModalProps {
 }
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const { control } = useForm();
-
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  console.log(selectedTeamSize);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading] = useState(false);
 
@@ -215,13 +199,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 Grading System
               </label>
               <Select
-                name="levelPositionId"
-                control={control}
-                options={dummyPositions.map((pos) => ({
-                  value: pos.id?.toString() || "",
-                  label: pos.name,
-                }))}
-              />
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={position}
+            />
             </div>
             <div>
               <label
@@ -231,13 +212,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 Education Type
               </label>
               <Select
-                name="levelPositionId"
-                control={control}
-                options={dummyPositions.map((pos) => ({
-                  value: pos.id?.toString() || "",
-                  label: pos.name,
-                }))}
-              />
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={position}
+            />
             </div>
             <div>
               <label

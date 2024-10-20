@@ -1,35 +1,21 @@
 import { FC } from "react";
-import { useForm } from "react-hook-form";
-import React, { useState } from "react";
 import Select from "@/components/select/select";
-// import CkEditors from "@/components/ckEditors/CkEditors";
+import { position } from "@/data/position";
+import { useState } from "react";
 
 interface ExperienceModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }
-interface Position {
-  id?: number;
-  name: string;
-}
-
-// Create some dummy data
-const dummyPositions: Position[] = [
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-];
 
 const ExperienceModal: FC<ExperienceModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
 }) => {
-  const { control } = useForm();
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  console.log(selectedTeamSize);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading] = useState(false);
   if (!isOpen) return null;
@@ -169,13 +155,10 @@ const ExperienceModal: FC<ExperienceModalProps> = ({
                   Category
                 </label>
                 <Select
-                  name="levelPositionId"
-                  control={control}
-                  options={dummyPositions.map((pos) => ({
-                    value: pos.id?.toString() || "",
-                    label: pos.name,
-                  }))}
-                />
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={position}
+            />
               </div>
               <div>
               <label

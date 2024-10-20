@@ -1,8 +1,7 @@
 import { FC } from "react";
-import { useForm } from "react-hook-form";
-import React, { useState } from "react";
 import Select from "@/components/select/select";
-// import CkEditors from "@/components/ckEditors/CkEditors";
+import { position } from "@/data/position";
+import { useState } from "react";
 
 interface CertificationModalProps {
   isOpen: boolean;
@@ -10,25 +9,13 @@ interface CertificationModalProps {
   onSubmit: (data: any) => void;
 }
 
-interface Position {
-  id?: number;
-  name: string;
-}
-const dummyPositions: Position[] = [
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-  { id: 1, name: "Manager" },
-  { id: 2, name: "Developer" },
-  { id: 3, name: "Designer" },
-];
-
 const CertificationModal: FC<CertificationModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
 }) => {
-  const { control } = useForm();
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  console.log(selectedTeamSize);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading] = useState(false);
   if (!isOpen) return null;
@@ -166,13 +153,10 @@ const CertificationModal: FC<CertificationModalProps> = ({
                   Category
                 </label>
                 <Select
-                  name="levelPositionId"
-                  control={control}
-                  options={dummyPositions.map((pos) => ({
-                    value: pos.id?.toString() || "",
-                    label: pos.name,
-                  }))}
-                />
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={position}
+            />
               </div>
               <div className="col-span-3">
                 <label htmlFor="">Description</label>

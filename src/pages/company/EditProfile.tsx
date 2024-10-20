@@ -10,92 +10,105 @@ import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 import CkEditors from "@/components/ckEditors/CkEditors";
 import Category from "@/components/category/category";
 import Select from "@/components/select/select";
+import { teamSize } from "@/data/teamSize";
 
-interface EditProfileProps {}
-interface TeamSize {
-    id?: number;
-    name: string;
-  }
-  
-  const teamSize: TeamSize[] = [
-    { id: 1, name: "0-10" },
-    { id: 2, name: "10-20" },
-    { id: 3, name: "20-50" },
-  ];
+interface EditProfileProps { }
 
 const EditProfile: FC<EditProfileProps> = ({ }) => {
-    const { id } = useParams<{ id: string }>();
-    const numericId = Number(id);
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-    const { getCompanyProfile,  updateCompanyProfile } = useCompanyProfileStore();
-    const [ProfileData, setProfileData] = useState<CompanyProfiles | null>(null);
-    const [editorContent, setEditorContent] = useState<string>("");
-    const [uploadedPhoto, setUploadedPhoto] = useState<File | null>(null);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const {
-        control,
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-      } = useForm<CompanyProfiles>({
-        resolver: yupResolver(companyProfileValidationSchema),
-      });
+  const { id } = useParams<{ id: string }>();
+  const numericId = Number(id);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { getCompanyProfile, updateCompanyProfile } = useCompanyProfileStore();
+  const [ProfileData, setProfileData] = useState<CompanyProfiles | null>(null);
+  const [editorContent, setEditorContent] = useState<string>("");
+  const [uploadedPhoto, setUploadedPhoto] = useState<File | any>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    trigger,
+    formState: { errors },
+  } = useForm<CompanyProfiles>({
+    resolver: yupResolver(companyProfileValidationSchema),
+  });
+  const fetchCompanyProfile = async () => {
+    try {
+      setLoading(true);
+      const profile = await getCompanyProfile(numericId);
+      setProfileData(profile as any);
+      setLoading(false);
 
-    const fetchCompanyProfile = async () => {
-        try {
-            setLoading(true);
-            const profile = await getCompanyProfile(numericId);
-            setProfileData(profile as any);
-            setLoading(false);
-
-        } catch (error) {
-            toast.error("Failed to fetch company profile");
-            navigate('/companyProfile');
-            setLoading(false);
-        }
+    } catch (error) {
+      toast.error("Failed to fetch company profile");
+      navigate('/companyProfile');
+      setLoading(false);
     }
-    const reseting = () => {
-        reset();
-        setEditorContent("");
-        setUploadedPhoto(null);
-        setSelectedCategory(null);
-      };
-    const onSubmit = async (data: CompanyProfiles) => {
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("description", editorContent);
-        formData.append("categoryId", selectedCategory || "");
-        if (uploadedPhoto) {
-          formData.append("logo", uploadedPhoto);
-          data.logo = uploadedPhoto;
-        }
-        formData.append("companyName", data.companyName);
-        formData.append("email", data.email);
-        formData.append("phoneNumber", data.phoneNumber);
-        formData.append("website", data.website);
-        formData.append("location", data.location);
-        formData.append("established", data.established);
-        formData.append("teamSize", data.teamSize);
-    
-        try {
-          await updateCompanyProfile(formData);
-            toast.success("Company profile saved successfully!");
-            navigate("/companyProfile");
-  
-        } catch (error) {
-          toast.error("Company profile save failed!");
-        } finally {
-          setLoading(false);
-        }
-      };
+  }
+  const reseting = () => {
+    reset();
+    setEditorContent("");
+    setUploadedPhoto(null);
+    setSelectedCategory("");
+  };
+  const onSubmit = async (data: CompanyProfiles) => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("description", editorContent);
+    formData.append("categoryId", selectedCategory);
+    formData.append("logo", uploadedPhoto);
+    formData.append("companyName", data.companyName);
+    formData.append("email", data.email);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("website", data.website);
+    formData.append("location", data.location);
+    formData.append("established", data.established);
+    formData.append("teamSize", selectedTeamSize);
+    formData.append("status", '1');
+    formData.append("created_by", '1');
+    try {
+      console.log(data);
+      await updateCompanyProfile(numericId, formData);
+      toast.success("Company profile saved successfully!");
+      navigate("/companyProfile");
 
-    useEffect(() => {
-        fetchCompanyProfile();
-    }, [id]);
-
-    return <div className="px-3 py-1">
+    } catch (error) {
+      toast.error("Company profile save failed!");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchCompanyProfile();
+  }, [id]);
+  useEffect(() => {
+    if (ProfileData) {
+      reset({
+        companyName: ProfileData.companyName,
+        email: ProfileData.email,
+        phoneNumber: ProfileData.phoneNumber,
+        website: ProfileData.website,
+        location: ProfileData.location,
+        established: ProfileData.established,
+        description: ProfileData.description,
+        teamSize: ProfileData.teamSize,
+        categoryId: ProfileData.categoryId,
+      });
+      setEditorContent(ProfileData.description);
+      setUploadedPhoto(ProfileData.logo);
+      setSelectedCategory(ProfileData.categoryId);
+     
+    }
+  }, [ProfileData, reset]);
+  useEffect(() => {
+    if (ProfileData) {
+      reset({ /* populate fields with ProfileData */ });
+      trigger(); // Force validation check after resetting form with default values
+    }
+  }, [ProfileData, reset, trigger]);
+  return <div className="px-3 py-1">
     <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
       <h5 className="text-primary font-medium text-xl">Company Profile</h5>
       <hr className="border-t-1 border-gray-300 flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
@@ -115,7 +128,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             </p>
           )}
         </label>
-        <UploadPhoto onUpload={setUploadedPhoto} />
+        <UploadPhoto onUpload={setUploadedPhoto} preview={ProfileData?.logo} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <div>
@@ -130,9 +143,10 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             id="companyName"
             type="text"
             placeholder="Company Name"
-            value={ProfileData?.companyName}
-            {...register("companyName")}
+            defaultValue={ProfileData?.companyName} // Use defaultValue for initial value
+            {...register("companyName")} // This will handle state updates automatically
           />
+
           {errors.companyName && (
             <p className="text-opsh-danger text-sm">
               {errors.companyName.message}
@@ -169,7 +183,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             className="border border-gray-300 rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:border-blue-700 focus:ring-primary focus:ring-1 placeholder:text-opsh-muted/50 placeholder:text-sm"
             id="email"
             type="email"
-            value={ProfileData?.email}
+            defaultValue={ProfileData?.email}
             placeholder="Email Address"
             {...register("email")}
           />
@@ -188,7 +202,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             className="border border-gray-300 rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:border-blue-700 focus:ring-primary focus:ring-1 placeholder:text-opsh-muted/50 placeholder:text-sm"
             id="phone"
             type="text"
-            value={ProfileData?.phoneNumber}
+            defaultValue={ProfileData?.phoneNumber}
             placeholder="Phone Number"
             {...register("phoneNumber", {
               required: "Phone number is required",
@@ -211,7 +225,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             className="border border-gray-300 rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:border-blue-700 focus:ring-primary focus:ring-1 placeholder:text-opsh-muted/50 placeholder:text-sm"
             id="website"
             type="text"
-            value={ProfileData?.website}
+            defaultValue={ProfileData?.website}
             placeholder="Website"
             {...register("website", { required: "Website is required" })}
           />
@@ -232,7 +246,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             className="border border-gray-300 rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:border-blue-700 focus:ring-primary focus:ring-1 placeholder:text-opsh-muted/50 placeholder:text-sm"
             id="location"
             type="text"
-            value={ProfileData?.location}
+            defaultValue={ProfileData?.location}
             placeholder="Location"
             {...register("location", { required: "Location is required" })}
           />
@@ -253,7 +267,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             className="border border-gray-300 rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:border-blue-700 focus:ring-primary focus:ring-1 placeholder:text-opsh-muted/50 placeholder:text-sm"
             id="estSince"
             type="date"
-            value={ProfileData?.established}
+            defaultValue={ProfileData?.established}
             {...register("established", {
               required: "Est. Since is required",
             })}
@@ -272,14 +286,11 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             Team Size
           </label>
           <Select
-            name="teamSize" // This should match exactly with the CompanyProfiles interface
-            control={control}
-            options={teamSize.map((pos) => ({
-              value: pos.name?.toString() || "",
-              label: pos.name,
-            }))}
+            name="teamSize"
+            onChange={setSelectedTeamSize}
+            selected={ProfileData?.teamSize}
+            data={teamSize}
           />
-
           {errors.teamSize && (
             <p className="text-opsh-danger text-sm">
               {errors.teamSize.message}
@@ -294,8 +305,8 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             Description
           </label>
           <CkEditors
-           data={ProfileData?.description}
-           onChange={setEditorContent} />
+            data={ProfileData?.description}
+            onChange={setEditorContent} />
           {errors.description && (
             <p className="text-opsh-danger text-sm">
               {errors.description.message}
@@ -310,7 +321,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             className="px-4 py-2 bg-red-500 text-white rounded"
             onClick={() => reseting()}
           >
-            Cancel 
+            Cancel
           </button>
           <button
             type="submit"

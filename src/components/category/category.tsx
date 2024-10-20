@@ -13,6 +13,7 @@ interface CategoryResponse {
 interface CategoryProps {
   onChange: (selectedCategoryId: string) => void; // Callback to send the selected category ID to parent
   selectedCategory?: string; // Optional prop for the initially selected category
+  name?: string; // Optional prop for the name of the field
 }
 
 interface Option {
@@ -20,15 +21,15 @@ interface Option {
   label: string;
 }
 
-const Category: FC<CategoryProps> = ({ onChange, selectedCategory }) => {
+const Category: FC<CategoryProps> = ({ onChange, selectedCategory, name }) => {
   const [options, setOptions] = useState<Option[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [defaultOption, setDefaultOption] = useState<Option | null>(null);
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    categoryApi({} as Categories)
-      .then((response) => {
+    const fetchCategories = async () => {
+      try {
+        const response = await categoryApi({} as Categories);
         const data = response as unknown as CategoryResponse;
         const formattedOptions = data.datas.map((item) => ({
           value: item.id,
@@ -37,37 +38,47 @@ const Category: FC<CategoryProps> = ({ onChange, selectedCategory }) => {
         setOptions(formattedOptions);
 
         if (selectedCategory) {
-          const selectedOption = formattedOptions.find(
-            (option) => option.value === selectedCategory
+          const foundOption = formattedOptions.find(
+            (option) => option.value == selectedCategory
           );
-          setDefaultOption(selectedOption || null);
+          setDefaultOption(foundOption || null);
+          setSelectedOption(foundOption || null); // Set the selected option if found
+        } else {
+          setSelectedOption(null); // Reset if no selected category
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching categories:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchCategories();
   }, [selectedCategory]);
 
-  const handleChange = (selectedOption: Option | null) => {
-    if (selectedOption) {
-      onChange(selectedOption.value); // Pass the selected category ID to the parent
+  const handleChange = (option: Option | null) => {
+    setSelectedOption(option); // Update the selected option state
+    if (option) {
+      onChange(option.value); // Pass the selected category ID to the parent
     }
   };
 
+  const noOptionsMessage = "No matching categories available.";
+
   return (
     <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <Select
-          options={options}
-          onChange={handleChange} // Call the handleChange function on selection
-          defaultValue={defaultOption} // Set the default selected option
-        />
-      )}
+      
+        <>
+          {options.length === 0 ? (
+            <p>{noOptionsMessage}</p>
+          ) : (
+            <Select
+              name={name}
+              options={options}
+              onChange={handleChange} // Call the handleChange function on selection
+              value={selectedOption || defaultOption} // Show selected or default option
+              isClearable // Allow clearing the selection
+            />
+          )}
+        </>
     </div>
   );
 };

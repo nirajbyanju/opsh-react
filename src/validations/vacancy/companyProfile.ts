@@ -15,14 +15,12 @@ export const companyProfileValidationSchema: AnyObjectSchema = yup.object().shap
     .string()
     .nullable()
     .matches(/^[0-9]+$/, "Phone number is not valid")
-    .test("phoneOrEmail", "phone number or email is required", function (value) {
+    .test("phoneOrEmail", "Phone number or email is required", function (value) {
       return value || this.parent.email;
     }),
-//   website: yup.string().url("Invalid URL format").required("Website is required"),
-  location: yup.string().required("Location is required"),
-//   established: yup.date().required("Est. Since is required"),
+  // website: yup.string().url("Invalid URL format").required("Website is required"),
+  // location: yup.string().required("Location is required"),
+  // established: yup.date().required("Est. Since is required"),
   // description: yup.string().required("Description is required"),
-  // logo: yup.string().required("Logo is required"),
-//   teamSize: yup.string().required("Team size is required"),
 });
 

@@ -5,7 +5,7 @@ import { CompanyProfiles, CompanyProfile } from "@/types/company/compnayProfile"
 
 // Fetch all company profiles
 export const getAllCompanyProfiles = (page: number): Promise<CompanyProfile> =>
-  api.get<Response<CompanyProfile>>(`/companyProfile?limit=2&page=${page}`)
+  api.get<Response<CompanyProfile>>(`/companyProfile?limit=10&page=${page}`)
     .then(({ data }) => {
       console.log('Fetched Company Profile:', data.data);
       return (data as any);
@@ -34,15 +34,20 @@ export const getCompanyProfileByID = (
     });
 
 // Update an existing company profile using FormData
-export const updateCompanyProfile = (
-  payload: FormData
-): Promise<CompanyProfiles> =>
-  api.put<Response<CompanyProfiles>>('/companyProfile', payload, {
+export const updateCompanyProfile = (id: number, payload: FormData): Promise<CompanyProfiles> => {
+  // Convert FormData to URLSearchParams
+  const params = new URLSearchParams();
+  payload.forEach((value, key) => {
+    params.append(key, value.toString());
+  });
+
+  return api.patch<Response<CompanyProfiles>>(`/companyProfile/${id}?${params.toString()}`, null, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-  })
-    .then(({ data }) => data.data);
+  }).then(({ data }) => data.data);
+};
+
 
 // Delete a company profile by ID
 export const deleteCompanyProfile = (

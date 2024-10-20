@@ -19,7 +19,7 @@ interface CompanyProfileState {
   getAllCompanyProfiles: (page: number) => Promise<CompanyProfile | null>; 
   createCompanyProfile: (companyProfile: FormData) => Promise<void>; 
   getCompanyProfile: (id: number) => Promise<CompanyProfile | null>;
-  updateCompanyProfile: (companyProfile: FormData) => Promise<void>;
+  updateCompanyProfile: (id: number, companyProfile: FormData) => Promise<void>;
   deleteCompanyProfile: (id: number) => Promise<void>;
 }
 
@@ -97,9 +97,9 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
    * Updates an existing company profile and updates the state.
    * @param companyProfile - The FormData containing the updated CompanyProfile.
    */
-  updateCompanyProfile: async (formData: FormData) => {
+  updateCompanyProfile: async (id: number, formData: FormData) => {
     try {
-      const updatedProfile = await updateCompanyProfile(formData);
+      const updatedProfile = await updateCompanyProfile(id,formData);
       set((state) => ({
         companyProfiles: state.companyProfiles?.map((profile) =>
           profile.id === updatedProfile.id ? updatedProfile : profile

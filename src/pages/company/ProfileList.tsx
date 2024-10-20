@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CompanyProfiles } from "@/types/company/compnayProfile";
 import ViewModal from "./ViewingModal";
 import { MdOutlineEdit } from "react-icons/md";
+import { teamSize } from "@/data/teamSize";
 
 
 const ProfileList: FC = () => {
@@ -23,14 +24,14 @@ const ProfileList: FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchCompanyProfiles = async (page: number = 1) => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const response = await getAllCompanyProfiles(page);
       setProfileList((response as any).data);
     } catch (error) {
       console.error("Error fetching company profiles:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -45,11 +46,11 @@ const ProfileList: FC = () => {
     } catch (error) {
       toast.error("Failed to delete company profile!");
     } finally {
-      fetchCompanyProfiles(current_page); 
+      fetchCompanyProfiles(current_page);
       closeModal(); // Close the modal after action
     }
   };
-  
+
   const [status, setStatus] = useState<number>(1);
 
   const updateCompyStatus = (newStatus: any) => {
@@ -93,7 +94,7 @@ const ProfileList: FC = () => {
 
   const getVisiblePages = (currentPage: number, lastPage: number) => {
     const pageNumbers = [];
-    const delta = 2; 
+    const delta = 2;
     for (let i = 1; i <= lastPage; i++) {
       if (i === 1 || i === lastPage || (i >= currentPage - delta && i <= currentPage + delta)) {
         pageNumbers.push(i);
@@ -264,11 +265,12 @@ const ProfileList: FC = () => {
                         </td>
                         <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
                           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            {compy.teamSize}
+                            {teamSize.find(size => size.id == compy.teamSize)?.label}
                           </span>
                         </td>
                         <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden md:table-cell text-xs sm:text-sm text-gray-500">
-                          {compy.established}
+                          {compy.formatted_date}
+                       
                         </td>
                         <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
                           <label className="relative inline-flex items-center cursor-pointer">
@@ -276,7 +278,7 @@ const ProfileList: FC = () => {
                               type="checkbox"
                               className="sr-only peer"
                               checked={status === 1}
-                              onChange={(e) => updateCompyStatus(e.target.checked ?  1 : 0)}
+                              onChange={(e) => updateCompyStatus(e.target.checked ? 1 : 0)}
                             />
                             <div className="w-9 h-5 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#52BD94]" />
                           </label>
@@ -290,8 +292,8 @@ const ProfileList: FC = () => {
                               <LuEye />
                             </button>
                             <button
-                            className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey"
-                            onClick={() => navigate(`/companyProfile/Edit/${compy.id}`)}
+                              className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey"
+                              onClick={() => navigate(`/companyProfile/Edit/${compy.id}`)}
                             >
                               <MdOutlineEdit />
                             </button>
@@ -330,13 +332,12 @@ const ProfileList: FC = () => {
                 <button
                   key={index}
                   onClick={() => handlePageClick(Number(page))}
-                  className={`mx-1 px-3 py-1 rounded-md ${
-                    page === current_page
+                  className={`mx-1 px-3 py-1 rounded-md ${page === current_page
                       ? "bg-blue-500 text-white"
                       : page === "..."
-                      ? "cursor-default"
-                      : "bg-gray-200"
-                  }`}
+                        ? "cursor-default"
+                        : "bg-gray-200"
+                    }`}
                   disabled={page === "..."}
                 >
                   {page}
@@ -354,7 +355,7 @@ const ProfileList: FC = () => {
           </div>
         </div>
       )}
-        {isDeleteModalOpen && (
+      {isDeleteModalOpen && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <div className="fixed inset-0 transition-opacity">

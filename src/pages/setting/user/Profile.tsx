@@ -1,16 +1,10 @@
 import Select from "@/components/select/select";
-import { useForm } from "react-hook-form";
-interface Position {
-  id?: number;
-  name: string;
-}
+import { tittleName } from "@/data/tittleName";
+import { useState } from "react";
+
 const profile = () => {
-  const dummyPositions: Position[] = [
-    { id: 1, name: "Mr." },
-    { id: 2, name: "Mrs." },
-    { id: 3, name: "Miss" },
-  ];
-  const { control } = useForm();
+const [profile, setProfile] = useState<any>(null);
+console.log(profile);
   return (
     <div className="w-full mx-auto bg-white sm:py-4 sm:px-5 2xl:px-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row items-center mb-2">
@@ -39,21 +33,10 @@ const profile = () => {
                 Title
               </label>
               <Select
-                name="levelPositionId"
-                control={control}
-                options={dummyPositions.map((pos) => ({
-                  value: pos.id ? pos.id.toString() : "", // Ensure value is always a string
-                  label: pos.name,
-                }))}
-                value={
-                  dummyPositions.length > 0
-                    ? {
-                        value: dummyPositions[0].id?.toString() || "",
-                        label: dummyPositions[0].name,
-                      }
-                    : undefined
-                }
-              />
+              name="teamSize"
+              onChange={setProfile}
+              data={tittleName}
+            />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
