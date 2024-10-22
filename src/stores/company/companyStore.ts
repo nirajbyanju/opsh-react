@@ -3,6 +3,7 @@ import {
   getCompanyProfileByID,
   createCompanyProfile,
   updateCompanyProfile,
+  updateStatusCompanyProfile,
   deleteCompanyProfile
 } from '@/apis/company/companyProfile.api';
 import { CompanyProfiles, CompanyProfile } from '@/types/company/compnayProfile'; // Corrected the typo in the path
@@ -16,10 +17,11 @@ interface CompanyProfileState {
   per_page: number;
   current_page: number;
   last_page: number;
-  getAllCompanyProfiles: (page: number) => Promise<CompanyProfile | null>; 
+  getAllCompanyProfiles: (page: number, search: string) => Promise<CompanyProfile | null>;
   createCompanyProfile: (companyProfile: FormData) => Promise<void>; 
   getCompanyProfile: (id: number) => Promise<CompanyProfile | null>;
   updateCompanyProfile: (id: number, companyProfile: FormData) => Promise<void>;
+  updateStatusCompanyProfile: (id: number, companyProfile: FormData) => Promise<void>;
   deleteCompanyProfile: (id: number) => Promise<void>;
 }
 
@@ -31,23 +33,25 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
   current_page: 1,
   last_page: 0,
 
-  getAllCompanyProfiles: async (page: number) => {
-    try {
-      const profiles = await getAllCompanyProfiles(page);
-      if (profiles) {
-        set({ 
-          companyProfiles: profiles.data, 
-          total: profiles.pagination.total, 
-          last_page: profiles.pagination.last_page,
-          current_page: profiles.pagination.current_page
-        });
-      }
-      return profiles; 
-    } catch (error) {
-      console.error('Failed to fetch company profiles:', error);
-      throw error; 
+
+getAllCompanyProfiles: async  (page: number, search: string) => {
+  try {
+    const profiles =  await getAllCompanyProfiles(page, search);;
+    if (profiles) {
+      set({ 
+        companyProfiles: profiles.data, 
+        total: profiles.pagination.total, 
+        last_page: profiles.pagination.last_page,
+        current_page: profiles.pagination.current_page
+      });
     }
-  },
+    return profiles; 
+  } catch (error) {
+    console.error('Failed to fetch company profiles:', error);
+    throw error; 
+  }
+},
+
 
 
 
@@ -110,6 +114,29 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
       throw error;
     }
   },
+
+  updateStatusCompanyProfile: async (id: number, formData: FormData) => {
+    try {
+      const updatedProfile = await updateStatusCompanyProfile(id,formData);
+      console.log(updatedProfile.id);
+      set((state) => ({
+        companyProfiles: state.companyProfiles?.map((profile) =>
+          profile.id === updatedProfile.id ? updatedProfile : profile
+        ),
+        
+      }));
+      console.log(updatedProfile);//
+    } catch (error) {
+      console.error('Failed to update company profile Status:', error);
+      throw error;
+    }
+  },
+
+
+
+
+
+
 
   /**
    * Deletes a company profile by ID and updates the state.

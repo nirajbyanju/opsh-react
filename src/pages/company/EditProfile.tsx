@@ -19,7 +19,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
   const numericId = Number(id);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { getCompanyProfile, updateCompanyProfile } = useCompanyProfileStore();
+  const { getCompanyProfile, updateCompanyProfile} = useCompanyProfileStore();
   const [ProfileData, setProfileData] = useState<CompanyProfiles | null>(null);
   const [editorContent, setEditorContent] = useState<string>("");
   const [uploadedPhoto, setUploadedPhoto] = useState<File | any>("");
@@ -80,6 +80,11 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
       setLoading(false);
     }
   };
+
+
+
+
+
   useEffect(() => {
     fetchCompanyProfile();
   }, [id]);

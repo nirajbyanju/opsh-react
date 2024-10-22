@@ -22,7 +22,7 @@ export interface CompanyProfiles {
   teamSize: number; 
   logo: any;
   description: string;
-  status?: string; // Optional fields
+  status: number; // Optional fields
   verifiedAt?: Date;
   category?: any;
   formatted_date?: string;

@@ -4,12 +4,13 @@ import { Response, api } from '@/apis/http.api';
 import { CompanyProfiles, CompanyProfile } from "@/types/company/compnayProfile"; // Corrected the typo in the path
 
 // Fetch all company profiles
-export const getAllCompanyProfiles = (page: number): Promise<CompanyProfile> =>
-  api.get<Response<CompanyProfile>>(`/companyProfile?limit=10&page=${page}`)
+export const getAllCompanyProfiles = (page: number, search: string = ''): Promise<CompanyProfile> => 
+  api.get<Response<CompanyProfile>>(`/companyProfile?limit=10&page=${page}&search=${encodeURIComponent(search)}`)
     .then(({ data }) => {
-      console.log('Fetched Company Profile:', data.data);
-      return (data as any);
+      console.log('Fetched Company Profile:', data);
+      return data as any;
     });
+
 // Create a new company profile using FormData
 export const createCompanyProfile = (
   payload: FormData
@@ -42,6 +43,20 @@ export const updateCompanyProfile = (id: number, payload: FormData): Promise<Com
   });
 
   return api.patch<Response<CompanyProfiles>>(`/companyProfile/${id}?${params.toString()}`, null, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }).then(({ data }) => data.data);
+};
+
+// Update an existing company profile using FormData
+export const updateStatusCompanyProfile = (id: number, payload: FormData): Promise<CompanyProfiles> => {
+  const params = new URLSearchParams();
+  payload.forEach((value, key) => {
+    params.append(key, value.toString());
+  });
+
+  return api.patch<Response<CompanyProfiles>>(`/companyProfile/status/${id}?${params.toString()}`, null, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

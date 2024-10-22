@@ -9,29 +9,36 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CompanyProfiles } from "@/types/company/compnayProfile";
 import ViewModal from "./ViewingModal";
 import { MdOutlineEdit } from "react-icons/md";
+import { IoSearch } from "react-icons/io5";
 import { teamSize } from "@/data/teamSize";
-
+import Category from "@/components/category/category";
+import Select from "@/components/select/select";
 
 const ProfileList: FC = () => {
   const navigate = useNavigate();
   const [Listing, setIsListing] = useState<number>(1);
-  const { getAllCompanyProfiles, deleteCompanyProfile, current_page, last_page } = useCompanyProfileStore();
+  const { getAllCompanyProfiles, deleteCompanyProfile, updateStatusCompanyProfile, current_page, last_page } = useCompanyProfileStore();
   const [profileList, setProfileList] = useState<CompanyProfiles[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [profileToDelete, setProfileToDelete] = useState<number | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const fetchCompanyProfiles = async (page: number = 1) => {
-    setLoading(true);
+const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setSearchQuery(e.target.value);
+};
+
+
+const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
     try {
-      const response = await getAllCompanyProfiles(page);
+      const response = await getAllCompanyProfiles(page, search);
       setProfileList((response as any).data);
     } catch (error) {
       console.error("Error fetching company profiles:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -50,13 +57,6 @@ const ProfileList: FC = () => {
       closeModal(); // Close the modal after action
     }
   };
-
-  const [status, setStatus] = useState<number>(1);
-
-  const updateCompyStatus = (newStatus: any) => {
-    setStatus(newStatus);
-  };
-
   const openViewModal = (id: number) => {
     setSelectedProfileId(id);
     setIsModalOpen(true);
@@ -67,9 +67,14 @@ const ProfileList: FC = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const openSearchModal = () => {
+    setIsSearchModalOpen(true);
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setIsDeleteModalOpen(false);
+    setIsSearchModalOpen(false);
     setProfileToDelete(null);
   };
 
@@ -106,6 +111,27 @@ const ProfileList: FC = () => {
     return pageNumbers;
   };
 
+  const handleStatusChange = async (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStatus = e.target.checked ? 1 : 0;
+    const formData = new FormData();
+    formData.append("status", newStatus.toString());
+
+    try {
+      await updateStatusCompanyProfile(id, formData);
+      toast.success(`Company profile status changed to ${newStatus === 1 ? 'active' : 'inactive'} successfully!`);
+
+      // Update the profileList locally to reflect the change
+      setProfileList((prevProfiles) =>
+        prevProfiles.map((profile) =>
+          profile.id === id ? { ...profile, status: newStatus } : profile
+        )
+      );
+    } catch (error) {
+      toast.error("Company profile status change unsuccessful!");
+    } finally {
+    }
+  };
+
 
   useEffect(() => {
     fetchCompanyProfiles();
@@ -125,57 +151,35 @@ const ProfileList: FC = () => {
           Vacancy List
         </span>
 
-        <form className="col-span-12 sm:col-span-4 flex items-center w-full mt-2 sm:mt-0">
-          <label htmlFor="simple-search" className="sr-only">
-            Search
-          </label>
-          <div className="relative w-full">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2"
-                />
-              </svg>
-            </div>
-            <input
-              type="text"
-              id="simple-search"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2"
-              placeholder="Search branch name..."
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-          >
-            <svg
-              className="w-4 h-4"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-          </button>
-        </form>
+        <form
+  className="col-span-12 sm:col-span-4 flex items-center w-full mt-2 sm:mt-0"
+  onSubmit={(e) => {
+    e.preventDefault();
+    fetchCompanyProfiles(1, searchQuery); // Pass searchQuery when fetching profiles
+  }}
+>
+  <label htmlFor="simple-search" className="sr-only">Search</label>
+  <div className="relative w-full">
+    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+      <IoSearch className="w-4 h-4 text-gray-500" />
+    </div>
+    <input
+      type="text"
+      id="simple-search"
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2"
+      placeholder="Search company name..."
+      value={searchQuery}
+      onChange={handleSearchChange}
+    />
+  </div>
+  <button
+    type="submit"
+    className="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+  >
+    <IoSearch className="w-4 h-4" />
+  </button>
+</form>
+
 
         <div className="col-span-12 sm:col-span-6 flex flex-wrap justify-between gap-4">
           <div className="flex flex-wrap gap-2 sm:gap-4">
@@ -183,7 +187,7 @@ const ProfileList: FC = () => {
               Bulk Action
             </button>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => openSearchModal()}
               className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90"
             >
               Advance Filters
@@ -191,7 +195,7 @@ const ProfileList: FC = () => {
             <button className="text-opsh-primary border-2 py-1 px-3 border-opsh-primary text-sm rounded-lg hover:bg-opsh-light-blue">
               All View
             </button>
-            <Link to='/companyProfile' className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90">
+            <Link to='/companyProfile/create' className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90">
               Add  Company Profile
             </Link>
           </div>
@@ -210,112 +214,67 @@ const ProfileList: FC = () => {
         <div className="gap-4">
           <div className="mt-3">
             <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead className="bg-opsh-primary/25 mt-5 rounded-lg">
-                  <tr className="text-xs sm:text-sm text-center text-opsh-darkgrey">
-                    <th className="py-2 font-medium">Name</th>
-                    <th className="py-2 font-medium hidden sm:table-cell">Category</th>
-                    <th className="py-2 font-medium hidden md:table-cell">Location</th>
-                    <th className="py-2 font-medium hidden lg:table-cell">Phone Number</th>
-                    <th className="py-2 font-medium">Team Size</th>
-                    <th className="py-2 font-medium hidden md:table-cell">Establish Date</th>
-                    <th className="py-2 font-medium">Status</th>
-                    <th className="py-2 font-medium">Action</th>
-                  </tr>
-                </thead>
+              <div className="overflow-x-auto">
+                <div className="min-w-full bg-opsh-primary/25 rounded-lg">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-12 text-xs sm:text-sm text-center text-opsh-darkgrey">
 
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {loading ? (
-                    <tr>
-                      <td colSpan={8} className="text-center py-4">
-                        Loading...
-                      </td>
-                    </tr>
-                  ) : profileList.length > 0 ? (
-                    profileList.map((compy, index) => (
-                      <tr key={index}>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <img
-                              className="h-8 sm:h-10 w-8 sm:w-10 rounded-full"
-                              src={compy.logo}
-                              alt="Company logo"
-                            />
-                            <div className="ml-2 sm:ml-4">
-                              <div className="text-xs sm:text-sm font-medium text-gray-900 w-32 sm:w-40 text-wrap">
-                                {compy.companyName}
-                              </div>
+                    <div className="py-2 font-medium col-span-2">Name</div>
+                    <div className="py-2 font-medium col-span-2 ">Category</div>
+                    <div className="py-2 font-medium col-span-2 ">Location</div>
+                    <div className="py-2 font-medium col-span-2">Phone Number</div>
+                    <div className="py-2 font-medium">Team Size</div>
+                    <div className="py-2 font-medium ">Establish Date</div>
+                    <div className="py-2 font-medium">Status</div>
+                    <div className="py-2 font-medium">Action</div>
+                  </div>
+
+                  <div className="bg-white divide-y divide-gray-200">
+                    {profileList.length > 0 ? (
+                      profileList.map((compy, index) => (
+                        <div key={index} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-12 items-center text-center py-4 text-xs sm:text-sm">
+                          <div className="px-2 sm:px-6 whitespace-nowrap flex items-center col-span-2">
+                            <img className="h-8 sm:h-10 w-8 sm:w-10 rounded-full" src={compy.logo} alt="Company logo" />
+                            <div className="ml-2 sm:ml-4 text-xs sm:text-sm font-medium text-gray-900 w-32 sm:w-40">
+                              {compy.companyName}
                             </div>
                           </div>
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
-                          <div className="text-xs sm:text-sm text-gray-900">
-                            {compy.category?.name}
+                          <div className="px-2 sm:px-6 whitespace-nowrap col-span-2">{compy.category?.name}</div>
+                          <div className="px-2 sm:px-6 whitespace-nowrap col-span-2">{compy.location}</div>
+                          <div className="px-2 sm:px-6 whitespace-nowrap col-span-2">{compy.phoneNumber}</div>
+                          <div className="px-2 sm:px-6 whitespace-nowrap">
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                              {teamSize.find(size => size.id == compy.teamSize)?.label}
+                            </span>
                           </div>
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden md:table-cell">
-                          <div className="text-xs sm:text-sm text-gray-900">
-                            {compy.location}
+                          <div className="px-2 sm:px-6 whitespace-nowrap hidden md:block">{compy.formatted_date}</div>
+                          <div className="px-2 sm:px-6 whitespace-nowrap">
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input type="checkbox" className="sr-only peer" checked={compy.status === 1} onChange={(e) => handleStatusChange(compy.id, e)} />
+                              <div className="w-9 h-5 bg-gray-200 hover:bg-gray-300 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#52BD94]" />
+                            </label>
                           </div>
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                          <div className="text-xs sm:text-sm text-gray-900">
-                            {compy.phoneNumber}
+                          <div className="px-2 sm:px-6 whitespace-nowrap">
+                            <div className="flex gap-1 justify-center items-center">
+                              <button className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey" onClick={() => openViewModal(compy.id)}>
+                                <LuEye />
+                              </button>
+                              <button className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey" onClick={() => navigate(`/companyProfile/Edit/${compy.id}`)}>
+                                <MdOutlineEdit />
+                              </button>
+                              <button className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey" onClick={() => openDeleteModal(compy.id)}>
+                                <RiDeleteBinLine />
+                              </button>
+                            </div>
                           </div>
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            {teamSize.find(size => size.id == compy.teamSize)?.label}
-                          </span>
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap hidden md:table-cell text-xs sm:text-sm text-gray-500">
-                          {compy.formatted_date}
-                       
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="sr-only peer"
-                              checked={status === 1}
-                              onChange={(e) => updateCompyStatus(e.target.checked ? 1 : 0)}
-                            />
-                            <div className="w-9 h-5 bg-gray-200 hover:bg-gray-300 peer-focus:outline-0 peer-focus:ring-transparent rounded-full peer transition-all ease-in-out duration-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#52BD94]" />
-                          </label>
-                        </td>
-                        <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
-                          <div className="flex flex-row gap-1 justify-center items-center">
-                            <button
-                              className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey"
-                              onClick={() => openViewModal(compy.id)}
-                            >
-                              <LuEye />
-                            </button>
-                            <button
-                              className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey"
-                              onClick={() => navigate(`/companyProfile/Edit/${compy.id}`)}
-                            >
-                              <MdOutlineEdit />
-                            </button>
-                            <button
-                              className="w-5 sm:w-6 h-5 sm:h-6 text-opsh-darkgrey"
-                              onClick={() => openDeleteModal(compy.id)}
-                            >
-                              <RiDeleteBinLine />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={8} className="text-center py-4">
-                        No profiles found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-4 col-span-full">No profiles found.</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             {/* Pagination Controls */}
@@ -333,10 +292,10 @@ const ProfileList: FC = () => {
                   key={index}
                   onClick={() => handlePageClick(Number(page))}
                   className={`mx-1 px-3 py-1 rounded-md ${page === current_page
-                      ? "bg-blue-500 text-white"
-                      : page === "..."
-                        ? "cursor-default"
-                        : "bg-gray-200"
+                    ? "bg-blue-500 text-white"
+                    : page === "..."
+                      ? "cursor-default"
+                      : "bg-gray-200"
                     }`}
                   disabled={page === "..."}
                 >
@@ -410,6 +369,122 @@ const ProfileList: FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+{isSearchModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+        <div className="bg-white w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-6 rounded-lg max-h-[90vh] overflow-y-auto overflow-auto custom-scrollbar">
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="text-xl font-medium text-opsh-primary">
+              Advance Filters
+            </h4>
+            <button
+              onClick={closeModal}
+              className="bg-opsh-danger font-medium text-white text-sm py-1 px-3 rounded-md border-2 border-white hover:bg-white hover:text-opsh-danger hover:border-opsh-danger"
+            >
+              Close (x)
+            </button>
+          </div>
+  
+          <div className="grid gap-y-2 mt-2">
+            <div className="grid grid-cols-1 gap-y-2 gap-x-3 sm:grid-cols-1 md:grid-cols-3">
+              <div className="col-span-1 sm:col-span-2 md:col-span-1">
+                <label
+                  htmlFor="awardName"
+                  className="block text-sm mb-1 font-medium"
+                >
+                  Company Name
+                </label>
+                <input
+                  type="text"
+                  id="awardName"
+                  name="awardName"
+                  className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="joinedYearDate"
+                  className="block text-sm mb-1 font-medium"
+                >
+                  Category
+                </label>
+                <Category
+              name={"categoryId"}
+              onChange={setSelectedCategory}
+            />
+              </div>
+              <div>
+                <label
+                  htmlFor="joinedYearDate"
+                  className="block text-sm mb-1 font-medium"
+                >
+                  Team Size
+                </label>
+                <Select
+              name="teamSize"
+              onChange={setSelectedTeamSize}
+              data={teamSize}
+            />
+              </div>
+              
+              <div>
+                <label
+                  htmlFor="joinedYearDate"
+                  className="block text-sm mb-1 font-medium"
+                >
+                  Location
+                </label>
+                <input
+                  type="text"
+                  id="awardName"
+                  name="awardName"
+                   className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="joinedYearDate"
+                  className="block text-sm mb-1 font-medium"
+                >
+                 Phone Number
+                </label>
+                <input
+                  type="text"
+                  id="awardName"
+                  name="awardName"
+                  className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="joinedYearDate"
+                  className="block text-sm mb-1 font-medium"
+                >
+                 Est. Since
+                </label>
+                <input
+                  type="date"
+                  id="awardName"
+                  name="awardName"
+                   className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end mb-2">
+            <button
+              onClick={closeModal}
+              className="bg-opsh-success text-white py-1 px-6 mt-1  rounded-md border-2 border-white  hover:bg-opsh-primary flex items-center gap-1 "
+            >
+             <IoSearch />
+              search
+            </button>
+          </div>
+          </div>
+        </div>
+      </div>
       )}
 
       {/* Modal for viewing profiles */}
