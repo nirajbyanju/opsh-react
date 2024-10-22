@@ -24,8 +24,8 @@ const ProfileList: FC = () => {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [profileToDelete, setProfileToDelete] = useState<number | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
+  // const [selectedCategory, setSelectedCategory] = useState<string>("");
+  // const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
 const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,7 +1,7 @@
 // src/apis/company/companyProfile.api.ts
 
 import { Response, api } from '@/apis/http.api';
-import { CompanyProfiles, CompanyProfile } from "@/types/company/compnayProfile"; // Corrected the typo in the path
+import { CompanyProfiles, CompanyProfile } from "@/types/company/compnayProfile";
 
 // Fetch all company profiles
 export const getAllCompanyProfiles = (page: number, search: string = ''): Promise<CompanyProfile> => 
