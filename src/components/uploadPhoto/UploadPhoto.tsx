@@ -37,17 +37,17 @@ const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload, preview }) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        <div className="flex items-center justify-center w-full">
+        <div className="flex  w-full">
           {imagePreview ? (
             <div className="relative">
               <img
                 src={imagePreview} // Use local preview state
                 alt="Uploaded Preview"
-                className="w-full h-56 object-cover rounded-lg"
+                className="w-40 h-40 object-cover rounded-lg"
               />
               <button
                 onClick={removeImage}
-                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+                className="absolute text-xs top-1 right-2 bg-opsh-danger text-white px-2 py-1 rounded"
               >
                 Delete
               </button>
@@ -55,7 +55,7 @@ const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload, preview }) => {
           ) : (
             <label
               htmlFor="dropzone-file"
-              className="flex flex-col items-center justify-center w-full h-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+              className="flex flex-col items-center justify-center w-48 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
             >
               <div className="flex flex-col items-center justify-center pt-1 pb-2">
                 <svg
@@ -73,11 +73,15 @@ const UploadPhoto: FC<UploadPhotoProps> = ({ onUpload, preview }) => {
                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                   />
                 </svg>
-                <p className="mb-2 text-sm text-gray-500">
-                  <span className="font-semibold">Click to upload</span> or drag and drop
+                <p className="mb-2 flex flex-col text-xs text-gray-500">
+                  <span className="font-semibold">Click to upload or
+                    </span> drag and drop
                 </p>
-                <p className="text-xxs text-gray-500">
-                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                <p className="flex flex-col text-xxs text-gray-500">
+                  SVG, PNG, JPG or GIF 
+                  <span>
+                  (MAX. 800x400px)
+                  </span>
                 </p>
               </div>
               <input

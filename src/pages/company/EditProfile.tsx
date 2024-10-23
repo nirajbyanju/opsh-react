@@ -37,6 +37,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
   }
 
   const onSubmit = async (data: any) => {
+
     try {
       await updateCompanyProfile(numericId, data);
       toast.success("Company profile saved successfully!");

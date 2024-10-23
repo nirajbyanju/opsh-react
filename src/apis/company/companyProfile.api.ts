@@ -53,20 +53,7 @@ export const getCompanyProfileByID = (
 
 // Update an existing company profile using FormData
 export const updateCompanyProfile = (id: number, payload: FormData): Promise<CompanyProfiles> => {
-  console.log(payload);
-  const params = new URLSearchParams();
-  if (payload instanceof FormData) {
-    payload.forEach((value, key) => {
-      params.append(key, String(value)); // Convert value to string
-    });
-  } else {
-    Object.entries(payload).forEach(([key, value]) => {
-      params.append(key, String(value)); // Convert value to string
-    });
-  }
-  
-
-  return api.patch<Response<CompanyProfiles>>(`/companyProfile/${id}?${params.toString()}`, null, {
+  return api.post<Response<CompanyProfiles>>(`/companyProfile/${id}`, payload, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

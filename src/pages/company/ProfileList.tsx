@@ -13,6 +13,15 @@ import { IoSearch } from "react-icons/io5";
 import { teamSize } from "@/data/teamSize";
 import AdvanceSearch from "./AdvanceSearch";
 import { useForm } from "react-hook-form";
+import profile from "../../assets/auth/profile.jpg";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { TbClockX } from "react-icons/tb";
+import { TbCategoryPlus } from "react-icons/tb";
+import { CiLocationOn } from "react-icons/ci";
+import { RiGraduationCapLine } from "react-icons/ri";
+import { FaAngleUp } from "react-icons/fa6";
+import { FaAngleDown } from "react-icons/fa6";
+import { MdOutlineWatchLater} from "react-icons/md";
 
 const ProfileList: FC = () => {
   const navigate = useNavigate();
@@ -25,6 +34,13 @@ const ProfileList: FC = () => {
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
   const [isAdvanceSearchModalOpen, setIsAdvanceSearchModalOpen] = useState(false);
   const { register, handleSubmit, watch } = useForm();
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  
+  const toggleExpanded = (index: any) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
+
   const fetchCompanyProfiles = async (page: number = 1, formData: any = "") => {
     try {
       const response = await getAllCompanyProfiles(page, formData);
@@ -130,26 +146,131 @@ const ProfileList: FC = () => {
     fetchCompanyProfiles(1, data);
   };
 
+  const selectedLimit = watch("limit");
+  const limitList = async (data: any) => {
+    console.log(data);
+    fetchCompanyProfiles(1, data);
+  };
+
   useEffect(() => {
     fetchCompanyProfiles();
   }, []);
+
+  useEffect(() => {
+    handleSubmit(limitList)(); // Submit form data whenever the status changes
+  }, [selectedStatus]);
+
+
   useEffect(() => {
     handleSubmit(statusList)(); // Submit form data whenever the status changes
-  }, [selectedStatus]);
+  }, [selectedLimit]);
+
+  const vacancies = [
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    {
+      company: "Triveni Food and Beverage",
+      position: "Manager",
+      type: "Full Time",
+      startDate: "24 Aug 2024",
+      endDate: "24 Aug 2024",
+      location: "Kathmandu-baneshwor Branch",
+      education: "Under Graduate (Bach)",
+    },
+    // Add more items if needed
+    // Add more items if needed
+  ];
+
 
   return (
     <div className="px-3 py-1">
       <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
-        <h5 className="text-primary font-medium text-xl">Profile List</h5>
+        <h5 className="text-primary font-medium text-xl">Company Profile</h5>
         <hr className="border-t-1 border-gray-300 flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
-        <h5 className="text-muted text-sm">Working Dashboard</h5>
-        <h5 className="text-muted text-sm">Statistics Dashboard</h5>
+        <h5 className="text-sm">Working Dashboard</h5>
+        <h5 className="text-opsh-grey  text-sm">Statistics Dashboard</h5>
       </div>
 
       <div className="grid grid-cols-12 gap-3 sm:flex-row sm:gap-4 items-center mb-2">
-        <span className="col-span-12 sm:col-span-2 text-lg font-normal text-opsh-primary">
-          Vacancy List
-        </span>
+        <div className="col-span-12 sm:col-span-2 text-xl font-medium text-opsh-primary">
+          Profile List
+        </div>
 
         <form
           className="col-span-12 sm:col-span-4 flex items-center w-full mt-2 sm:mt-0"
@@ -196,9 +317,18 @@ const ProfileList: FC = () => {
             >
               Advance Filters
             </button>
-            <button className="text-opsh-primary border-2 py-1 px-3 border-opsh-primary text-sm rounded-lg hover:bg-opsh-light-blue">
-              All View
-            </button>
+            <form className="flex items-center space-x-4" onSubmit={handleSubmit(limitList)}>
+
+              <select
+                {...register("limit")} // Register the status field with react-hook-form
+                className="border-2 py-1 px-2 text-sm rounded-lg border-opsh-primary text-opsh-primary hover:bg-opsh-light-blue"
+              >
+                <option value="">Page</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+              </select>
+            </form>
             <Link to='/companyProfile/create' className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90">
               Add  Company Profile
             </Link>
@@ -215,11 +345,11 @@ const ProfileList: FC = () => {
         </div>
       </div>
       {Listing === 1 && (
-        <div className="gap-4">
-          <div className="mt-3">
+        <div className="gap-2">
+          <div className="mt-1">
             <div className="overflow-x-auto">
               <div className="overflow-x-auto">
-                <div className="min-w-full bg-opsh-primary/25 rounded-lg">
+                <div className="min-w-full bg-opsh-primary/25 rounded-md">
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-12 text-xs sm:text-sm text-center text-opsh-darkgrey">
 
                     <div className="py-2 font-medium col-span-2">Name</div>
@@ -237,8 +367,14 @@ const ProfileList: FC = () => {
                       profileList.map((compy, index) => (
                         <div key={index} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-12 items-center text-center py-4 text-xs sm:text-sm">
                           <div className="px-2 sm:px-6 whitespace-nowrap flex items-center col-span-2">
-                            <img className="h-8 sm:h-10 w-8 sm:w-10 rounded-full" src={compy.logo} alt="Company logo" />
-                            <div className="ml-2 sm:ml-4 text-xs sm:text-sm font-medium text-gray-900 w-32 sm:w-40">
+                            <div>
+                              <img
+                                className="h-8 w-8 sm:h-8 sm:w-8 rounded-full aspect-square"
+                                src={compy.logo ? compy.logo : 'https://back.opportunitiessharing.com/logos/1729412162.JPG'}
+                                alt="Company logo"
+                              />
+                            </div>
+                            <div className="ml-2 sm:ml-4 text-xs sm:text-sm font-medium text-gray-900 w-32  sm:w-40">
                               {compy.companyName}
                             </div>
                           </div>
@@ -324,6 +460,103 @@ const ProfileList: FC = () => {
           </div>
         </div>
       )}
+      {Listing === 2 && (
+        <div className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {vacancies.map((vacancy, index) => (
+          <div key={index}>
+            <div className="p-2 border-2 rounded-lg shadow-sm">
+              <div className="flex gap-3 my-3 relative">
+                <div>
+                  <img
+                    src={profile}
+                    className="border-2 border-opsh-primary w-12 h-12 rounded-full"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <h5 className="text-opsh-primary font-medium">
+                    {vacancy.company}
+                  </h5>
+                  <div className="flex justify-between w-full">
+                    <span className="text-sm text-opsh-grey">
+                      {vacancy.position}
+                    </span>
+                    <span className="text-sm font-medium text-opsh-primary">
+                      {vacancy.type}
+                    </span>
+                  </div>
+                </div>
+                <div className="absolute top-0 right-0">
+                  <BsThreeDotsVertical />
+                </div>
+              </div>
+              <hr className="border-t-2 border-opsh-grey/4 mt-2" />
+              <div className="flex justify-between my-2">
+                <div className="flex text-sm text-opsh-success gap-1 items-center">
+                  <span className="bg-opsh-success/15 p-1 rounded-3xl">
+                    <MdOutlineWatchLater />
+                  </span>
+                  {vacancy.startDate}
+                </div>
+                <div className="flex text-sm text-opsh-danger gap-1 items-center">
+                  <span className="bg-opsh-danger/15 p-1 rounded-3xl">
+                    <TbClockX />
+                  </span>
+                  {vacancy.endDate}
+                </div>
+              </div>
+              {expandedIndex === index && (
+                <div id="expanded">
+                  <hr className="border-t-2 border-opsh-grey/4 mt-2" />
+                  <div className="flex text-sm text-opsh-primary justify-between my-2">
+                    <div className="flex gap-1 items-center">
+                      <span className="bg-opsh-primary/15 p-1 rounded-3xl">
+                        <TbCategoryPlus />
+                      </span>
+                      Hospitality
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      <span>
+                        <MdOutlineEdit className="h-6 w-5" />
+                      </span>
+                      Edit
+                    </div>
+                  </div>
+                  <hr className="border-t-2 border-opsh-grey/4 mt-2" />
+                  <div className="flex text-sm text-opsh-primary gap-1 items-center my-2">
+                    <span className="bg-opsh-primary/15 p-1 rounded-3xl">
+                      <CiLocationOn />
+                    </span>
+                    {vacancy.location}
+                  </div>
+                  <hr className="border-t-2 border-opsh-grey/4 mt-2" />
+                  <div className="flex text-sm text-opsh-primary gap-1 items-center my-2">
+                    <span className="bg-opsh-primary/15 p-1 rounded-3xl">
+                      <RiGraduationCapLine />
+                    </span>
+                    {vacancy.education}
+                  </div>
+                </div>
+              )}
+              <div
+                className="flex justify-center mt-4 cursor-pointer"
+                onClick={() => toggleExpanded(index)}
+              >
+                {expandedIndex === index ? (
+                  <FaAngleUp className="text-opsh-primary" />
+                ) : (
+                  <span className="flex gap-3 items-center">
+                    View Expanded Mode
+                    <FaAngleDown className="text-opsh-primary" />
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      )}
+
+
       {isDeleteModalOpen && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
