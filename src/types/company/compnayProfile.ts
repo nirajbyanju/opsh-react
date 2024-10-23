@@ -26,6 +26,7 @@ export interface CompanyProfiles {
   verifiedAt?: Date;
   category?: any;
   formatted_date?: string;
+  createdBy: number;
 }
 
 export interface CompanyProfileResponse {

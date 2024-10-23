@@ -1,6 +1,6 @@
 import { useEffect, useState, FC } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import useCompanyProfileStore from "@/stores/company/companyStore";
 import { toast } from "react-toastify";
 import { CompanyProfiles } from "@/types/company/compnayProfile";
@@ -18,101 +18,42 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
   const { id } = useParams<{ id: string }>();
   const numericId = Number(id);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const { getCompanyProfile, updateCompanyProfile} = useCompanyProfileStore();
+  const { getCompanyProfile, updateCompanyProfile } = useCompanyProfileStore();
   const [ProfileData, setProfileData] = useState<CompanyProfiles | null>(null);
-  const [editorContent, setEditorContent] = useState<string>("");
-  const [uploadedPhoto, setUploadedPhoto] = useState<File | any>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
-  const {
-    register,
-    handleSubmit,
-    reset,
-    trigger,
-    formState: { errors },
-  } = useForm<CompanyProfiles>({
+
+  const { register, handleSubmit, reset, setValue, formState: { errors }, } = useForm<CompanyProfiles>({
     resolver: yupResolver(companyProfileValidationSchema),
   });
+
   const fetchCompanyProfile = async () => {
     try {
-      setLoading(true);
       const profile = await getCompanyProfile(numericId);
       setProfileData(profile as any);
-      setLoading(false);
-
+      reset(profile as any);
     } catch (error) {
       toast.error("Failed to fetch company profile");
       navigate('/companyProfile');
-      setLoading(false);
     }
   }
-  const reseting = () => {
-    reset();
-    setEditorContent("");
-    setUploadedPhoto(null);
-    setSelectedCategory("");
-  };
-  const onSubmit = async (data: CompanyProfiles) => {
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("description", editorContent);
-    formData.append("categoryId", selectedCategory);
-    formData.append("logo", uploadedPhoto);
-    formData.append("companyName", data.companyName);
-    formData.append("email", data.email);
-    formData.append("phoneNumber", data.phoneNumber);
-    formData.append("website", data.website);
-    formData.append("location", data.location);
-    formData.append("established", data.established);
-    formData.append("teamSize", selectedTeamSize);
-    formData.append("status", '1');
-    formData.append("created_by", '1');
+
+  const onSubmit = async (data: any) => {
     try {
-      console.log(data);
-      await updateCompanyProfile(numericId, formData);
+      await updateCompanyProfile(numericId, data);
       toast.success("Company profile saved successfully!");
       navigate("/companyProfile");
-
     } catch (error) {
       toast.error("Company profile save failed!");
-    } finally {
-      setLoading(false);
     }
   };
-
-
-
-
+  const handleReset = () => {
+    reset();
+  };
 
   useEffect(() => {
     fetchCompanyProfile();
   }, [id]);
-  useEffect(() => {
-    if (ProfileData) {
-      reset({
-        companyName: ProfileData.companyName,
-        email: ProfileData.email,
-        phoneNumber: ProfileData.phoneNumber,
-        website: ProfileData.website,
-        location: ProfileData.location,
-        established: ProfileData.established,
-        description: ProfileData.description,
-        teamSize: ProfileData.teamSize,
-        categoryId: ProfileData.categoryId,
-      });
-      setEditorContent(ProfileData.description);
-      setUploadedPhoto(ProfileData.logo);
-      setSelectedCategory(ProfileData.categoryId);
-     
-    }
-  }, [ProfileData, reset]);
-  useEffect(() => {
-    if (ProfileData) {
-      reset({ /* populate fields with ProfileData */ });
-      trigger(); // Force validation check after resetting form with default values
-    }
-  }, [ProfileData, reset, trigger]);
+
+
   return <div className="px-3 py-1">
     <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
       <h5 className="text-primary font-medium text-xl">Company Profile</h5>
@@ -133,7 +74,10 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
             </p>
           )}
         </label>
-        <UploadPhoto onUpload={setUploadedPhoto} preview={ProfileData?.logo} />
+        <UploadPhoto
+          onUpload={(val: File | any) => setValue("logo", val)}
+          preview={ProfileData?.logo}
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <div>
@@ -167,8 +111,8 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
           </label>
           <Category
             {...register("categoryId")}
-            onChange={setSelectedCategory}
             selectedCategory={ProfileData?.categoryId}
+            onChange={(val: string) => setValue("categoryId", val)}
           />
 
           {errors.categoryId && (
@@ -292,7 +236,7 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
           </label>
           <Select
             name="teamSize"
-            onChange={setSelectedTeamSize}
+            onChange={(val: number) => setValue("teamSize", val)}
             selected={ProfileData?.teamSize}
             data={teamSize}
           />
@@ -311,7 +255,8 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
           </label>
           <CkEditors
             data={ProfileData?.description}
-            onChange={setEditorContent} />
+            onChange={(val: any) => setValue("description", val)}
+          />
           {errors.description && (
             <p className="text-opsh-danger text-sm">
               {errors.description.message}
@@ -321,26 +266,23 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
       </div>
       <div>
         <div className="flex justify-end gap-5 mt-2">
-          <button
-            type="button"
+          <Link to='/companyProfile'
             className="px-4 py-2 bg-red-500 text-white rounded"
-            onClick={() => reseting()}
           >
             Cancel
-          </button>
+          </Link>
           <button
-            type="submit"
+            type="button" // Change to type="button" to prevent form submission
             className="px-5 py-2 bg-green-500 text-white rounded"
-            disabled={loading}
+            onClick={handleReset} // This will only reset the form, not submit
           >
             Reset
           </button>
           <button
             type="submit"
             className="px-5 py-2 bg-green-500 text-white rounded"
-            disabled={loading}
           >
-            {loading ? <span className="loader light"></span> : "Update"}
+            Update
           </button>
         </div>
       </div>

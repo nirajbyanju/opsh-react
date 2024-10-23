@@ -11,8 +11,8 @@ import ViewModal from "./ViewingModal";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
 import { teamSize } from "@/data/teamSize";
-import Category from "@/components/category/category";
-import Select from "@/components/select/select";
+import AdvanceSearch from "./AdvanceSearch";
+import { useForm } from "react-hook-form";
 
 const ProfileList: FC = () => {
   const navigate = useNavigate();
@@ -21,24 +21,18 @@ const ProfileList: FC = () => {
   const [profileList, setProfileList] = useState<CompanyProfiles[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [profileToDelete, setProfileToDelete] = useState<number | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
-  // const [selectedCategory, setSelectedCategory] = useState<string>("");
-  // const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setSearchQuery(e.target.value);
-};
-
-
-const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
+  const [isAdvanceSearchModalOpen, setIsAdvanceSearchModalOpen] = useState(false);
+  const { register, handleSubmit, watch } = useForm();
+  const fetchCompanyProfiles = async (page: number = 1, formData: any = "") => {
     try {
-      const response = await getAllCompanyProfiles(page, search);
+      const response = await getAllCompanyProfiles(page, formData);
       setProfileList((response as any).data);
+      setIsAdvanceSearchModalOpen(false);
     } catch (error) {
       console.error("Error fetching company profiles:", error);
+      setIsAdvanceSearchModalOpen(false);
     }
   };
 
@@ -54,7 +48,7 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
       toast.error("Failed to delete company profile!");
     } finally {
       fetchCompanyProfiles(current_page);
-      closeModal(); // Close the modal after action
+      onClose(); // Close the modal after action
     }
   };
   const openViewModal = (id: number) => {
@@ -67,14 +61,9 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
     setIsDeleteModalOpen(true);
   };
 
-  const openSearchModal = () => {
-    setIsSearchModalOpen(true);
-  };
-
-  const closeModal = () => {
+  const onClose = () => {
     setIsModalOpen(false);
     setIsDeleteModalOpen(false);
-    setIsSearchModalOpen(false);
     setProfileToDelete(null);
   };
 
@@ -120,7 +109,6 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
       await updateStatusCompanyProfile(id, formData);
       toast.success(`Company profile status changed to ${newStatus === 1 ? 'active' : 'inactive'} successfully!`);
 
-      // Update the profileList locally to reflect the change
       setProfileList((prevProfiles) =>
         prevProfiles.map((profile) =>
           profile.id === id ? { ...profile, status: newStatus } : profile
@@ -128,14 +116,26 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
       );
     } catch (error) {
       toast.error("Company profile status change unsuccessful!");
-    } finally {
     }
   };
-
+  const handleSearchChange = (data: any) => {
+    fetchCompanyProfiles(1, data);
+  };
+  const handleSearchName = (data: any) => {
+    fetchCompanyProfiles(1, data);
+  };
+  const selectedStatus = watch("status");
+  const statusList = async (data: any) => {
+    console.log(data);
+    fetchCompanyProfiles(1, data);
+  };
 
   useEffect(() => {
     fetchCompanyProfiles();
   }, []);
+  useEffect(() => {
+    handleSubmit(statusList)(); // Submit form data whenever the status changes
+  }, [selectedStatus]);
 
   return (
     <div className="px-3 py-1">
@@ -152,42 +152,46 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
         </span>
 
         <form
-  className="col-span-12 sm:col-span-4 flex items-center w-full mt-2 sm:mt-0"
-  onSubmit={(e) => {
-    e.preventDefault();
-    fetchCompanyProfiles(1, searchQuery); // Pass searchQuery when fetching profiles
-  }}
->
-  <label htmlFor="simple-search" className="sr-only">Search</label>
-  <div className="relative w-full">
-    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-      <IoSearch className="w-4 h-4 text-gray-500" />
-    </div>
-    <input
-      type="text"
-      id="simple-search"
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2"
-      placeholder="Search company name..."
-      value={searchQuery}
-      onChange={handleSearchChange}
-    />
-  </div>
-  <button
-    type="submit"
-    className="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-  >
-    <IoSearch className="w-4 h-4" />
-  </button>
-</form>
+          className="col-span-12 sm:col-span-4 flex items-center w-full mt-2 sm:mt-0"
+          onSubmit={handleSubmit(handleSearchName)}
+        >
+          <label htmlFor="simple-search" className="sr-only">Search</label>
+          <div className="relative w-full">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <IoSearch className="w-4 h-4 text-gray-500" />
+            </div>
+            <input
+              type="text"
+              id="simple-search"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2"
+              placeholder="Search company name..."
+              {...register("companyName")}
+            />
+          </div>
+          <button
+            type="submit"
+            className="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+          >
+            <IoSearch className="w-4 h-4" />
+          </button>
+        </form>
 
 
         <div className="col-span-12 sm:col-span-6 flex flex-wrap justify-between gap-4">
           <div className="flex flex-wrap gap-2 sm:gap-4">
-            <button className="text-opsh-primary border-2 py-1 px-3 border-opsh-primary text-sm rounded-lg hover:bg-opsh-light-blue">
-              Bulk Action
-            </button>
+            <form className="flex items-center space-x-4" onSubmit={handleSubmit(statusList)}>
+
+              <select
+                {...register("status")} // Register the status field with react-hook-form
+                className="border-2 py-1 px-2 text-sm rounded-lg border-opsh-primary text-opsh-primary hover:bg-opsh-light-blue"
+              >
+                <option value="">All</option>
+                <option value="1">Active</option>
+                <option value="0">Offline</option>
+              </select>
+            </form>
             <button
-              onClick={() => openSearchModal()}
+              onClick={() => setIsAdvanceSearchModalOpen(true)}
               className="text-white bg-opsh-primary border-2 border-opsh-primary py-1 px-3 text-sm rounded-lg hover:bg-opacity-90"
             >
               Advance Filters
@@ -278,24 +282,27 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
             </div>
 
             {/* Pagination Controls */}
-            <div className="flex justify-center items-center mt-4">
+            <div className="flex justify-center items-center mt-6 space-x-2">
               <button
                 onClick={handlePreviousPage}
                 disabled={current_page === 1}
-                className="bg-gray-200 px-3 py-1 rounded-md disabled:opacity-50"
+                className="text-gray-800 font-semibold px-2 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                &lt;
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="4" stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
               </button>
 
               {getVisiblePages(current_page, last_page).map((page, index) => (
                 <button
                   key={index}
                   onClick={() => handlePageClick(Number(page))}
-                  className={`mx-1 px-3 py-1 rounded-md ${page === current_page
-                    ? "bg-blue-500 text-white"
-                    : page === "..."
-                      ? "cursor-default"
-                      : "bg-gray-200"
+                  className={`px-2 py-2 rounded-lg font-bold transition-all duration-200 ease-in-out 
+        ${page === current_page
+                      ? "text-opsh-secondary font-bold"
+                      : page === "..."
+                        ? "cursor-default text-gray-500"
+                        : "font-bold"
                     }`}
                   disabled={page === "..."}
                 >
@@ -306,11 +313,14 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
               <button
                 onClick={handleNextPage}
                 disabled={current_page === last_page}
-                className="bg-gray-200 px-3 py-1 rounded-md disabled:opacity-50"
+                className="text-gray-800 font-semibold px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                &gt;
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="4" stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
               </button>
             </div>
+
           </div>
         </div>
       )}
@@ -360,7 +370,7 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
                   Delete
                 </button>
                 <button
-                  onClick={closeModal}
+                  onClick={onClose}
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                 >
                   Cancel
@@ -371,127 +381,19 @@ const fetchCompanyProfiles = async (page: number = 1, search: string = "") => {
         </div>
       )}
 
-{isSearchModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-        <div className="bg-white w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-6 rounded-lg max-h-[90vh] overflow-y-auto overflow-auto custom-scrollbar">
-          <div className="flex justify-between items-center mb-2">
-            <h4 className="text-xl font-medium text-opsh-primary">
-              Advance Filters
-            </h4>
-            <button
-              onClick={closeModal}
-              className="bg-opsh-danger font-medium text-white text-sm py-1 px-3 rounded-md border-2 border-white hover:bg-white hover:text-opsh-danger hover:border-opsh-danger"
-            >
-              Close (x)
-            </button>
-          </div>
-  
-          <div className="grid gap-y-2 mt-2">
-            <div className="grid grid-cols-1 gap-y-2 gap-x-3 sm:grid-cols-1 md:grid-cols-3">
-              <div className="col-span-1 sm:col-span-2 md:col-span-1">
-                <label
-                  htmlFor="awardName"
-                  className="block text-sm mb-1 font-medium"
-                >
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="awardName"
-                  name="awardName"
-                  className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
-                
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="joinedYearDate"
-                  className="block text-sm mb-1 font-medium"
-                >
-                  Category
-                </label>
-                <Category
-              name={"categoryId"}
-              onChange={setSelectedCategory}
-            />
-              </div>
-              <div>
-                <label
-                  htmlFor="joinedYearDate"
-                  className="block text-sm mb-1 font-medium"
-                >
-                  Team Size
-                </label>
-                <Select
-              name="teamSize"
-              onChange={setSelectedTeamSize}
-              data={teamSize}
-            />
-              </div>
-              
-              <div>
-                <label
-                  htmlFor="joinedYearDate"
-                  className="block text-sm mb-1 font-medium"
-                >
-                  Location
-                </label>
-                <input
-                  type="text"
-                  id="awardName"
-                  name="awardName"
-                   className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="joinedYearDate"
-                  className="block text-sm mb-1 font-medium"
-                >
-                 Phone Number
-                </label>
-                <input
-                  type="text"
-                  id="awardName"
-                  name="awardName"
-                  className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="joinedYearDate"
-                  className="block text-sm mb-1 font-medium"
-                >
-                 Est. Since
-                </label>
-                <input
-                  type="date"
-                  id="awardName"
-                  name="awardName"
-                   className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mb-2">
-            <button
-              onClick={closeModal}
-              className="bg-opsh-success text-white py-1 px-6 mt-1  rounded-md border-2 border-white  hover:bg-opsh-primary flex items-center gap-1 "
-            >
-             <IoSearch />
-              search
-            </button>
-          </div>
-          </div>
-        </div>
-      </div>
-      )}
+
+      <AdvanceSearch
+        isOpen={isAdvanceSearchModalOpen}
+        onClose={() => setIsAdvanceSearchModalOpen(false)}
+        onSubmit={handleSearchChange}
+      />
+
 
       {/* Modal for viewing profiles */}
       {isModalOpen && (
         <ViewModal
           isOpen={isModalOpen}
-          onClose={closeModal}
+          onClose={onClose}
           profileId={selectedProfileId}
           onDelete={handleDelete}
           profileToDelete={profileToDelete}

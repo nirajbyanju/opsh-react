@@ -29,7 +29,7 @@ const AwardModal: FC<AwardModalProps> = ({isOpen, onClose, onSubmit}) => {
       };
   
       onSubmit(formData);
-      onClose(); // Close modal after submit
+      onClose(); 
     };
   
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

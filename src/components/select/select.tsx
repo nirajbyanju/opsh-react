@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import ReactSelect from "react-select"; // Rename the component
 
 interface SelectProps {
-    onChange: (selectedId: string) => void;
+    onChange: (selectedId:any) => void;
     selected?: any;
     name?: string;
     data: Array<{

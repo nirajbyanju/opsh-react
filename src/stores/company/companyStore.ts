@@ -34,9 +34,9 @@ export const useCompanyProfileStore = create<CompanyProfileState>((set, get) => 
   last_page: 0,
 
 
-getAllCompanyProfiles: async  (page: number, search: string) => {
+getAllCompanyProfiles: async  (page: number, formData: any="") => {
   try {
-    const profiles =  await getAllCompanyProfiles(page, search);;
+    const profiles =  await getAllCompanyProfiles(page, formData);;
     if (profiles) {
       set({ 
         companyProfiles: profiles.data, 
