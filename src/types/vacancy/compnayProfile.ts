@@ -7,7 +7,7 @@ export interface CompanyProfiles {
   website: string;
   location: string;
   established: string;
-  teamSize: string; 
+  teamSize: number; 
   logo: any ;
   description: string;
   status?: any;

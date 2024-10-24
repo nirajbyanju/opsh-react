@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import from react-router-dom
 import Select from "@/components/select/select";
 import { useForm } from "react-hook-form";
 import useCompanyProfileStore from "@/stores/company/companyStore";
-import { CompanyProfiles } from "@/types/vacancy/compnayProfile";
+import { CompanyProfiles } from "@/types/company/compnayProfile";
 import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 import CkEditors from "@/components/ckEditors/CkEditors";
 import Category from "@/components/category/category";
@@ -16,70 +16,41 @@ import { teamSize } from "@/data/teamSize";
 interface CompanyProfileProps { }
 const CompanyProfile: FC<CompanyProfileProps> = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const { createCompanyProfile } = useCompanyProfileStore();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<CompanyProfiles>({
+  const {register, handleSubmit, reset, setValue, formState: { errors }, } = useForm<CompanyProfiles>({
     resolver: yupResolver(companyProfileValidationSchema),
   });
-  const [editorContent, setEditorContent] = useState<string>("");
-  const [uploadedPhoto, setUploadedPhoto] = useState<File | any>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedTeamSize, setSelectedTeamSize] = useState<string>("");
   const userData = useAuthStore((state) => state.userData.user);
 
-  const reseting = () => {
-    reset();
-    setEditorContent("");
-    setUploadedPhoto("");
-    setSelectedCategory("");
-    setIsCreatingNew(false);
-  };
-
-  const onSubmit = async (data: CompanyProfiles) => {
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("description", editorContent);
-    formData.append("categoryId", selectedCategory);
-    formData.append("logo", uploadedPhoto);
-    formData.append("companyName", data.companyName);
-    formData.append("email", data.email);
-    formData.append("phoneNumber", data.phoneNumber);
-    formData.append("website", data.website);
-    formData.append("location", data.location);
-    formData.append("established", data.established);
-    formData.append("teamSize", selectedTeamSize);
-    formData.append("createdBy", userData.id);
+  const onSubmit = async (data: any) => {
     try {
-      await createCompanyProfile(formData);
+      // Assign the createdBy field to the data object
+      data.createdBy = userData.id;
+  
+      await createCompanyProfile(data);
       toast.success("Company profile saved successfully!");
-
+  
       if (isCreatingNew) {
         reset();
-        setEditorContent(""); 
-        setUploadedPhoto(""); 
-        setSelectedCategory(""); 
       } else {
         navigate("/companyProfile");
       }
     } catch (error) {
       toast.error("Company profile save failed!");
-    } finally {
-      setLoading(false);
     }
   };
+  const handleReset = () => {
+    reset();
+  };
+  
   return (
     <div className="px-3 py-1">
-      <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
+      <div className="flex flex-col gap-1 md:gap-4 sm:flex-row items-center mb-1">
         <h5 className="text-primary font-medium text-xl">Company Profile</h5>
         <hr className="border-t-1 border-gray-300 flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
-        <h5 className="text-muted text-sm">Working Dashboard</h5>
-        <h5 className="text-muted text-sm">Statistics Dashboard</h5>
+        <h5 className="text-sm hidden md:block">Working Dashboard</h5>
+        <h5 className="text-opsh-grey  text-sm hidden md:block">Statistics Dashboard</h5>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -94,7 +65,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
               </p>
             )}
           </label>
-          <UploadPhoto onUpload={setUploadedPhoto} preview={""} />
+          <UploadPhoto onUpload={(val: File | any) => setValue("logo", val)} preview={""} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
           <div>
@@ -126,7 +97,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
             </label>
             <Category
               name={"categoryId"}
-              onChange={setSelectedCategory}
+              onChange={(val: string) => setValue("categoryId", val)}
             />
 
             {errors.categoryId && (
@@ -245,7 +216,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
             </label>
             <Select
               name="teamSize"
-              onChange={setSelectedTeamSize}
+              onChange={(val: number) => setValue("teamSize", val)}
               data={teamSize}
             />
 
@@ -262,7 +233,7 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
             >
               Description
             </label>
-            <CkEditors onChange={setEditorContent} />
+            <CkEditors onChange={(val: any) => setValue("description", val)} />
             {errors.description && (
               <p className="text-opsh-danger text-sm">
                 {errors.description.message}
@@ -275,24 +246,22 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
             <button
               type="button"
               className="px-4 py-2 bg-red-500 text-white rounded"
-              onClick={() => reseting()}
+              onClick={handleReset}
             >
-              Cancel & Reset
+              Reset
             </button>
             <button
               type="submit"
               onClick={() => setIsCreatingNew(true)}
               className="px-5 py-2 bg-green-500 text-white rounded"
-              disabled={loading}
             >
               Add & Create New
             </button>
             <button
               type="submit"
               className="px-5 py-2 bg-green-500 text-white rounded"
-              disabled={loading}
             >
-              {loading ? <span className="loader light"></span> : "Add Profile"}
+              Add Profile
             </button>
           </div>
         </div>
@@ -302,3 +271,4 @@ const CompanyProfile: FC<CompanyProfileProps> = () => {
 };
 
 export default CompanyProfile;
+

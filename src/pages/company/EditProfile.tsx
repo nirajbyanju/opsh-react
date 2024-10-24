@@ -37,7 +37,6 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
   }
 
   const onSubmit = async (data: any) => {
-
     try {
       await updateCompanyProfile(numericId, data);
       toast.success("Company profile saved successfully!");
@@ -56,12 +55,12 @@ const EditProfile: FC<EditProfileProps> = ({ }) => {
 
 
   return <div className="px-3 py-1">
-    <div className="flex flex-col gap-4 sm:flex-row items-center mb-1">
-      <h5 className="text-primary font-medium text-xl">Company Profile</h5>
-      <hr className="border-t-1 border-gray-300 flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
-      <h5 className="text-muted text-sm">Working Dashboard</h5>
-      <h5 className="text-muted text-sm">Statistics Dashboard</h5>
-    </div>
+    <div className="flex flex-col gap-1 md:gap-4 sm:flex-row items-center mb-1">
+        <h5 className="text-primary font-medium text-xl">Company Profile</h5>
+        <hr className="border-t-1 border-gray-300 flex-grow sm:ml-4 mt-2 sm:mt-0 w-full sm:w-auto" />
+        <h5 className="text-sm hidden md:block">Working Dashboard</h5>
+        <h5 className="text-opsh-grey  text-sm hidden md:block">Statistics Dashboard</h5>
+      </div>
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label

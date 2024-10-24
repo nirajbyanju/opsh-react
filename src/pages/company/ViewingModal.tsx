@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import useCompanyProfileStore from "@/stores/company/companyStore";
 import CkEditors from "@/components/ckEditors/CkEditors";
+import { teamSize } from "@/data/teamSize";
 
 interface ViewModalProps {
   isOpen: boolean;
@@ -193,7 +194,7 @@ const ViewModal: FC<ViewModalProps> = ({ isOpen, onClose, profileId }) => {
                 name="awardName"
                 disabled
                  className="w-full border-opsh-grey rounded px-2 py-[0.275rem] border  text-sm"
-                value={profileData.teamSize}
+                value={teamSize.find(size => size.id == profileData.teamSize)?.label}
                 required
               />
             </div>
@@ -204,7 +205,7 @@ const ViewModal: FC<ViewModalProps> = ({ isOpen, onClose, profileId }) => {
             >
               Description
             </label>
-            <CkEditors data={profileData.description} readOnly={true} />
+            <CkEditors data={profileData.description} />
           </div>
           </div>
         </div>
